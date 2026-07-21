@@ -1,0 +1,470 @@
+/* Journey page (interactive timeline) — page-specific layout only.
+   Shared component styles (.site-nav, .btn, .card, etc.) live in base.css. */
+
+.journey-main {
+  min-height: 100vh;
+  padding: calc(var(--space-16) * 1.5) var(--space-4) var(--space-16);
+  position: relative;
+  overflow-x: hidden;
+}
+
+@media (min-width: 1024px) {
+  /* Desktop is a single, non-scrolling "screen": nav (fixed) + this column
+     fill exactly one viewport, so the footer is hidden and overflow is
+     clipped at the true page edge (not an inner box) rather than letting
+     the page scroll. Mobile keeps the natural vertical stack + page scroll
+     (see .journey-stack below). */
+  body[data-page="journey"] {
+    height: 100vh;
+    overflow: hidden;
+  }
+  body[data-page="journey"] .site-footer {
+    display: none;
+  }
+  .journey-main {
+    height: 100vh;
+    position: relative;
+    padding: calc(var(--space-16) * 1.5) 0 0;
+    overflow: hidden;
+  }
+}
+
+/* ---------- Header ---------- */
+.journey-header {
+  margin-bottom: var(--space-12);
+}
+
+@media (min-width: 1024px) {
+  /* The title floats over the canvas instead of occupying its own row, so
+     there's no separate "header area" carving space out of the movable
+     surface below it — header and canvas share the same box. */
+  .journey-header {
+    position: absolute;
+    top: var(--space-16);
+    left: var(--space-8);
+    z-index: 5;
+    margin: 0;
+  }
+}
+
+.journey-header__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-size: clamp(32px, 7vw, 48px);
+  margin: 0;
+}
+
+/* ---------- Desktop canvas ---------- */
+.journey-canvas {
+  display: none;
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .journey-canvas {
+    display: block;
+    position: relative;
+    /* Fills the entire single-viewport `.journey-main` box — the whole
+       timeline fits on one screen, no page scroll required. No overflow
+       clip of its own: `.journey-main`/body already clip at the true
+       page edge, so cards near the canvas's nominal edges aren't cut off
+       early by a second, smaller boundary. Scaled down and centered so
+       the whole layout has margin on every side instead of touching the
+       real viewport edges. */
+    width: 100%;
+    height: 100%;
+    transform: scale(0.8);
+    transform-origin: center center;
+    touch-action: none;
+    cursor: grab;
+  }
+}
+
+.journey-canvas.is-panning {
+  cursor: grabbing;
+}
+
+/* Inner wrapper is what gets panned via transform */
+.journey-canvas-inner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.journey-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* stroke-dasharray/dashoffset starting values are set in JS to the
+     path's actual measured length (journey.js sizeDash()) — a hardcoded
+     number here would visually truncate the line once the real path
+     (7 nodes across a wide layout) exceeds it. */
+  animation: journey-dash 2.4s ease-out forwards;
+}
+
+@keyframes journey-dash {
+  from { stroke-dashoffset: var(--path-length, 6000); }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
+/* Dot marking the exact node position on the path */
+.journey-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.journey-dot--current {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+/* Draggable control-point handles along the path — smaller and dimmer than
+   node dots, always faintly visible, brighten on hover/drag. Reshaping the
+   curve is direct manipulation, so the drag itself isn't reduced-motion
+   gated; only the decorative hover/active transition is. */
+.journey-control-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  opacity: 0.35;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  z-index: 2;
+  touch-action: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.journey-control-point:hover,
+.journey-control-point.is-dragging {
+  opacity: 1;
+  background: var(--color-primary);
+  transform: translate(-50%, -50%) scale(1.6);
+  cursor: grabbing;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-control-point {
+    transition-duration: 0.001ms;
+  }
+}
+
+/* Dashed leader line connecting a dot to its floating card */
+.journey-connector {
+  position: absolute;
+  border-top: 2px dashed var(--color-border-variant);
+  transform-origin: 0 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.journey-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  border: 1px solid var(--color-border-variant);
+  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  backdrop-filter: blur(8px);
+  padding: var(--space-4);
+  text-align: left;
+  color: var(--color-text);
+  cursor: grab;
+  font-family: var(--font-display);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  z-index: 3;
+  touch-action: none;
+  user-select: none;
+  /* Border-color already carries the focus/hover affordance below; the
+     browser's native focus ring would otherwise linger after a drag
+     release and read as a stray extra border. */
+  outline: none;
+}
+
+.journey-node:hover,
+.journey-node:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.journey-node.is-dragging {
+  cursor: grabbing;
+  border-color: var(--color-primary);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  transition: none;
+}
+
+.journey-node--current {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 95%, transparent);
+}
+
+@media (min-width: 1280px) {
+  .journey-node {
+    width: 220px;
+  }
+}
+
+.journey-node__icon {
+  color: var(--color-primary);
+  font-size: 18px;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.journey-node__title {
+  font-size: 16px;
+  margin: 0 0 var(--space-1);
+}
+
+.journey-node__subtitle {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ---------- Mobile stack ---------- */
+.journey-stack {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 1024px) {
+  .journey-stack {
+    display: none;
+  }
+}
+
+.journey-stack__item + .journey-stack__item {
+  margin-top: var(--space-4);
+}
+
+.journey-stack__button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  border: 1px solid var(--color-border-variant);
+  background: var(--color-surface-elevated);
+  padding: var(--space-6);
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-display);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.journey-stack__button:hover,
+.journey-stack__button:focus-visible {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.journey-stack__button .material-symbols-outlined {
+  color: var(--color-primary);
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.journey-stack__button small {
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+/* ---------- Detail modal ---------- */
+.journey-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  backdrop-filter: blur(4px);
+  z-index: 69;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.journey-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.journey-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - var(--space-8));
+  max-width: 700px;
+  max-height: 80vh;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+  z-index: 70;
+  padding: var(--space-8);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  transform: translate(-50%, -50%) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+@media (min-width: 768px) {
+  .journey-panel {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.journey-panel.is-open {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-panel,
+  .journey-backdrop {
+    transition-duration: 0.001ms;
+  }
+}
+
+.journey-panel__boot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: var(--space-8);
+  background: var(--color-surface-lowest);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.journey-panel__boot.is-active {
+  opacity: 1;
+}
+
+.journey-panel__boot::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  margin-left: 2px;
+  background: var(--color-primary);
+  animation: journey-boot-cursor 0.5s step-end infinite;
+}
+
+@keyframes journey-boot-cursor {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-panel__boot {
+    transition-duration: 0.001ms;
+  }
+  .journey-panel__boot::after {
+    animation: none;
+  }
+}
+
+.journey-panel__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: var(--space-2);
+  z-index: 3;
+}
+
+.journey-panel__close:hover {
+  color: var(--color-text);
+}
+
+.journey-panel__main {
+  flex: 1 1 55%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.journey-panel__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin: 0 0 var(--space-4);
+  padding-right: var(--space-8);
+}
+
+.journey-panel__desc {
+  margin: 0 0 var(--space-6);
+  color: var(--color-text-muted);
+}
+
+.journey-panel__footer {
+  margin-top: auto;
+  padding-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.journey-panel__footer .btn {
+  flex: 1 1 auto;
+  justify-content: center;
+  text-align: center;
+}
+
+.journey-panel__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 45%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.journey-panel__item {
+  border-left: 2px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  padding-left: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  transition: border-color 0.2s ease;
+}
+
+.journey-panel__item:hover {
+  border-color: var(--color-primary);
+}

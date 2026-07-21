@@ -1,0 +1,32 @@
+:root {
+  --color-bg: #0A0A0B;
+  --color-surface: #141313;
+  --color-surface-elevated: #1c1b1b;
+  --color-surface-lowest: #0e0e0e;
+  --color-surface-highest: #2b2a2a;
+  --color-border: #27272A;
+  --color-border-variant: #46464a;
+  --color-text: #e5e2e1;
+  --color-text-muted: #c7c6ca;
+  --color-primary: #c8c6c7;
+  --color-primary-on: #141313;
+
+  --font-display: 'Geist', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --space-unit: 4px;
+  --space-1: calc(var(--space-unit) * 1);
+  --space-2: calc(var(--space-unit) * 2);
+  --space-3: calc(var(--space-unit) * 3);
+  --space-4: calc(var(--space-unit) * 4);
+  --space-6: calc(var(--space-unit) * 6);
+  --space-8: calc(var(--space-unit) * 8);
+  --space-12: calc(var(--space-unit) * 12);
+  --space-16: calc(var(--space-unit) * 16);
+
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+
+  --radius: 0px;
+  --grid-cell: 32px;
+}

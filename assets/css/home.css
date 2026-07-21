@@ -1,0 +1,358 @@
+/* Home page (Hero + About) — page-specific layout only.
+   Shared component styles (.site-nav, .btn, .card, etc.) live in base.css. */
+
+/* ---------- Hero ---------- */
+.home-hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding: calc(var(--space-16) * 2) var(--space-4) var(--space-16);
+}
+
+@media (min-width: 1024px) {
+  .home-hero {
+    padding: calc(var(--space-16) * 2) var(--space-16) var(--space-16);
+  }
+}
+
+.home-hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.home-hero__content--pending {
+  opacity: 0;
+}
+
+/* ---------- Boot sequence overlay ---------- */
+.home-boot {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  min-height: 90px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--color-primary);
+}
+
+.home-boot__line {
+  white-space: pre;
+}
+
+.home-boot__line::after {
+  content: '_';
+  animation: home-boot-cursor 1s step-end infinite;
+}
+
+.home-boot.is-done {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+@keyframes home-boot-cursor {
+  50% { opacity: 0; }
+}
+
+.home-hero__badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.home-hero__badge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-primary);
+}
+
+.home-hero__badge-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.home-hero__headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-size: clamp(32px, 8vw, 48px);
+  margin: 0 0 var(--space-4);
+}
+
+.home-hero__accent {
+  display: block;
+  color: var(--color-primary);
+}
+
+.home-hero__rule {
+  width: 96px;
+  height: 4px;
+  background: var(--color-primary);
+  box-shadow: 0 0 15px rgba(200, 198, 199, 0.2);
+  margin-bottom: var(--space-12);
+}
+
+.home-hero__subtext {
+  max-width: 640px;
+  margin: 0 0 var(--space-12);
+  padding-left: var(--space-6);
+  border-left: 1px solid rgba(200, 198, 199, 0.4);
+  color: var(--color-text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.home-hero__subtext strong {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(200, 198, 199, 0.4);
+  text-underline-offset: 4px;
+}
+
+.home-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-16);
+}
+
+.home-hero__cta .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.home-hero__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border-variant);
+}
+
+@media (min-width: 768px) {
+  .home-hero__meta {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.home-hero__meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-hero__meta-label {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.home-hero__meta-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.home-hero__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+}
+
+/* ---------- About / Identity ---------- */
+.home-about {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-16);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-4);
+  border-top: 1px solid var(--color-border-variant);
+}
+
+@media (min-width: 1024px) {
+  .home-about {
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
+    padding: var(--space-16);
+  }
+}
+
+.home-about__heading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.home-about__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.home-about__accent {
+  color: var(--color-primary);
+}
+
+.home-about__heading-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border-variant);
+}
+
+.home-about__lede {
+  max-width: 640px;
+  margin: 0 0 var(--space-12);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.home-about__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .home-about__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.home-about__card-icon {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--color-primary);
+}
+
+.home-about__card-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.home-about__card-body {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Portrait ---------- */
+.home-portrait {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+}
+
+.home-portrait__frame {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  pointer-events: none;
+}
+
+.home-portrait__frame--top {
+  top: -16px;
+  right: -16px;
+  border-top: 2px solid var(--color-primary);
+  border-right: 2px solid var(--color-primary);
+}
+
+.home-portrait__frame--bottom {
+  bottom: -16px;
+  left: -16px;
+  border-bottom: 2px solid var(--color-primary);
+  border-left: 2px solid var(--color-primary);
+}
+
+.home-portrait__media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border-variant);
+  background: var(--color-surface-elevated);
+  filter: grayscale(1);
+  transition: filter 0.7s ease;
+}
+
+.home-portrait__media:hover {
+  filter: grayscale(0);
+}
+
+.home-portrait__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.home-portrait__media:hover .home-portrait__image {
+  opacity: 1;
+}
+
+.home-portrait__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-6);
+  background: linear-gradient(to top, var(--color-bg), transparent);
+}
+
+.home-portrait__caption-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.home-portrait__caption-subject {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-text);
+}

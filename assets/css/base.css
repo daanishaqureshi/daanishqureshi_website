@@ -1,0 +1,141 @@
+@import url('tokens.css');
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+.u-visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap;
+}
+.u-grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-surface-elevated) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-surface-elevated) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+}
+
+/* Cursor-following grid glow (paired with motion.js's initCursorGlow).
+   Duplicates the grid-line pattern at higher contrast and masks it to a
+   radial falloff around the (eased) pointer position, so nearby grid lines
+   brighten instead of a colored spotlight washing over the background. */
+.u-cursor-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-primary) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 45%, transparent) 1px, transparent 1px);
+  background-size: var(--grid-cell) var(--grid-cell);
+  -webkit-mask-image: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), black 0%, transparent 180px);
+  mask-image: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), black 0%, transparent 180px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.u-cursor-glow.has-pointer {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-cursor-glow { display: none; }
+}
+.text-accent { color: var(--color-primary); }
+
+/* Nav */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-4) var(--space-4);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border-variant);
+}
+.site-nav__brand {
+  font-family: var(--font-mono); font-weight: 700; letter-spacing: -0.02em;
+  font-size: 16px; text-transform: uppercase;
+}
+.site-nav__links { display: none; gap: var(--space-8); position: relative; }
+.site-nav__link {
+  font-family: var(--font-mono); font-size: 13px; text-transform: uppercase;
+  color: var(--color-text-muted); padding-bottom: var(--space-1);
+  transition: color 0.2s ease;
+}
+.site-nav__link:hover { color: var(--color-text); }
+.site-nav__link.is-active { color: var(--color-primary); }
+.site-nav__underline {
+  position: absolute; bottom: -1px; height: 2px; background: var(--color-primary);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), width 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.site-nav__toggle {
+  display: inline-flex; background: none; border: 1px solid var(--color-border-variant);
+  color: var(--color-text); padding: var(--space-2); cursor: pointer;
+}
+@media (min-width: 768px) {
+  .site-nav__links { display: flex; }
+  .site-nav__toggle { display: none; }
+}
+
+/* Mobile drawer */
+.site-drawer {
+  position: fixed; inset: 0; z-index: 60; background: var(--color-surface-lowest);
+  transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  padding: var(--space-16) var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);
+}
+.site-drawer.is-open { transform: translateX(0); }
+.site-drawer__close { align-self: flex-end; background: none; border: none; color: var(--color-text); font-family: var(--font-mono); cursor: pointer; }
+.site-drawer__link { font-family: var(--font-mono); text-transform: uppercase; font-size: 20px; color: var(--color-text); }
+
+/* Footer */
+.site-footer {
+  display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: space-between; align-items: center;
+  padding: var(--space-4) var(--space-4); border-top: 1px solid var(--color-border-variant);
+  background: var(--color-surface-lowest); font-family: var(--font-mono); font-size: 11px;
+  color: var(--color-text-muted); text-transform: uppercase;
+}
+.site-footer__links { display: flex; gap: var(--space-6); }
+
+/* Buttons */
+.btn {
+  font-family: var(--font-mono); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  padding: var(--space-4) var(--space-8); border: 1px solid var(--color-border-variant);
+  background: transparent; color: var(--color-text); cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+}
+.btn--primary { background: var(--color-primary); color: var(--color-primary-on); border-color: var(--color-primary); }
+.btn--ghost { background: transparent; color: var(--color-text-muted); border-color: var(--color-border-variant); }
+.btn:hover { transform: translateY(-2px); border-color: var(--color-primary); }
+.btn--primary:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn--ghost:hover { transform: translateY(-2px); border-color: var(--color-primary); color: var(--color-text); }
+
+/* Cards */
+.card {
+  border: 1px solid var(--color-border-variant); background: var(--color-surface-elevated);
+  padding: var(--space-6);
+}
+
+/* Scroll reveal */
+.u-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.u-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  .u-reveal { opacity: 1; transform: none; }
+}
+
+/* Page transitions */
+body { opacity: 0; transition: opacity 0.25s ease; }
+body.is-loaded { opacity: 1; }
+body.is-leaving { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  body { opacity: 1 !important; transition: none !important; }
+}

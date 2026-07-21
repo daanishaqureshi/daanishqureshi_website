@@ -1,0 +1,116 @@
+/* Leadership page — page-specific layout only.
+   Shared components (.research-card, .research-grid, .research-tags, .research-stat,
+   .research-checklist, .research-arch-list, .research-achievement, .research-intro, etc.)
+   live in research.css and are reused as-is here. */
+
+/* ---------- Spacing helper for a grid that follows another block within a section ---------- */
+.leadership-grid--spaced {
+  margin-top: var(--space-6);
+}
+
+/* ---------- Section 1: supporting photo row (Impiricus team photos) ---------- */
+.leadership-photo-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .leadership-photo-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.leadership-photo {
+  margin: 0;
+  border: 1px solid var(--color-border-variant);
+  background: var(--color-surface-elevated);
+}
+
+.leadership-photo__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.leadership-photo:hover .leadership-photo__img {
+  opacity: 1;
+}
+
+.leadership-photo__caption {
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border-variant);
+}
+
+/* ---------- Section 3: lighter/secondary aside item (office layout optimization) ---------- */
+.leadership-aside {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-variant);
+  background: var(--color-surface-lowest);
+}
+
+@media (min-width: 768px) {
+  .leadership-aside {
+    grid-template-columns: 160px 1fr;
+    align-items: center;
+    padding: var(--space-4) var(--space-6);
+  }
+}
+
+.leadership-aside__media {
+  border: 1px solid var(--color-border-variant);
+  overflow: hidden;
+}
+
+.leadership-aside__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  opacity: 0.75;
+  filter: grayscale(0.4);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.leadership-aside:hover .leadership-aside__img {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.leadership-aside__label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.leadership-aside__text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0 0 var(--space-2);
+}
+
+.leadership-aside__link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+}
+
+.leadership-aside__link:hover {
+  text-decoration: underline;
+}

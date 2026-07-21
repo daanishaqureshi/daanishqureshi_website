@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daanish A. Qureshi // Portfolio</title>
+<meta name="description" content="Portfolio of Daanish A. Qureshi, applied mathematician, PhD Candidate in Computational Biology at Yale, and VP of AI Engineering leading agentic AI systems in healthcare technology.">
+<meta property="og:title" content="Daanish A. Qureshi // Portfolio">
+<meta property="og:description" content="Portfolio of Daanish A. Qureshi, applied mathematician, PhD Candidate in Computational Biology at Yale, and VP of AI Engineering leading agentic AI systems in healthcare technology.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/home.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body data-page="home">
+
+<nav class="site-nav">
+  <div class="site-nav__brand">DAANISH_A_QURESHI</div>
+  <div class="site-nav__links">
+    <a class="site-nav__link" data-page="home" href="index.html" data-internal>HOME</a>
+    <a class="site-nav__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+    <a class="site-nav__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+    <a class="site-nav__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+    <span class="site-nav__underline"></span>
+  </div>
+  <button class="site-nav__toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+</nav>
+
+<div class="site-drawer" inert>
+  <button class="site-drawer__close" type="button" aria-label="Close navigation menu">✕</button>
+  <a class="site-drawer__link" data-page="home" href="index.html" data-internal>HOME</a>
+  <a class="site-drawer__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+  <a class="site-drawer__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+  <a class="site-drawer__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+</div>
+
+<main>
+  <section class="home-hero u-grid-bg">
+    <canvas id="ambient-canvas" class="home-hero__canvas" aria-hidden="true"></canvas>
+    <div class="u-cursor-glow" aria-hidden="true"></div>
+    <div id="boot-sequence" class="home-boot" aria-hidden="true"></div>
+    <div id="hero-content" class="home-hero__content home-hero__content--pending">
+      <div class="home-hero__badge">
+        <span class="home-hero__badge-dot" aria-hidden="true"></span>
+        <span class="home-hero__badge-text">INITIALIZING_SEQUENCE_091</span>
+      </div>
+
+      <h1 class="home-hero__headline">
+        DAANISH A. QURESHI //
+        <span class="home-hero__accent">ARCHITECTING AGENTIC SYSTEMS</span>
+      </h1>
+      <div class="home-hero__rule" aria-hidden="true"></div>
+
+      <p class="home-hero__subtext">
+        PhD Candidate in Computational Biology (Yale) | VP of AI Engineering (Impiricus).
+        Studied <strong>applied mathematics, biology, and engineering</strong> at Brown. Now building agentic AI systems at the intersection of healthcare and technology.
+      </p>
+
+      <div class="home-hero__cta">
+        <a class="btn btn--primary" href="journey.html" data-internal>JOURNEY</a>
+        <a class="btn btn--ghost" href="research.html" data-internal>
+          <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
+          RESEARCH
+        </a>
+      </div>
+
+      <div class="home-hero__meta">
+        <div class="home-hero__meta-item">
+          <span class="home-hero__meta-label">LATENCY_INDEX</span>
+          <span class="home-hero__meta-value"><span id="latency-value" data-counter-to="14" data-counter-ms="1500" data-jitter-base="14" data-jitter-range="4">0</span>ms [STABLE]</span>
+        </div>
+        <div class="home-hero__meta-item">
+          <span class="home-hero__meta-label">SYSTEM_STATUS</span>
+          <span class="home-hero__meta-value"><span class="home-hero__status-dot" aria-hidden="true"></span>OPTIMAL_OPERATIONAL</span>
+        </div>
+        <div class="home-hero__meta-item">
+          <span class="home-hero__meta-label">GEO_LOCK</span>
+          <span class="home-hero__meta-value">NEW_HAVEN.CT // YALE_UNIV</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="identity" class="home-about u-reveal">
+    <div class="home-about__narrative">
+      <div id="interests" class="home-about__grid">
+        <div class="card u-reveal">
+          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">functions</span>
+          <h3 class="home-about__card-title">Applied Mathematics</h3>
+          <p class="home-about__card-body">Physics-informed neural networks and quantitative modeling, from mussel adhesion mechanics to drug-delivery systems. Grounded in a Brown University Sc.B. in Applied Mathematics, Biology, and Engineering.</p>
+        </div>
+        <div class="card u-reveal">
+          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">psychology</span>
+          <h3 class="home-about__card-title">AI Leadership</h3>
+          <p class="home-about__card-body">Leading AI at Impiricus: agentic systems, optimization, and operations research. Building software that reaches physicians and pharmaceutical teams at scale.</p>
+        </div>
+        <div class="card u-reveal">
+          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">genetics</span>
+          <h3 class="home-about__card-title">Computational Biology</h3>
+          <p class="home-about__card-body">PhD research at Yale, exploring the intersection of AI, healthcare, and biology. Still choosing a specific focus, from medical imaging to genomics.</p>
+        </div>
+        <div class="card u-reveal">
+          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">rocket_launch</span>
+          <h3 class="home-about__card-title">Physical Sciences</h3>
+          <p class="home-about__card-body">Published research in structural mechanics and materials science: NASA-funded work, plus a first-author paper in <em>Matter</em> (Cell Press) on mussel adhesion mechanics.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="biography" class="home-portrait">
+      <div class="home-portrait__frame home-portrait__frame--top" aria-hidden="true"></div>
+      <div class="home-portrait__frame home-portrait__frame--bottom" aria-hidden="true"></div>
+      <div class="home-portrait__media">
+        <img class="home-portrait__image" alt="Daanish A. Qureshi portrait" src="assets/img/portrait.png">
+        <div class="home-portrait__caption">
+          <span class="home-portrait__caption-eyebrow">IMAGE_SOURCE_IDENTIFIED</span>
+          <span class="home-portrait__caption-subject">SUBJECT: D.Q. [PRIMARY_NODE]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__copy">© 2026 <span class="text-accent">DAANISH_Q_SYSTEMS</span>. ALL RIGHTS RESERVED. [STATUS: <span class="text-accent">OPTIMAL</span>]</div>
+  <div class="site-footer__links">
+    <a href="https://linkedin.com/in/dq03" target="_blank" rel="noopener">LINKEDIN</a>
+    <a href="mailto:daanishqureshi@yale.edu">EMAIL</a>
+  </div>
+</footer>
+
+<script type="module">
+  import { initSiteNav } from './assets/js/nav.js';
+  import { initScrollReveal, initCounters, initCursorGlow } from './assets/js/motion.js';
+  import { initParticles, initBootSequence, initLatencyJitter } from './assets/js/home.js?v=2';
+  initSiteNav();
+  initScrollReveal();
+  initParticles('#ambient-canvas');
+  initCursorGlow('.home-hero');
+  initBootSequence('#boot-sequence', '#hero-content', [
+    'BOOTING SYSTEM...',
+    'LOADING PROFILE: DAANISH_A_QURESHI',
+    'STATUS: READY',
+  ], {
+    onDone: () => {
+      initCounters();
+      initLatencyJitter('#latency-value');
+    },
+  });
+</script>
+</body>
+</html>

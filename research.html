@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daanish A. Qureshi // Research</title>
+<meta name="description" content="Research portfolio of Daanish A. Qureshi across four areas: physics-informed machine learning for drug-release modeling (Brown/NVIDIA DLI), structural and biomedical materials research at Brown University (mussel adhesion mechanics, ML-based ultrasonic crack detection), NASA-funded structural mechanics, and NIH/population health research on cardiovascular disease and social determinants.">
+<meta property="og:title" content="Daanish A. Qureshi // Research">
+<meta property="og:description" content="Research portfolio of Daanish A. Qureshi across four areas: physics-informed machine learning for drug-release modeling (Brown/NVIDIA DLI), structural and biomedical materials research at Brown University (mussel adhesion mechanics, ML-based ultrasonic crack detection), NASA-funded structural mechanics, and NIH/population health research on cardiovascular disease and social determinants.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/research.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body data-page="research">
+
+<nav class="site-nav">
+  <div class="site-nav__brand">DAANISH_A_QURESHI</div>
+  <div class="site-nav__links">
+    <a class="site-nav__link" data-page="home" href="index.html" data-internal>HOME</a>
+    <a class="site-nav__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+    <a class="site-nav__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+    <a class="site-nav__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+    <span class="site-nav__underline"></span>
+  </div>
+  <button class="site-nav__toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+</nav>
+
+<div class="site-drawer" inert>
+  <button class="site-drawer__close" type="button" aria-label="Close navigation menu">✕</button>
+  <a class="site-drawer__link" data-page="home" href="index.html" data-internal>HOME</a>
+  <a class="site-drawer__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+  <a class="site-drawer__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+  <a class="site-drawer__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+</div>
+
+<main class="research-main u-grid-bg">
+  <header class="research-intro">
+    <div class="research-intro__chip">STATUS: RESEARCH_ACTIVE</div>
+    <h1 class="research-intro__title">ARCHITECTING THE FUTURE OF <span class="text-accent">INTELLIGENT SYSTEMS</span>.</h1>
+    <p class="research-intro__subtext">A repository of deep research across scientific machine learning, structural &amp; biomedical materials, and population health. Spanning Brown University, NVIDIA's Deep Learning Institute, NASA, and the NIH.</p>
+    <nav class="research-jumpnav" aria-label="Research sections">
+      <a class="research-jumpnav__link" href="#applied-ml">01 // Applied ML</a>
+      <a class="research-jumpnav__link" href="#brown-research">02 // Brown University Research</a>
+      <a class="research-jumpnav__link" href="#nasa">03 // NASA</a>
+      <a class="research-jumpnav__link" href="#population-health">04 // NIH &amp; Population Health</a>
+    </nav>
+  </header>
+
+  <section id="applied-ml" class="research-section u-reveal">
+    <div class="research-section__head">
+      <h2 class="research-section__title">01 // APPLIED ML</h2>
+      <div class="research-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="research-grid research-grid--nvidia">
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">Physics-Informed Neural Networks</span>
+          <span class="research-card__header-ref">BROWN_UNIV // NVIDIA_DLI</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--contain">
+            <img class="research-card__media-img" alt="Drug-release data and model fits for flat, 1D-wrinkled, and 2D-crumpled films, comparing the Higuchi, Peppas, and Fick's Law classical models against the PINN model." src="https://arxiv.org/html/2602.09963v1/images/plot_pinn.png">
+            <div class="research-card__media-caption">PINN VS. CLASSICAL RELEASE MODELS</div>
+          </div>
+          <h3 class="research-card__title">PHYSICS-INFORMED NEURAL NETWORKS</h3>
+          <p class="research-card__text">Developed at Brown in collaboration with NVIDIA's Deep Learning Institute, working with Prof. George Em Karniadakis and Dr. Khemraj Shukla. It is a PINN and Bayesian PINN (BPINN) method for predicting drug-release rates from planar, 1D-wrinkled, and 2D-crumpled controlled-release films, built in PyTorch and JAX. By integrating Fick's diffusion law directly into the network alongside limited experimental data, the model benchmarks against, and outperforms, the classical Fick, Higuchi, and Peppas release models, cutting prediction error by up to 40% and reaching target accuracy for the planar-film case using just 6% of the typical experimental timeframe.</p>
+          <div class="research-tags">
+            <span class="research-tag research-tag--nvidia">NVIDIA DLI</span>
+            <span class="research-tag">PyTorch</span>
+            <span class="research-tag">JAX</span>
+            <span class="research-tag">Bayesian PINNs</span>
+          </div>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">Qureshi, Shukla &amp; Srivastava, <em>Journal of Drug Delivery Science and Technology</em>, 108654 (2026)</span>
+          </div>
+          <p class="research-card__text research-card__text--small"><a href="https://arxiv.org/abs/2602.09963" target="_blank" rel="noopener">Read the preprint on arXiv →</a></p>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">As Featured in Brown University News</span>
+          <span class="research-card__header-ref">JULY_2026</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-stat">
+            <div class="research-stat__value"><span data-counter-to="94" data-counter-ms="1200">0</span>%</div>
+            <div class="research-stat__label">Reduction in Required Experimental Data</div>
+            <p class="research-stat__caption">For simple, planar controlled-release materials. The reduction is 67% for more complex, folded geometries. <a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery" target="_blank" rel="noopener">Read the Brown University News feature →</a></p>
+          </div>
+          <h3 class="research-card__title">DRUG-RELEASE PREDICTION</h3>
+          <p class="research-card__text">Collaborative research with Prof. Vikas Srivastava (Brown Engineering), Prof. George Em Karniadakis, and Dr. Khemraj Shukla. This work could cut development time for therapeutic patches, bandages, and implants. The press coverage above and the peer-reviewed preprint at left describe the same underlying model.</p>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">SAME MODEL AS THE J. DRUG DELIVERY SCI. &amp; TECH. PAPER. SEE CARD AT LEFT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-card research-card--spaced">
+      <div class="research-card__header">
+        <span class="research-card__header-label">Predictive Modeling // Healthcare Provider Behavior</span>
+        <span class="research-card__header-ref">IMPIRICUS</span>
+      </div>
+      <div class="research-card__body">
+        <h3 class="research-card__title">PREDICTING HEALTHCARE PROVIDER ENGAGEMENT IN SMS CAMPAIGNS</h3>
+        <p class="research-card__text">Applied predictive modeling to forecast how individual healthcare providers engage with SMS-based outreach campaigns. This is the same predictive-modeling-of-provider-behavior work that underpins product development at Impiricus, formalized and written up as a standalone study.</p>
+        <div class="research-tags">
+          <span class="research-tag">Predictive Modeling</span>
+          <span class="research-tag">Healthcare Provider Behavior</span>
+        </div>
+        <div class="research-card__footer">
+          <span class="research-card__footer-tag">Qureshi, Chaudhary, Tan, Maoz, Burian, Gelber &amp; Kang, arXiv:2511.17658 (2025)</span>
+        </div>
+        <p class="research-card__text research-card__text--small"><a href="https://arxiv.org/abs/2511.17658" target="_blank" rel="noopener">Read the paper on arXiv →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="brown-research" class="research-section u-reveal">
+    <div class="research-section__head">
+      <h2 class="research-section__title">02 // BROWN UNIVERSITY RESEARCH</h2>
+      <div class="research-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="research-grid research-grid--nvidia">
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">Mussel Byssal-Plaque Mechanics</span>
+          <span class="research-card__header-ref">MIT COLLAB // QIN LAB</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--contain">
+            <img class="research-card__media-img" alt="Figure showing mussels attached to a surface by byssal threads, a close-up of a byssal plaque, a fluorescence microscopy image of the plaque, and a schematic of the modeling, 3D-printing, and mechanical-testing workflow used to study plaque attachment strength." src="assets/img/research/why-mussels-figure.jpg">
+          </div>
+          <h3 class="research-card__title">WHY MUSSEL BYSSAL PLAQUES ARE TINY YET STRONG</h3>
+          <p class="research-card__text">First-author study, conducted during his Brown years through a collaboration with Dr. Zhao Qin's lab at MIT, combining mechanical testing, 3D printing, and numerical modeling to explain how mussels anchor themselves to wave-battered surfaces. Found that byssal plaques 3–5x the diameter of their thread give optimized attachment strength, and that overall bonding strength depends more on network architecture than on plaque size alone.</p>
+          <div class="research-tags">
+            <span class="research-tag research-tag--nvidia">First-Author</span>
+            <span class="research-tag">Mechanical Testing</span>
+            <span class="research-tag">3D Printing</span>
+            <span class="research-tag">Numerical Modeling</span>
+          </div>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">Qureshi, Goffredo, Kim, Han, Guo, Ryu &amp; Qin, <em>Matter</em> 5, 710–724 (2022)</span>
+          </div>
+          <p class="research-card__text research-card__text--small"><a href="https://www.cell.com/matter/fulltext/S2590-2385(21)00626-3" target="_blank" rel="noopener">Read the peer-reviewed paper on Cell Press →</a></p>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">First-Author Publication // Ultrasonic ML Crack Detection</span>
+          <span class="research-card__header-ref">SRIVASTAVA LAB // BME</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--contain">
+            <img class="research-card__media-img" alt="Scatter plots of CNN-predicted crack length and crack position versus actual measured values on experimental high-density polyethylene ultrasound data, both tightly following the prediction-equals-actual line." src="https://arxiv.org/html/2304.11497v2/x6.png">
+            <div class="research-card__media-caption">CNN PREDICTION VS. ACTUAL (EXPERIMENTAL)</div>
+          </div>
+          <h3 class="research-card__title">MEASURING EMBEDDED CRACKS IN HDPE VIA ULTRASOUND</h3>
+          <p class="research-card__text">High-density polyethylene is used in nuclear-plant cooling pipelines and biomedical implants. It can develop embedded crack-like flaws during fabrication or operation that risk catastrophic failure if undetected. Working with Prof. Vikas Srivastava's Biomedical Engineering lab, built a finite-element-simulation-trained CNN that predicts crack length and position simultaneously from only tens of microseconds of ultrasound A-scan signal, achieving 3.2% mean absolute percent error on crack length and 3.8% on position.</p>
+          <div class="research-tags">
+            <span class="research-tag research-tag--nvidia">First-Author</span>
+            <span class="research-tag">CNN</span>
+            <span class="research-tag">Finite Element Simulation</span>
+            <span class="research-tag">Nondestructive Evaluation</span>
+          </div>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">Qureshi, Bellala, Niu &amp; Srivastava, <em>Journal of Nondestructive Evaluation, Diagnostics and Prognostics of Engineering Systems</em> (2026)</span>
+          </div>
+          <p class="research-card__text research-card__text--small"><a href="https://arxiv.org/abs/2304.11497" target="_blank" rel="noopener">Read the arXiv preprint →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-card research-card--spaced">
+      <div class="research-card__header">
+        <span class="research-card__header-label">Broader Structural &amp; Biomedical Materials Research</span>
+        <span class="research-card__header-ref">SRIVASTAVA LAB</span>
+      </div>
+      <div class="research-card__body">
+        <p class="research-card__text">Beyond the two published studies above, ongoing work in Prof. Vikas Srivastava's lab at Brown applies machine learning to a wider set of structural and biomedical materials problems.</p>
+        <ul class="research-checklist">
+          <li class="research-checklist__item">
+            <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+            <span>Analyzing structural defects in polymers with machine learning techniques</span>
+          </li>
+          <li class="research-checklist__item">
+            <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+            <span>Understanding the mechanics of hydrogels for biomedical applications</span>
+          </li>
+          <li class="research-checklist__item">
+            <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+            <span>Using machine learning to predict dietary intake and health status</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="nasa" class="research-section u-reveal">
+    <div class="research-section__head">
+      <h2 class="research-section__title">03 // NASA</h2>
+      <div class="research-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="research-grid research-grid--nvidia">
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">NASA Space Grant // Research Scholar</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--grayscale">
+            <img class="research-card__media-img" alt="Photo of a researcher assembling a folded, faceted geometric paper structure on a workshop table, part of NASA Space Grant research into material behavior under stress." src="assets/img/research/nasa-shape.png">
+          </div>
+          <h3 class="research-card__subtitle">A NOVEL GEOMETRIC STRUCTURE</h3>
+          <p class="research-card__text">Investigated a novel geometric structure I invented to study material behavior under stress for NASA. The approach combines mechanics and statistics to predict how materials behave under stress, applied to NASA space exploration technologies.</p>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">NASA_SPACE_GRANT_2022</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">Research Program</span>
+          <span class="research-card__header-ref">NASA_CT_SPACE_GRANT</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--grayscale">
+            <img class="research-card__media-img" alt="Photo of a folded, faceted geometric structure made of blue paper mounted in a mechanical testing machine between two metal compression plates." src="assets/img/research/structural-research.png">
+          </div>
+          <h3 class="research-card__title">STRUCTURAL BEHAVIOR UNDER EXTREME LOADING</h3>
+          <p class="research-card__text">As a NASA Space Grant Research Scholar, applied statistical and mechanical modeling to the question of how materials behave under the extreme structural and thermal loads seen in space exploration. This work connects directly to the same physics-informed and data-driven modeling approaches used in the Applied ML and Brown University research above. The research looks at structural materials and how they respond to stress and strain under load, including how and when they start to fail. Understanding these failure modes under extreme conditions helps predict which materials and structures can hold up during space missions.</p>
+          <div class="research-tags">
+            <span class="research-tag">Structural Mechanics</span>
+            <span class="research-tag">Statistical Modeling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="population-health" class="research-section u-reveal">
+    <div class="research-section__head">
+      <h2 class="research-section__title">04 // NIH &amp; POPULATION HEALTH</h2>
+      <div class="research-section__rule" aria-hidden="true"></div>
+    </div>
+
+    <div class="research-grid research-grid--nvidia">
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">NIH All of Us Program</span>
+          <span class="research-card__header-ref">POPULATION_HEALTH</span>
+        </div>
+        <div class="research-card__body">
+          <div class="research-card__media research-card__media--grayscale">
+            <img class="research-card__media-img" alt="Photo from the CPGI 2023 presentation of NIH All of Us research findings, two presenters speaking at a podium with an All of Us Research Program banner in the background." src="assets/img/research/all-of-us-presentation.jpeg">
+          </div>
+          <h3 class="research-card__title">LARGE-SCALE STATISTICAL &amp; ML ANALYSIS</h3>
+          <p class="research-card__text">Research through the NIH All of Us Program applying statistical and machine-learning analysis to large-scale population health datasets, exploring correlations between maternal mortality, cardiovascular disease, and social determinants of health. Presented these findings with Ketan Pamurthy at CPGI 2023.</p>
+          <ul class="research-checklist">
+            <li class="research-checklist__item">
+              <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+              <span>Large-scale statistical &amp; ML analysis of NIH All of Us data</span>
+            </li>
+            <li class="research-checklist__item">
+              <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+              <span>Correlating maternal mortality with social determinants of health</span>
+            </li>
+          </ul>
+          <p class="research-card__text research-card__text--small"><a href="https://www.linkedin.com/posts/dq03_cpgi2023-joinallofus-reasons4research-activity-7067555611630002176-KI3r?utm_source=share&amp;utm_medium=member_desktop&amp;rcm=ACoAADTMVQABsmOEEbGtyogOFyvTp6UgxSNBsSE" target="_blank" rel="noopener">See the CPGI 2023 presentation on LinkedIn →</a></p>
+        </div>
+      </div>
+
+      <div class="research-card">
+        <div class="research-card__header">
+          <span class="research-card__header-label">Brown University // Biomedical Informatics</span>
+          <span class="research-card__header-ref">SARKAR LAB</span>
+        </div>
+        <div class="research-card__body">
+          <h3 class="research-card__title">ETHNICITY, SOCIAL DETERMINANTS &amp; CARDIOVASCULAR DISEASE</h3>
+          <p class="research-card__text">Research with Prof. Neil Sarkar in Brown University's Department of Biomedical Informatics studying the role of ethnicity and social determinants in cardiovascular disease, including an exploration of "Blue Zones" longevity patterns in the U.S., regions where residents live measurably longer, healthier lives.</p>
+          <ul class="research-checklist">
+            <li class="research-checklist__item">
+              <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+              <span>Ethnicity &amp; social determinants in cardiovascular disease</span>
+            </li>
+            <li class="research-checklist__item">
+              <span class="material-symbols-outlined research-checklist__icon" aria-hidden="true">check_circle</span>
+              <span>Exploring "Blue Zones" longevity patterns in the U.S.</span>
+            </li>
+          </ul>
+          <div class="research-card__footer">
+            <span class="research-card__footer-tag">Qureshi, Wahood &amp; Sarkar, "The Role of Ethnicity and Social Determinants in Cardiovascular Disease." Under review (2024)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="research-card research-card--spaced">
+      <div class="research-card__header">
+        <span class="research-card__header-label">Independent Study // Brown University</span>
+        <span class="research-card__header-ref">UNPUBLISHED</span>
+      </div>
+      <div class="research-card__body">
+        <div class="research-card__media research-card__media--contain">
+          <img class="research-card__media-img" alt="Figure showing hand image segmentation into fingers and palm regions, illustrating the steps from a raw hand photo through background removal, contour detection, finger and palm segmentation, feature extraction, and modeling." src="assets/img/research/independent-study-hand-analysis.png">
+          <div class="research-card__media-caption">HAND IMAGE SEGMENTATION AND FEATURE EXTRACTION PIPELINE</div>
+        </div>
+        <h3 class="research-card__title">ANALYZING HAND IMAGES FOR DIET AND HEALTH</h3>
+        <p class="research-card__text">This independent study at Brown looks at whether a photo of someone's hand can say something about their diet and health. The method starts by adjusting the colors in each photo so they match up across different lighting and cameras. It then finds the hand in the photo, separates it from the background, and splits the image into the left and right hand.</p>
+        <p class="research-card__text">From there, it finds key points on the hand and uses them to split each hand into its fingers and palm. For each of these parts, it pulls out features like color patterns and shape measurements, and puts them on a common scale so they can be compared across photos. The next step, proposed but not yet done, is to use these features with statistics and machine learning to try to predict health outcomes.</p>
+        <p class="research-card__text">This work is unpublished. If you are interested in it, feel free to reach out.</p>
+        <div class="research-tags">
+          <span class="research-tag">Image Processing</span>
+          <span class="research-tag">Feature Extraction</span>
+          <span class="research-tag">Health Prediction</span>
+        </div>
+        <div class="research-card__footer">
+          <span class="research-card__footer-tag">SRIVASTAVA LAB, BROWN UNIVERSITY. UNPUBLISHED INDEPENDENT STUDY.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__copy">© 2026 <span class="text-accent">DAANISH_Q_SYSTEMS</span>. ALL RIGHTS RESERVED. [STATUS: <span class="text-accent">OPTIMAL</span>]</div>
+  <div class="site-footer__links">
+    <a href="https://linkedin.com/in/dq03" target="_blank" rel="noopener">LINKEDIN</a>
+    <a href="mailto:daanishqureshi@yale.edu">EMAIL</a>
+  </div>
+</footer>
+
+<script type="module">
+  import { initSiteNav } from './assets/js/nav.js';
+  import { initScrollReveal, initCounters } from './assets/js/motion.js';
+  import { initScrollspy } from './assets/js/research.js';
+  initSiteNav();
+  initScrollReveal();
+  initCounters();
+  initScrollspy();
+</script>
+</body>
+</html>

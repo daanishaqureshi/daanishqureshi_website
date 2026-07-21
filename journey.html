@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daanish A. Qureshi // The Journey</title>
+<meta name="description" content="An interactive timeline of Daanish A. Qureshi's journey through Brown University, NASA, LitGrab, Fidelity Investments, Yale PhD, and Impiricus.">
+<meta property="og:title" content="Daanish A. Qureshi // The Journey">
+<meta property="og:description" content="An interactive timeline of Daanish A. Qureshi's journey through Brown University, NASA, LitGrab, Fidelity Investments, Yale PhD, and Impiricus.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/journey.css?v=7">
+<link rel="icon" href="favicon.svg">
+</head>
+<body data-page="journey">
+
+<nav class="site-nav">
+  <div class="site-nav__brand">DAANISH_A_QURESHI</div>
+  <div class="site-nav__links">
+    <a class="site-nav__link" data-page="home" href="index.html" data-internal>HOME</a>
+    <a class="site-nav__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+    <a class="site-nav__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+    <a class="site-nav__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+    <span class="site-nav__underline"></span>
+  </div>
+  <button class="site-nav__toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+</nav>
+
+<div class="site-drawer" inert>
+  <button class="site-drawer__close" type="button" aria-label="Close navigation menu">✕</button>
+  <a class="site-drawer__link" data-page="home" href="index.html" data-internal>HOME</a>
+  <a class="site-drawer__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
+  <a class="site-drawer__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
+  <a class="site-drawer__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
+</div>
+
+<main class="journey-main u-grid-bg">
+  <div class="journey-header">
+    <h1 class="journey-header__title">The Journey</h1>
+  </div>
+
+  <div id="journey-canvas" class="journey-canvas" aria-hidden="false">
+    <div class="u-cursor-glow" aria-hidden="true"></div>
+    <div id="journey-canvas-inner" class="journey-canvas-inner">
+      <svg class="journey-path" viewBox="0 0 1000 2000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="journeyPathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#c8c6c7;stop-opacity:0.2" />
+            <stop offset="50%" style="stop-color:#c8c6c7;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#c8c6c7;stop-opacity:0.2" />
+          </linearGradient>
+        </defs>
+        <path id="journey-path-line" d="" fill="none" stroke="url(#journeyPathGrad)" stroke-width="5" stroke-linecap="round" />
+      </svg>
+    </div>
+  </div>
+
+  <ol id="journey-stack" class="journey-stack"></ol>
+</main>
+
+<div id="journey-backdrop" class="journey-backdrop" aria-hidden="true" inert></div>
+<aside id="journey-panel" class="journey-panel" aria-hidden="true" inert role="dialog" aria-modal="true" aria-labelledby="journey-panel-title">
+  <div class="journey-panel__boot" aria-hidden="true"></div>
+  <button class="journey-panel__close" type="button" aria-label="Close detail panel">
+    <span class="material-symbols-outlined" aria-hidden="true">close</span>
+  </button>
+  <div class="journey-panel__main">
+    <h2 id="journey-panel-title" class="journey-panel__title">Details</h2>
+    <p class="journey-panel__desc">Select a node to view details.</p>
+    <div class="journey-panel__footer"></div>
+  </div>
+  <ul class="journey-panel__items"></ul>
+</aside>
+
+<footer class="site-footer">
+  <div class="site-footer__copy">© 2026 <span class="text-accent">DAANISH_Q_SYSTEMS</span>. ALL RIGHTS RESERVED. [STATUS: <span class="text-accent">OPTIMAL</span>]</div>
+  <div class="site-footer__links">
+    <a href="https://linkedin.com/in/dq03" target="_blank" rel="noopener">LINKEDIN</a>
+    <a href="mailto:daanishqureshi@yale.edu">EMAIL</a>
+  </div>
+</footer>
+
+<script type="module">
+  import { initSiteNav } from './assets/js/nav.js';
+  import { initJourney } from './assets/js/journey.js?v=7';
+  initSiteNav();
+  initJourney();
+</script>
+</body>
+</html>

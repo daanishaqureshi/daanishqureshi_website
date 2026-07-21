@@ -1,0 +1,605 @@
+/* Leadership & Research page — page-specific layout only.
+   Shared component styles (.site-nav, .btn, .card, .site-footer, .text-accent,
+   .u-reveal) live in base.css. */
+
+.research-main {
+  min-height: 100vh;
+  padding: calc(var(--space-16) * 1.5) var(--space-4) var(--space-16);
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .research-main {
+    padding: calc(var(--space-16) * 1.5) var(--space-8) var(--space-16);
+  }
+}
+
+/* ---------- Intro header ---------- */
+.research-intro {
+  margin-bottom: var(--space-16);
+}
+
+.research-intro__chip {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  margin-bottom: var(--space-4);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.research-intro__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-size: clamp(32px, 6vw, 48px);
+  max-width: 48rem;
+  margin: 0 0 var(--space-6);
+}
+
+.research-intro__subtext {
+  color: var(--color-text-muted);
+  max-width: 40rem;
+  margin: 0 0 var(--space-6);
+  line-height: 1.6;
+}
+
+/* ---------- Jump nav (in-page section links, 4-section layout) ---------- */
+.research-jumpnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+
+.research-jumpnav__link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.research-jumpnav__link:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ---------- Section heading ---------- */
+.research-section {
+  margin-bottom: var(--space-16);
+}
+
+.research-section__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.research-section__title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.research-section__rule {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--color-border-variant);
+}
+
+/* ---------- Grids ---------- */
+.research-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .research-grid--impericus {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .research-grid--nvidia {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .research-grid--nasa {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.research-card--main {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  .research-card--main {
+    grid-column: span 8;
+  }
+  .research-side {
+    grid-column: span 4;
+  }
+  .research-card--nasa {
+    grid-column: span 1;
+  }
+  .research-card--brown {
+    grid-column: span 2;
+  }
+}
+
+.research-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ---------- Card component ---------- */
+.research-card {
+  border: 1px solid var(--color-border-variant);
+  background: var(--color-surface-elevated);
+  display: flex;
+  flex-direction: column;
+}
+
+.research-card--main,
+.research-card--brown {
+  flex: 1;
+}
+
+.research-card--spaced {
+  margin-top: var(--space-6);
+}
+
+.research-arch-list {
+  flex-grow: 1;
+  padding: var(--space-6);
+}
+
+.research-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface-highest);
+  border-bottom: 1px solid var(--color-border-variant);
+}
+
+.research-card__header-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.research-card__header-ref {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.research-card__body {
+  padding: var(--space-6);
+  flex-grow: 1;
+}
+
+@media (min-width: 768px) {
+  .research-card__body {
+    padding: var(--space-8);
+  }
+}
+
+.research-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+  overflow: hidden;
+  margin-bottom: var(--space-8);
+}
+
+.research-card__media-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.research-card__media:hover .research-card__media-img {
+  opacity: 1;
+}
+
+.research-card__media--grayscale .research-card__media-img {
+  filter: grayscale(1);
+}
+
+.research-card__media--grayscale:hover .research-card__media-img {
+  filter: grayscale(0);
+}
+
+/* Full-figure reproduction (paper plots/diagrams) — never crop data or labels */
+.research-card__media--contain .research-card__media-img {
+  object-fit: contain;
+  opacity: 1;
+  background: #fff;
+}
+
+.research-card__media-caption {
+  position: absolute;
+  bottom: var(--space-4);
+  left: var(--space-4);
+  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  border: 1px solid var(--color-border-variant);
+  padding: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  backdrop-filter: blur(4px);
+}
+
+.research-card__content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .research-card__content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.research-card__title {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin: 0 0 var(--space-4);
+}
+
+.research-card__subtitle {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin: 0 0 var(--space-3);
+}
+
+.research-card__text {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0 0 var(--space-6);
+}
+
+.research-card__text--small {
+  font-size: 13px;
+  margin-bottom: var(--space-4);
+}
+
+.research-card__footer {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-variant);
+}
+
+.research-card__footer-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-primary);
+}
+
+/* Tags */
+.research-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.research-tag {
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-surface-highest);
+  border: 1px solid var(--color-border-variant);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.research-tag--nvidia {
+  color: #76B900;
+  border-color: #76B900;
+}
+
+/* Stat block */
+.research-stat {
+  padding-top: var(--space-6);
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--color-border-variant);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .research-stat {
+    padding-top: 0;
+    margin-top: 0;
+    padding-left: var(--space-8);
+    border-top: none;
+    border-left: 1px solid var(--color-border-variant);
+  }
+}
+
+.research-stat__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: var(--space-4);
+}
+
+.research-stat__label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.research-stat__caption {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  opacity: 0.8;
+  margin: 0 0 var(--space-6);
+}
+
+/* Core architecture list */
+.research-arch-list__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary);
+  margin-bottom: var(--space-4);
+}
+
+.research-arch-list__header-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.research-arch-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.research-arch-list__item {
+  padding: var(--space-3);
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+}
+
+.research-arch-list__item-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.research-arch-list__item-desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Achievement panel */
+.research-achievement {
+  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  padding: var(--space-8) var(--space-6);
+  text-align: center;
+}
+
+.research-achievement__icon {
+  font-size: 36px;
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.research-achievement__title {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.research-achievement__sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* Visual placeholder box (NVIDIA section) */
+.research-visual-box {
+  position: relative;
+  height: 220px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.research-visual-box__label {
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  backdrop-filter: blur(4px);
+}
+
+/* Metrics table */
+.research-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.research-metrics__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+}
+
+.research-metrics__label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.research-metrics__desc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.research-metrics__value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* Progress bars (Brown card) */
+.research-progress {
+  height: 100%;
+  padding: var(--space-4);
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+}
+
+.research-progress__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-primary);
+}
+
+.research-progress__bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.research-progress__bar {
+  height: 4px;
+  width: 100%;
+  background: var(--color-border-variant);
+}
+
+.research-progress__bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+}
+
+/* Checklist */
+.research-checklist {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.research-checklist__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.research-checklist__icon {
+  color: var(--color-primary);
+  font-size: 20px;
+}
+
+/* Team slot */
+.research-team {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-variant);
+}
+
+.research-team__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.research-team__header-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.research-team__slot {
+  width: 100%;
+  height: 96px;
+  background: var(--color-surface-lowest);
+  border: 1px solid var(--color-border-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  filter: grayscale(1);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  cursor: help;
+}
+
+.research-team__slot:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
