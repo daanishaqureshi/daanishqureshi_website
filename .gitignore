@@ -3,3 +3,7 @@
 .DS_Store
 **/.DS_Store
 docs/superpowers/
+
+# c-big-backs: only the encrypted blob is committed
+c-big-backs/events.json
+c-big-backs/work/

@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>C Big Backs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f2efe7; --panel:#fffdf8; --board:#17181a; --board-ink:#f6f2e7;
+  --ink:#141310; --ink2:#57503f; --dim:#6d6656;
+  --rule:#d9d2c2; --rule2:#b9b1a0;
+  --amber:#8a4b04; --amberbg:#ffe7c2;
+  --go:#186339; --gobg:#d6efdf;
+  --warn:#7a4a12; --warnbg:#f6e6cf;
+  --focus:#0a58ca;
+  --shadow:0 1px 0 rgba(0,0,0,.05);
+  --topbar:56px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0b0c0d; --panel:#141618; --board:#000; --board-ink:#ffd88a;
+    --ink:#f1eee5; --ink2:#a9a396; --dim:#8f8a7d;
+    --rule:#2b2e32; --rule2:#3d4147;
+    --amber:#fbbf24; --amberbg:#3a2a05;
+    --go:#5fd98d; --gobg:#0e2a1a;
+    --warn:#e3b25f; --warnbg:#2e2409;
+    --focus:#8cc6ff;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:400 16px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-text-size-adjust:100%;
+}
+.mono{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:0 12px 96px}
+:focus-visible{outline:3px solid var(--focus); outline-offset:2px; border-radius:4px}
+button{font:inherit; color:inherit}
+a{color:inherit}
+
+/* ---------- gate ---------- */
+#gate, #boot{min-height:100svh; display:grid; place-items:center; padding:24px 16px}
+.gatecard{width:100%; max-width:400px}
+.gatemark{
+  font-family:"IBM Plex Mono",monospace; font-weight:600; letter-spacing:.16em;
+  font-size:12px; color:var(--dim); text-transform:uppercase; margin-bottom:10px;
+}
+.gateflap{
+  background:var(--board); color:var(--board-ink); border-radius:10px;
+  padding:22px 18px; box-shadow:var(--shadow);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.gateflap h1{
+  margin:0; font-family:"IBM Plex Mono",monospace; font-weight:600;
+  font-size:clamp(26px,8vw,34px); line-height:1.05; letter-spacing:.02em;
+}
+.gateflap p{margin:10px 0 0; font-size:14px; color:#b9b3a4}
+.gateform{margin-top:18px}
+label.lbl{
+  display:block; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  font-weight:600; color:var(--dim); margin-bottom:6px; font-family:"IBM Plex Mono",monospace;
+}
+input[type=password], input[type=text]{
+  width:100%; min-height:48px; padding:12px 14px; font:500 17px/1.2 "IBM Plex Mono",monospace;
+  background:var(--panel); color:var(--ink); border:1.5px solid var(--rule2); border-radius:8px;
+}
+input[aria-invalid=true]{border-color:#b32020}
+@media (prefers-color-scheme: dark){input[aria-invalid=true]{border-color:#ff8f8f}}
+.btn{
+  width:100%; min-height:48px; margin-top:10px; border:0; border-radius:8px;
+  background:var(--ink); color:var(--bg); font-weight:600; letter-spacing:.02em; cursor:pointer;
+}
+.btn:hover{opacity:.9}
+.btn[disabled]{opacity:.55; cursor:progress}
+/* The flap is dark in both themes, so the error takes the light red that the
+   dark palette already uses. Scoped past .gateflap p, which would otherwise win. */
+.gateflap .err{
+  margin:10px 0 0; min-height:20px; font-size:14px; font-weight:500; color:#ff9d9d;
+}
+.stat{
+  margin:8px 0 0; min-height:18px; font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px; letter-spacing:.04em; color:#b9b3a4;
+}
+.gatefoot{margin-top:16px; font-size:13px; color:var(--dim)}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:30; background:var(--bg);
+  border-bottom:1.5px solid var(--rule2);
+}
+.topbar .row{
+  max-width:720px; margin:0 auto; padding:0 12px; height:var(--topbar);
+  display:flex; align-items:center; gap:10px;
+}
+.brand{
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px;
+  letter-spacing:.18em; text-transform:uppercase; white-space:nowrap;
+}
+.clock{
+  margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:13px;
+  font-variant-numeric:tabular-nums; color:var(--ink2);
+}
+.lock{
+  min-height:44px; min-width:44px; padding:0 10px; background:none; border:1.5px solid var(--rule2);
+  border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex;
+  align-items:center; gap:6px;
+}
+
+/* ---------- filters ---------- */
+.filters{
+  display:flex; gap:8px; padding:12px 0 4px; overflow-x:auto; scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.chip{
+  min-height:44px; padding:0 16px; border-radius:22px; border:1.5px solid var(--rule2);
+  background:var(--panel); font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap;
+}
+.chip[aria-pressed=true]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.chip .n{opacity:.6; font-weight:500; margin-left:6px; font-variant-numeric:tabular-nums}
+
+/* ---------- hero / next departure ---------- */
+.hero{
+  background:var(--board); color:var(--board-ink); border-radius:12px; padding:16px;
+  margin-top:8px; position:relative; overflow:hidden; border:1px solid var(--rule);
+}
+.hero .kicker{
+  display:flex; align-items:center; gap:8px; font-family:"IBM Plex Mono",monospace;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#c9c2b1;
+}
+.dotlive{
+  width:9px; height:9px; border-radius:50%; background:#3ddc84; flex:none;
+  box-shadow:0 0 0 0 rgba(61,220,132,.7); animation:pulse 2s infinite;
+}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+.hero .time{
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-variant-numeric:tabular-nums;
+  font-size:clamp(52px,17vw,76px); line-height:.92; letter-spacing:-.02em; margin:6px 0 2px;
+  display:flex; align-items:baseline; gap:10px;
+}
+.hero .time .mer{font-size:.32em; letter-spacing:.16em; color:#c9c2b1}
+.hero .in{font-family:"IBM Plex Mono",monospace; font-size:14px; color:#f0c469}
+.hero h2{margin:12px 0 4px; font-size:19px; line-height:1.25; font-weight:700}
+.hero .where{font-size:14px; color:#c9c2b1}
+.hero .food{
+  display:inline-block; margin-top:12px; padding:7px 12px; border-radius:8px;
+  background:rgba(255,255,255,.1); font-size:14px; font-weight:600;
+}
+.hero .open{
+  display:block; margin-top:14px; min-height:44px; line-height:44px; text-align:center;
+  border-radius:8px; background:var(--board-ink); color:#111; font-weight:700;
+  text-decoration:none; font-size:15px;
+}
+
+/* ---------- day dividers ---------- */
+.day{
+  position:sticky; top:var(--topbar); z-index:20; background:var(--bg);
+  display:flex; align-items:baseline; gap:10px; padding:22px 2px 6px;
+  border-bottom:1.5px solid var(--rule2); margin-bottom:0;
+}
+.day h3{
+  margin:0; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase;
+}
+.day .date{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--dim); margin-left:auto}
+
+/* ---------- rows ---------- */
+.ev{border-bottom:1px solid var(--rule)}
+.evbtn{
+  width:100%; background:none; border:0; padding:12px 2px; text-align:left; cursor:pointer;
+  display:grid; grid-template-columns:76px 1fr 18px; gap:12px; align-items:start; min-height:56px;
+}
+.evbtn:hover{background:color-mix(in srgb, var(--panel) 70%, transparent)}
+.evtime{
+  font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-weight:600; font-size:19px; line-height:1.2; padding-top:1px;
+}
+.evtime .mer{font-size:11px; letter-spacing:.1em; color:var(--dim); display:block; margin-top:1px}
+.evtitle{display:block; font-size:16px; font-weight:600; line-height:1.3}
+.evmeta{display:block; font-size:13.5px; color:var(--ink2); margin-top:3px}
+.evfood{display:block; font-size:14px; font-weight:600; color:var(--amber); margin-top:5px}
+.tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:7px}
+.tag{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; padding:3px 7px; border-radius:5px; background:var(--panel);
+  border:1px solid var(--rule2); color:var(--ink2);
+}
+.tag.now{background:var(--gobg); border-color:var(--go); color:var(--go)}
+.tag.soft{background:var(--warnbg); border-color:var(--warn); color:var(--warn)}
+.caret{
+  justify-self:end; align-self:center; width:10px; height:10px; border-right:2px solid var(--dim);
+  border-bottom:2px solid var(--dim); transform:rotate(45deg); transition:transform .18s ease;
+}
+.evbtn[aria-expanded=true] .caret{transform:rotate(225deg)}
+.ev.live{background:linear-gradient(90deg, var(--gobg), transparent 55%); box-shadow:inset 3px 0 0 var(--go)}
+.ev.soft .evtitle, .ev.soft .evmeta{color:var(--dim)}
+.ev.soft .evtime{opacity:.72}
+.ev.soft .evfood{color:var(--warn)}
+.ev.soft{box-shadow:inset 3px 0 0 var(--rule2)}
+
+/* ---------- details ---------- */
+.det{padding:2px 2px 18px 88px; font-size:14.5px}
+@media (max-width:420px){.det{padding-left:8px}}
+.det p{margin:0 0 10px; color:var(--ink2)}
+.dl{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:0 0 12px}
+.dl dt{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--dim); padding-top:3px;
+}
+.dl dd{margin:0; font-size:14.5px}
+.posterbtn{margin:0 0 12px; padding:0; border:0; background:none; cursor:pointer; display:block}
+.posterbtn img{width:100%; max-width:280px; border-radius:8px; border:1px solid var(--rule2); display:block}
+.golink{
+  display:inline-flex; align-items:center; min-height:44px; padding:0 14px; border-radius:8px;
+  border:1.5px solid var(--rule2); background:var(--panel); font-weight:600; font-size:14px;
+  text-decoration:none; cursor:pointer;
+}
+.ai{
+  margin-top:14px; border:1px solid var(--rule2); border-radius:10px; overflow:hidden;
+  background:var(--panel);
+}
+.ai .aihd{
+  display:flex; align-items:center; gap:8px; padding:9px 12px; border-bottom:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--dim);
+}
+.verdict{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; font-weight:600;
+  padding:3px 7px; border-radius:5px; margin-left:auto;
+}
+.v-free_food{background:var(--gobg); color:var(--go)}
+.v-likely{background:var(--amberbg); color:var(--amber)}
+.v-unclear{background:var(--warnbg); color:var(--warn)}
+.ai .aibd{padding:12px}
+.meter{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+.meter .bar{flex:1; height:8px; border-radius:5px; background:var(--rule); overflow:hidden}
+.meter .fill{height:100%; background:var(--go)}
+.meter.low .fill{background:var(--warn)}
+.meter .num{
+  font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+}
+.ai .why{margin:0 0 10px; color:var(--ink2)}
+.ai blockquote{
+  margin:0; padding:9px 11px; border-left:3px solid var(--rule2); background:var(--bg);
+  border-radius:0 6px 6px 0; font-size:13.5px; color:var(--ink2);
+}
+.ai .stamp{margin:10px 0 0; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--dim)}
+
+/* ---------- lightbox ---------- */
+.lb{
+  position:fixed; inset:0; z-index:60; background:rgba(0,0,0,.9);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:14px; padding:16px;
+}
+.lb img{max-width:100%; max-height:calc(100svh - 96px); border-radius:8px; object-fit:contain}
+.lbclose{
+  min-height:44px; padding:0 20px; border-radius:8px; border:1.5px solid rgba(255,255,255,.42);
+  background:rgba(255,255,255,.1); color:#fff; font-weight:600; cursor:pointer;
+}
+body.lbopen{overflow:hidden}
+
+/* ---------- empty / submit / how / footer ---------- */
+.empty{
+  text-align:center; padding:44px 16px; border:1.5px dashed var(--rule2); border-radius:12px;
+  margin-top:16px; color:var(--ink2);
+}
+.empty strong{display:block; font-size:17px; color:var(--ink); margin-bottom:6px}
+.submit, .how{
+  margin-top:28px; background:var(--panel); border:1.5px solid var(--rule2); border-radius:12px; padding:16px;
+}
+.submit h3, .how h3{
+  margin:0 0 8px; font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.submit p, .how p{margin:0 0 10px; font-size:14.5px; color:var(--ink2)}
+.how p:last-child{margin-bottom:0}
+.submit ol{margin:0 0 14px; padding-left:20px; font-size:14.5px; color:var(--ink2)}
+.submit li{margin-bottom:4px}
+.measure{
+  font-family:"IBM Plex Mono",monospace; font-size:12.5px; line-height:1.6; color:var(--dim);
+  border-top:1px solid var(--rule); padding-top:10px;
+}
+.mailto{
+  display:flex; align-items:center; justify-content:center; min-height:48px; border-radius:8px;
+  background:var(--ink); color:var(--bg); font-weight:700; text-decoration:none; font-size:15px;
+}
+.fine{font-size:12.5px; color:var(--dim); margin:10px 0 0}
+footer{margin-top:24px; font-size:12.5px; color:var(--dim); text-align:center; line-height:1.7}
+[hidden]{display:none !important}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important}
+}
+@media (min-width:600px){
+  .evbtn{grid-template-columns:96px 1fr 18px}
+  .hero{padding:22px}
+  .hero h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<main>
+<!-- ============ BOOT (stored passphrase, decrypting) ============ -->
+<section id="boot" hidden>
+  <div class="gatecard">
+    <div class="gatemark">Private · CBB cohort</div>
+    <div class="gateflap">
+      <h1>FREE FOOD<br>BOARD</h1>
+      <p class="stat" id="bootstat" role="status">Unlocking the board…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PASSPHRASE GATE ============ -->
+<section id="gate" hidden>
+  <div class="gatecard">
+    <div class="gatemark">Private · CBB cohort</div>
+    <div class="gateflap">
+      <h1>FREE FOOD<br>BOARD</h1>
+      <p>Enter the cohort passphrase to see today's departures.</p>
+      <form class="gateform" id="gateform" novalidate>
+        <label class="lbl" for="pass">Passphrase</label>
+        <input id="pass" type="password" autocomplete="current-password" autocapitalize="off"
+               spellcheck="false" aria-describedby="gateerr gatestat" required>
+        <button class="btn" type="submit" id="gatebtn">Unlock board</button>
+        <p class="err" id="gateerr" role="alert"></p>
+        <p class="stat" id="gatestat" role="status"></p>
+      </form>
+    </div>
+    <p class="gatefoot">Unlocks stay on this device until you lock the board again.</p>
+  </div>
+</section>
+
+<!-- ============ BOARD ============ -->
+<div id="board" hidden>
+  <div class="topbar">
+    <div class="row">
+      <span class="brand">Free Food · Departures</span>
+      <span class="clock mono" id="clock" aria-hidden="true"></span>
+      <button class="lock" id="lockbtn" type="button">Lock</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="filters" role="group" aria-label="Filter by time range">
+      <button class="chip" type="button" data-f="today" aria-pressed="false">Today <span class="n" id="n-today"></span></button>
+      <button class="chip" type="button" data-f="week" aria-pressed="true">This week <span class="n" id="n-week"></span></button>
+      <button class="chip" type="button" data-f="all" aria-pressed="false">All <span class="n" id="n-all"></span></button>
+    </div>
+
+    <section id="hero" aria-label="Next event"></section>
+
+    <div id="list"></div>
+    <p class="sr" role="status" id="status"></p>
+
+    <section class="submit" id="submitpanel">
+      <h3>Saw food? Add it</h3>
+      <p>Anyone with a university address can put an event on the board.</p>
+      <ol>
+        <li>Email <span class="mono" id="semail"></span> with <strong>FREE FOOD</strong> in the subject.</li>
+        <li>Paste the announcement text, or attach a photo of the poster.</li>
+        <li>It gets screened and appears here, credited to your first name and last initial.</li>
+      </ol>
+      <a class="mailto" id="mailtolink" href="#">Email a new event</a>
+      <p class="fine">Only <span class="mono">.edu</span> senders are accepted. Anything else is dropped without a reply.</p>
+    </section>
+
+    <section class="how">
+      <h3>How this works</h3>
+      <p>Three sources feed the board: the public Yale events calendar, department announcement
+         emails, and events people email in themselves.</p>
+      <p>Every listing is screened by a Claude model before it reaches the board. The model decides
+         whether the food is real and free, and its verdict, confidence, and the line of source text
+         it leaned on are shown under each event, so you can judge the call yourself.</p>
+      <p class="measure" id="measure" hidden></p>
+    </section>
+
+    <footer>
+      <span id="updated"></span>
+    </footer>
+  </div>
+</div>
+
+<!-- ============ POSTER LIGHTBOX ============ -->
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Event poster" hidden>
+  <img id="lbimg" alt="">
+  <button class="lbclose" id="lbclose" type="button">Close poster</button>
+</div>
+</main>
+
+<script>
+/* ================= DATA =================
+   The page ships with no event content. Everything below the gate comes from
+   events.enc, which is PBKDF2 + AES-GCM over the JSON described in
+   freefood/README.md and is only readable with the cohort passphrase. */
+let DATA = null;
+let BOX = null;                 // the parsed envelope, kept so a retry does not refetch
+let INDEX = new Map();          // id -> event, for the poster lightbox
+
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+function loadErr(){ const e = new Error("events.enc could not be loaded"); e.kind = "load"; return e; }
+
+async function fetchBox(){
+  if (BOX) return BOX;
+  let res;
+  try { res = await fetch("events.enc?v=" + Date.now(), { cache: "no-store" }); }
+  catch(e){ throw loadErr(); }
+  if (!res.ok) throw loadErr();
+  let box;
+  try { box = await res.json(); } catch(e){ throw loadErr(); }
+  if (!box || !box.salt || !box.iv || !box.ct || !box.iter) throw loadErr();
+  BOX = box;
+  return box;
+}
+
+// Throws with kind "load" when the file is missing or malformed, and plainly
+// (from crypto.subtle.decrypt) when the passphrase is wrong.
+async function decryptBoard(pw){
+  const box = await fetchBox();
+  if (!window.crypto || !crypto.subtle) throw loadErr();
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt:b64(box.salt), iterations:box.iter, hash:'SHA-256' },
+    base, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+  const pt = await crypto.subtle.decrypt({ name:'AES-GCM', iv:b64(box.iv) }, key, b64(box.ct));
+  const data = JSON.parse(new TextDecoder().decode(pt));
+  data.events = (data.events || []).filter(e => e && e.start && e.id && e.eval);
+  return data;
+}
+
+/* ================= TIME ================= */
+const TZ = "America/New_York";
+const fmt = (o) => new Intl.DateTimeFormat("en-US", Object.assign({timeZone:TZ}, o));
+const fT   = fmt({hour:"numeric", minute:"2-digit"});
+const fDay = fmt({weekday:"long"});
+const fDat = fmt({month:"short", day:"numeric"});
+const fFull= fmt({weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
+const fClk = fmt({hour:"numeric", minute:"2-digit"});
+const fWd  = fmt({weekday:"short"});
+
+// Day key in the board's timezone, so grouping never drifts with the viewer's clock.
+const fKey = fmt({year:"numeric", month:"2-digit", day:"2-digit"});
+const dayKey = (d) => fKey.format(d);
+
+// "1:30 PM" -> { hm: "1:30", mer: "PM" }, so the board can set them at different sizes.
+function splitTime(d){
+  const parts = fT.formatToParts(d);
+  const mer = (parts.find(p => p.type === "dayPeriod") || {value:""}).value;
+  const hm = parts.filter(p => p.type === "hour" || p.type === "minute" ||
+                              (p.type === "literal" && p.value === ":"))
+                  .map(p => p.value).join("");
+  return { hm, mer };
+}
+
+function boardNow(){ return new Date(); }
+
+const endOf = (e) => e.end ? new Date(e.end) : new Date(new Date(e.start).getTime() + 60*60*1000);
+const isLive = (e, now) => new Date(e.start) <= now && now < endOf(e);
+const isOver = (e, now) => endOf(e) <= now;
+
+function relative(start, now){
+  const ms = start - now, m = Math.round(ms/60000);
+  if (m < 60) return "in " + m + " min";
+  const h = Math.floor(m/60), r = m % 60;
+  if (h < 12) return "in " + h + "h" + (r ? " " + r + "m" : "");
+  const d = Math.round(m/1440);
+  return "in " + d + " day" + (d === 1 ? "" : "s");
+}
+
+function dayLabel(d, now){
+  const k = dayKey(d), today = dayKey(now);
+  const tm = new Date(now.getTime() + 864e5);
+  if (k === today) return "Today";
+  if (k === dayKey(tm)) return "Tomorrow";
+  return fDay.format(d);
+}
+
+/* ================= GATE =================
+   The salt is new on every publish, so the passphrase itself is what is
+   remembered, not a derived key or an "unlocked" flag. */
+const KEY = "ff.board.pass";
+const boot = document.getElementById("boot");
+const bootstat = document.getElementById("bootstat");
+const gate = document.getElementById("gate");
+const board = document.getElementById("board");
+const gateerr = document.getElementById("gateerr");
+const gatestat = document.getElementById("gatestat");
+const gatebtn = document.getElementById("gatebtn");
+const pass = document.getElementById("pass");
+
+const LOAD_MSG = "The list could not be loaded. Check your connection and try again.";
+const PASS_MSG = "That passphrase did not unlock the board. Check for a stray space and try again.";
+
+function savedPass(){ try { return localStorage.getItem(KEY) || ""; } catch(e){ return ""; } }
+function rememberPass(p){ try { localStorage.setItem(KEY, p); } catch(e){} }
+function forgetPass(){ try { localStorage.removeItem(KEY); } catch(e){} }
+
+function showGate(msg){
+  boot.hidden = true;
+  board.hidden = true;
+  gate.hidden = false;
+  gateerr.textContent = msg || "";
+  gatestat.textContent = "";
+  pass.focus();
+}
+
+function showBoard(){
+  boot.hidden = true;
+  gate.hidden = true;
+  board.hidden = false;
+  INDEX = new Map(DATA.events.map(e => [e.id, e]));
+  fillSubmit();
+  fillMeasure();
+  sig = null;
+  render();
+  tick();
+}
+
+function busy(on){
+  gatebtn.disabled = on;
+  gatebtn.textContent = on ? "Unlocking…" : "Unlock board";
+  gatestat.textContent = on ? "Fetching the list and deriving the key. This takes a moment on a phone." : "";
+}
+
+document.getElementById("gateform").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const value = pass.value.trim();
+  gateerr.textContent = "";
+  if (!value){
+    pass.setAttribute("aria-invalid","true");
+    gateerr.textContent = PASS_MSG;
+    pass.focus();
+    return;
+  }
+  busy(true);
+  try {
+    DATA = await decryptBoard(value);
+  } catch(err){
+    busy(false);
+    if (err && err.kind === "load"){
+      pass.removeAttribute("aria-invalid");
+      gateerr.textContent = LOAD_MSG;
+    } else {
+      pass.setAttribute("aria-invalid","true");
+      gateerr.textContent = PASS_MSG;
+    }
+    pass.focus();
+    return;
+  }
+  busy(false);
+  pass.removeAttribute("aria-invalid");
+  pass.value = "";
+  rememberPass(value);
+  showBoard();
+});
+
+document.getElementById("lockbtn").addEventListener("click", () => {
+  forgetPass();
+  DATA = null; BOX = null; INDEX = new Map();
+  document.getElementById("list").innerHTML = "";
+  document.getElementById("hero").innerHTML = "";
+  pass.value = "";
+  pass.removeAttribute("aria-invalid");
+  showGate("");
+});
+
+/* ================= RENDER ================= */
+let filter = "week";
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SRC = { calendar:"Yale calendar", inbox:"Email announcement", submitted:"Submitted" };
+const VERD = { free_food:"Free food", likely:"Likely", unclear:"Unclear" };
+const srcLabel = (e) => SRC[e.source] || "Source";
+const isPosterUrl = (e) => typeof e.url === "string" && e.url.indexOf("#poster-") === 0;
+
+// "This week" = today through the end of the coming Sunday, counted in board time
+// by walking whole days rather than by adding milliseconds, so a DST shift or a
+// late-evening "now" cannot push the boundary onto the wrong date.
+function weekKeys(now){
+  const keys = new Set();
+  let d = new Date(now);
+  for (let i = 0; i < 8; i++){
+    keys.add(dayKey(d));
+    if (fWd.format(d) === "Sun") break;
+    d = new Date(d.getTime() + 864e5);
+  }
+  return keys;
+}
+
+function inRange(e, now, f, wk){
+  if (f === "all") return true;
+  const s = new Date(e.start);
+  if (f === "today") return dayKey(s) === dayKey(now);
+  return (wk || weekKeys(now)).has(dayKey(s));
+}
+
+function eventRow(e, now){
+  const s = new Date(e.start);
+  const t = splitTime(s);
+  const live = isLive(e, now);
+  const soft = e.eval.confidence < 0.7;
+  const tags = [];
+  if (live) tags.push('<span class="tag now">Happening now</span>');
+  tags.push('<span class="tag">' + esc(srcLabel(e)) + (e.submitted_by ? " · " + esc(e.submitted_by) : "") + '</span>');
+  if (soft) tags.push('<span class="tag soft">' + esc(VERD[e.eval.verdict] || e.eval.verdict) + " · " + e.eval.confidence.toFixed(2) + '</span>');
+
+  return '' +
+  '<article class="ev' + (live ? " live" : "") + (soft ? " soft" : "") + '">' +
+    '<h4 class="sr">' + esc(e.title) + '</h4>' +
+    '<button class="evbtn" type="button" aria-expanded="false" aria-controls="d-' + esc(e.id) + '" data-id="' + esc(e.id) + '">' +
+      '<span class="evtime">' + esc(t.hm) + '<span class="mer">' + esc(t.mer) + (live ? " · NOW" : "") + '</span></span>' +
+      '<span>' +
+        '<span class="evtitle">' + esc(e.title) + '</span>' +
+        '<span class="evmeta">' + esc(e.location) + (e.room ? " · " + esc(e.room) : "") + '</span>' +
+        (e.food ? '<span class="evfood">' + esc(e.food) + '</span>' : "") +
+        '<span class="tags">' + tags.join("") + '</span>' +
+      '</span>' +
+      '<span class="caret" aria-hidden="true"></span>' +
+    '</button>' +
+    '<div class="det" id="d-' + esc(e.id) + '" hidden>' + details(e) + '</div>' +
+  '</article>';
+}
+
+function details(e){
+  const ev = e.eval, pct = Math.round(ev.confidence * 100);
+  const low = ev.confidence < 0.7;
+  const poster = isPosterUrl(e) && e.poster && e.poster.src ? e.poster : null;
+  let h = e.description ? '<p>' + esc(e.description) + '</p>' : "";
+  if (poster){
+    h += '<button class="posterbtn" type="button" data-poster="' + esc(e.id) + '">' +
+         '<img src="' + esc(poster.src) + '" alt="' + esc(poster.alt || ("Poster for " + e.title)) + '"></button>';
+  }
+  h += '<dl class="dl">';
+  if (e.host) h += '<dt>Host</dt><dd>' + esc(e.host) + '</dd>';
+  h += '<dt>Where</dt><dd>' + esc(e.location) + (e.room ? ", " + esc(e.room) : "") + '</dd>';
+  h += '<dt>Ends</dt><dd>' + (e.end ? esc(fT.format(new Date(e.end))) : "Not stated") + '</dd>';
+  h += '<dt>Source</dt><dd>' +
+       (e.source === "submitted" && e.submitted_by ? "Submitted by " + esc(e.submitted_by) : esc(srcLabel(e))) +
+       '</dd>';
+  if (e.added_at) h += '<dt>Added</dt><dd>' + esc(fFull.format(new Date(e.added_at))) + '</dd>';
+  h += '</dl>';
+  h += poster
+    ? '<button class="golink" type="button" data-poster="' + esc(e.id) + '">Open the poster</button>'
+    : '<a class="golink" href="' + esc(e.url) + '" target="_blank" rel="noopener">Open event page ↗</a>';
+  h += '<div class="ai">' +
+    '<div class="aihd">AI review <span class="verdict v-' + esc(ev.verdict) + '">' + esc(VERD[ev.verdict] || ev.verdict) + '</span></div>' +
+    '<div class="aibd">' +
+      '<div class="meter' + (low ? " low" : "") + '">' +
+        '<span class="num">' + ev.confidence.toFixed(2) + '</span>' +
+        '<span class="bar" role="img" aria-label="Confidence ' + pct + ' percent"><span class="fill" style="width:' + pct + '%"></span></span>' +
+      '</div>' +
+      '<p class="why">' + esc(ev.reasoning) + '</p>' +
+      (ev.evidence ? '<blockquote>' + esc(ev.evidence) + '</blockquote>' : "") +
+      '<p class="stamp">' + esc(ev.model) + (ev.evaluated_at ? " · " + esc(fFull.format(new Date(ev.evaluated_at))) : "") + '</p>' +
+    '</div></div>';
+  return h;
+}
+
+function heroHTML(e, now){
+  if (!e) return "";
+  const s = new Date(e.start);
+  const t = splitTime(s);
+  const live = isLive(e, now);
+  return '' +
+  '<div class="hero">' +
+    '<div class="kicker">' + (live
+      ? '<span class="dotlive"></span> Happening now · ends ' + esc(fT.format(endOf(e)))
+      : 'Next departure · ' + esc(dayLabel(s, now))) + '</div>' +
+    '<div class="time">' + esc(t.hm) + '<span class="mer">' + esc(t.mer) + '</span></div>' +
+    (live ? '' : '<div class="in">' + esc(relative(s, now)) + '</div>') +
+    '<h2>' + esc(e.title) + '</h2>' +
+    '<div class="where">' + esc(e.location) + (e.room ? " · " + esc(e.room) : "") + '</div>' +
+    (e.food ? '<div class="food">' + esc(e.food) + '</div>' : "") +
+    '<a class="open" href="#d-' + esc(e.id) + '" data-jump="' + esc(e.id) + '">Details and AI review</a>' +
+  '</div>';
+}
+
+let sig = null;
+
+function render(){
+  if (!DATA) return;
+  const now = boardNow();
+  const wk = weekKeys(now);
+  const upcoming = DATA.events
+    .filter(e => !isOver(e, now))
+    .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+  document.getElementById("n-today").textContent = upcoming.filter(e => inRange(e, now, "today", wk)).length;
+  document.getElementById("n-week").textContent  = upcoming.filter(e => inRange(e, now, "week", wk)).length;
+  document.getElementById("n-all").textContent   = upcoming.length;
+
+  const shown = upcoming.filter(e => inRange(e, now, filter, wk));
+
+  // Repaint only when the board actually changes. The minute timer would
+  // otherwise rebuild the list and snap every open details panel shut.
+  const next = filter + "|" + shown.map(e => e.id + (isLive(e, now) ? "!" : "")).join(",") +
+               "|" + (shown[0] ? relative(new Date(shown[0].start), now) : "");
+  if (next === sig) return;
+  sig = next;
+
+  document.getElementById("hero").innerHTML = heroHTML(shown[0], now);
+  document.getElementById("status").textContent =
+    shown.length + (shown.length === 1 ? " event" : " events") + " on the board.";
+
+  const list = document.getElementById("list");
+  if (!shown.length){
+    list.innerHTML = '<div class="empty"><strong>Nothing on the board.</strong>' +
+      'No screened events in this range. Try <em>All</em>, or send one in below.</div>';
+  } else {
+    let html = "", key = null;
+    shown.forEach(e => {
+      const s = new Date(e.start), k = dayKey(s);
+      if (k !== key){
+        key = k;
+        html += '<div class="day"><h3>' + esc(dayLabel(s, now)) + '</h3>' +
+                '<span class="date">' + esc(fDat.format(s)) + '</span></div>';
+      }
+      html += eventRow(e, now);
+    });
+    list.innerHTML = html;
+  }
+
+  document.getElementById("updated").textContent = DATA.generated_at
+    ? "Board updated " + fFull.format(new Date(DATA.generated_at)) + " · " + upcoming.length + " upcoming"
+    : upcoming.length + " upcoming";
+}
+
+/* ================= POSTER LIGHTBOX ================= */
+const lb = document.getElementById("lightbox");
+const lbimg = document.getElementById("lbimg");
+const lbclose = document.getElementById("lbclose");
+let lbOpener = null;
+
+function openPoster(id, opener){
+  const e = INDEX.get(id);
+  if (!e || !e.poster || !e.poster.src) return;
+  lbimg.src = e.poster.src;
+  lbimg.alt = e.poster.alt || ("Poster for " + e.title);
+  lb.hidden = false;
+  document.body.classList.add("lbopen");
+  lbOpener = opener || null;
+  lbclose.focus();
+}
+
+function closePoster(){
+  if (lb.hidden) return;
+  lb.hidden = true;
+  document.body.classList.remove("lbopen");
+  lbimg.removeAttribute("src");
+  if (lbOpener) lbOpener.focus();
+  lbOpener = null;
+}
+
+lbclose.addEventListener("click", closePoster);
+lb.addEventListener("click", (ev) => { if (ev.target === lb) closePoster(); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closePoster(); });
+
+/* ================= INTERACTION ================= */
+document.getElementById("list").addEventListener("click", (ev) => {
+  const p = ev.target.closest("[data-poster]");
+  if (p){ ev.preventDefault(); openPoster(p.getAttribute("data-poster"), p); return; }
+  const btn = ev.target.closest(".evbtn");
+  if (!btn) return;
+  const panel = document.getElementById("d-" + btn.dataset.id);
+  const open = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", open ? "false" : "true");
+  panel.hidden = open;
+});
+
+document.getElementById("hero").addEventListener("click", (ev) => {
+  const a = ev.target.closest("[data-jump]");
+  if (!a) return;
+  ev.preventDefault();
+  const btn = document.querySelector('.evbtn[data-id="' + a.dataset.jump + '"]');
+  if (!btn) return;
+  if (btn.getAttribute("aria-expanded") !== "true") btn.click();
+  btn.scrollIntoView({block:"center", behavior:
+    matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  btn.focus();
+});
+
+document.querySelectorAll(".chip").forEach(c => {
+  c.addEventListener("click", () => {
+    filter = c.dataset.f;
+    document.querySelectorAll(".chip").forEach(o =>
+      o.setAttribute("aria-pressed", String(o.dataset.f === filter)));
+    render();
+  });
+});
+
+/* ================= SUBMIT PANEL + MEASUREMENT ================= */
+function fillSubmit(){
+  const mail = DATA.submit_email;
+  const panel = document.getElementById("submitpanel");
+  if (!mail){ panel.hidden = true; return; }
+  panel.hidden = false;
+  document.getElementById("semail").textContent = mail;
+  document.getElementById("mailtolink").href =
+    "mailto:" + mail + "?subject=" + encodeURIComponent("FREE FOOD") +
+    "&body=" + encodeURIComponent(
+      "What: \nWhen: \nWhere (building + room): \nFood: \nLink or attach the poster photo: \n\nSent from the Free Food Board.");
+}
+
+// e.g. "Last checked against 23 hand-labelled events: precision 1.00, recall 1.00 (claude-haiku-4-5, Sep 9)"
+function fillMeasure(){
+  const el = document.getElementById("measure");
+  const m = DATA.eval_measure;
+  if (!m){ el.hidden = true; el.textContent = ""; return; }
+  const when = m.measured_at ? ", " + fDat.format(new Date(m.measured_at)) : "";
+  el.textContent =
+    "Last checked against " + m.n + " hand-labelled events: precision " +
+    Number(m.precision).toFixed(2) + ", recall " + Number(m.recall).toFixed(2) +
+    " (" + m.model + when + ")";
+  el.hidden = false;
+}
+
+/* ================= CLOCK ================= */
+function tick(){
+  if (!DATA) return;
+  document.getElementById("clock").textContent = fClk.format(boardNow());
+}
+setInterval(() => { tick(); if (!board.hidden) render(); }, 60000);
+
+/* ================= BOOT ================= */
+(async function start(){
+  const saved = savedPass();
+  if (!saved){ showGate(""); return; }
+  boot.hidden = false;
+  try {
+    DATA = await decryptBoard(saved);
+  } catch(err){
+    if (err && err.kind === "load"){
+      showGate(LOAD_MSG);
+    } else {
+      forgetPass();
+      showGate("The board's passphrase has changed. Enter the new one.");
+    }
+    return;
+  }
+  showBoard();
+})();
+</script>
+</body>
+</html>
