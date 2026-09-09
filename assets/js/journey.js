@@ -39,18 +39,10 @@ const NODE_DATA = [
       'Built proprietary RAG (Retrieval Augmented Generation) pipeline for peer-reviewed papers.',
       'Managed full-stack development and cloud infrastructure.',
       'Orchestrated a successful acquisition by Impiricus.',
-      'Prior venture: co-founded Sehat Systems, an Arabic-language AI medical scribe (family/friends-funded); wound down after validating limited product-market fit.',
+      'Prior venture: co-founded Sehat Systems, which transcribed clinical conversations into structured records. Wound down after limited product-market fit.',
     ],
     x: 64, y: 32, cardOffset: { x: 0, y: -95 },
     link: { href: 'leadership.html#litgrab', label: 'Leadership Page →' } },
-  { id: 'YALE', title: 'Yale PhD', subtitle: 'Computational Biology', icon: 'science',
-    desc: 'PhD research at Yale in Computational Biology and Biomedical Informatics, exploring the intersection of AI, healthcare, and biology.',
-    items: [
-      'PhD student in Computational Biology and Biomedical Informatics at Yale.',
-      'Research focus still being determined. Exploring possibilities spanning medical imaging, genomics, and other directions at the intersection of AI and biology.',
-      'Building on a foundation in applied mathematics, deep learning, and biomedical research.',
-    ],
-    x: 78, y: 68, cardOffset: { x: 0, y: 95 }, current: true },
   { id: 'IMPIRICUS', title: 'Impiricus', subtitle: 'VP, AI Engineering', icon: 'groups',
     desc: 'VP of AI Engineering leading mission-critical product development for healthcare enterprises.',
     items: [
@@ -58,8 +50,16 @@ const NODE_DATA = [
       'Drive product innovation, operational efficiency, and cross-functional team growth.',
       'Ranked #1 in Deloitte Fast 500 for rapid technical scale.',
     ],
-    x: 92, y: 32, cardOffset: { x: 0, y: -95 },
+    x: 78, y: 68, cardOffset: { x: 0, y: 95 },
     link: { href: 'leadership.html#impiricus', label: 'Leadership Page →' } },
+  { id: 'YALE', title: 'Yale PhD', subtitle: 'Computational Biology', icon: 'science',
+    desc: 'PhD research at Yale in Computational Biology and Biomedical Informatics, exploring the intersection of AI, healthcare, and biology.',
+    items: [
+      'PhD student in Computational Biology and Biomedical Informatics at Yale.',
+      'Research focus still being determined. Exploring possibilities spanning medical imaging, genomics, and other directions at the intersection of AI and biology.',
+      'Building on a foundation in applied mathematics, deep learning, and biomedical research.',
+    ],
+    x: 92, y: 32, cardOffset: { x: 0, y: -95 }, current: true },
 ];
 
 // Runtime-only offsets for the draggable curve control points (one between
