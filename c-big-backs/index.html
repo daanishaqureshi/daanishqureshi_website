@@ -10,6 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="../favicon.svg">
+<!-- Leaflet 1.9.4, vendored under assets/vendor/leaflet. No CDN at runtime: the
+     board is behind a passphrase and should not phone anywhere except the tile
+     server it needs to draw the map. -->
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
 <style>
 /* Standalone page: the site's tokens (assets/css/tokens.css) and the component
    conventions from assets/css/base.css are inlined rather than linked, so the
@@ -198,8 +202,16 @@ a{max-width:100%}
 .lock{padding:0 var(--space-3); font-size:11px}
 
 /* ---------- filters ---------- */
-.filters{display:flex; gap:var(--space-2); padding:var(--space-4) 0 var(--space-1); overflow-x:auto; scrollbar-width:none}
-.filters::-webkit-scrollbar{display:none}
+/* Two groups: the time range on the left, the list/map view on the right.
+   On a phone the view group wraps onto its own line, right-aligned, so
+   nothing is ever clipped and the page never scrolls sideways. */
+.filterbar{
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2);
+  padding:var(--space-4) 0 var(--space-1);
+}
+.filters{display:flex; gap:var(--space-2)}
+.filters--view{margin-left:auto}
+@media (max-width:460px){ .chip{padding:0 var(--space-3)} }
 .chip{
   flex:none; min-height:44px; padding:0 var(--space-4); border:1px solid var(--color-border-variant);
   background:transparent; color:var(--color-text-muted); cursor:pointer; white-space:nowrap;
@@ -362,6 +374,115 @@ a{max-width:100%}
   letter-spacing:.04em; color:var(--color-text-muted);
 }
 
+/* Placement caveats, in the details panel: an uncertain pin and an event the
+   pipeline could not place at all. */
+.geonote{
+  margin:0 0 var(--space-3); padding:var(--space-2) var(--space-3);
+  border-left:2px solid var(--color-border-variant); background:var(--color-surface-lowest);
+  font-family:var(--font-mono); font-size:11px; line-height:1.6; letter-spacing:.02em;
+  color:var(--color-text-muted);
+}
+
+/* ---------- map ---------- */
+.mapstat{
+  margin:var(--space-4) 0 var(--space-2); font-family:var(--font-mono); font-size:11px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--color-text-muted);
+}
+/* z-index 0 makes the map its own stacking context, so Leaflet's panes (400 and
+   up) stay under the sticky topbar instead of painting over it on scroll. */
+#map{
+  position:relative; z-index:0; width:100%; height:60vh;
+  border:1px solid var(--color-border-variant); background:var(--color-surface-lowest);
+}
+.mapattr{
+  margin:var(--space-2) 0 0; font-family:var(--font-mono); font-size:10px;
+  letter-spacing:.04em; color:var(--color-text-muted);
+}
+.mapattr a{text-decoration:underline; text-underline-offset:2px}
+.mapattr a:hover{color:var(--color-text)}
+
+/* Leaflet's chrome, repainted in the board's tokens. */
+.leaflet-container{background:var(--color-surface-lowest); font-family:var(--font-display); outline-offset:2px}
+.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) saturate(.35) brightness(.78) contrast(1.05)}
+.leaflet-bar{border:1px solid var(--color-border-variant); box-shadow:none}
+.leaflet-bar a, .leaflet-bar a:hover{
+  background:var(--color-surface); color:var(--color-text);
+  border-bottom:1px solid var(--color-border-variant); border-radius:0;
+  font-family:var(--font-mono);
+}
+.leaflet-bar a:hover{background:var(--color-surface-highest); color:var(--color-primary)}
+.leaflet-bar a:last-child{border-bottom:0}
+.leaflet-popup-content-wrapper, .leaflet-popup-tip{
+  background:var(--color-surface-elevated); color:var(--color-text);
+  border-radius:0; box-shadow:0 18px 40px rgba(0,0,0,.55);
+}
+.leaflet-popup-content-wrapper{border:1px solid var(--color-border-variant)}
+.leaflet-popup-content{margin:0; width:236px !important; line-height:1.5}
+.leaflet-container a.leaflet-popup-close-button{
+  color:var(--color-text-muted); font-family:var(--font-mono); padding:6px 8px 0 0;
+}
+.leaflet-container a.leaflet-popup-close-button:hover{color:var(--color-primary); background:transparent}
+
+/* ---------- pins ----------
+   The board's square, not Leaflet's teardrop. Filled = an ordinary event,
+   dashed hollow with a "?" = a location the geocoder is not sure about,
+   muted = a low-confidence eval, pulsing = happening now. */
+.pin{background:none; border:0}
+.pin i{
+  display:block; width:100%; height:100%; box-sizing:border-box;
+  background:var(--color-primary); border:2px solid var(--color-primary);
+  font-family:var(--font-mono); font-size:11px; font-weight:700; font-style:normal;
+  line-height:14px; text-align:center; color:var(--color-primary-on);
+}
+.pin b{
+  position:absolute; top:-7px; right:-9px; min-width:16px; height:16px; padding:0 3px;
+  box-sizing:border-box; background:var(--color-bg); border:1px solid var(--color-primary);
+  color:var(--color-primary); font-family:var(--font-mono); font-size:10px; font-weight:700;
+  line-height:14px; text-align:center; font-variant-numeric:tabular-nums;
+}
+.pin--soft i{
+  background:color-mix(in srgb, var(--color-primary) 32%, var(--color-bg));
+  border-color:color-mix(in srgb, var(--color-primary) 55%, var(--color-bg));
+}
+.pin--unsure i{
+  background:transparent; border-style:dashed; color:var(--color-primary);
+}
+.pin--now i{
+  background:transparent; border-width:3px;
+  box-shadow:0 0 0 0 rgba(200,198,199,.7); animation:pin-pulse 2s infinite;
+}
+@keyframes pin-pulse{70%{box-shadow:0 0 0 10px rgba(200,198,199,0)}100%{box-shadow:0 0 0 0 rgba(200,198,199,0)}}
+@media (prefers-reduced-motion: reduce){
+  /* The now pin keeps its heavier hollow ring, it just stops moving. */
+  .pin--now i{animation:none; box-shadow:0 0 0 3px rgba(200,198,199,.28)}
+}
+
+/* ---------- popup body ---------- */
+.mappop{padding:var(--space-3); max-height:230px; overflow-y:auto}
+.mappop .place{
+  margin:0 0 var(--space-2); font-family:var(--font-mono); font-size:10px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--color-primary);
+}
+.mappop .pev{padding-top:var(--space-3); border-top:1px solid var(--color-border)}
+.mappop .pev:first-of-type{padding-top:0; border-top:0}
+.mappop .pt{
+  font-family:var(--font-mono); font-size:12px; font-weight:700; font-variant-numeric:tabular-nums;
+  letter-spacing:.04em; color:var(--color-text-muted);
+}
+.mappop .ph{margin:2px 0 0; font-family:var(--font-display); font-size:14px; font-weight:600; line-height:1.3}
+.mappop .pf{
+  display:block; margin-top:var(--space-1); font-family:var(--font-mono); font-size:10px;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--color-primary);
+}
+.mappop .pd{
+  min-height:34px; margin-top:var(--space-2); padding:0 var(--space-3);
+  font-size:11px; letter-spacing:.1em; width:100%;
+}
+.mappop .pq{
+  margin:var(--space-2) 0 0; font-family:var(--font-mono); font-size:10px;
+  line-height:1.5; color:var(--color-text-muted);
+}
+
 /* ---------- lightbox ---------- */
 .lb{
   position:fixed; inset:0; z-index:60; background:rgba(0,0,0,.92);
@@ -422,6 +543,7 @@ body.lbopen{overflow:hidden}
 }
 @media (min-width:600px){
   .evbtn{grid-template-columns:92px minmax(0,1fr) 14px}
+  #map{height:70vh}
   .hero{padding:var(--space-8)}
   .hero h2{font-size:22px}
   .hero .open{width:280px}
@@ -472,16 +594,30 @@ body.lbopen{overflow:hidden}
   </div>
 
   <div class="wrap">
-    <div class="filters" role="group" aria-label="Filter by time range">
-      <button class="chip" type="button" data-f="today" aria-pressed="false">Today <span class="n" id="n-today"></span></button>
-      <button class="chip" type="button" data-f="week" aria-pressed="true">This week <span class="n" id="n-week"></span></button>
-      <button class="chip" type="button" data-f="all" aria-pressed="false">All <span class="n" id="n-all"></span></button>
+    <div class="filterbar">
+      <div class="filters" role="group" aria-label="Filter by time range">
+        <button class="chip" type="button" data-f="today" aria-pressed="false">Today <span class="n" id="n-today"></span></button>
+        <button class="chip" type="button" data-f="week" aria-pressed="true">This week <span class="n" id="n-week"></span></button>
+        <button class="chip" type="button" data-f="all" aria-pressed="false">All <span class="n" id="n-all"></span></button>
+      </div>
+      <div class="filters filters--view" role="group" aria-label="View">
+        <button class="chip" type="button" data-v="list" aria-pressed="true">List</button>
+        <button class="chip" type="button" data-v="map" aria-pressed="false">Map</button>
+      </div>
     </div>
 
     <section id="hero" aria-label="Next event"></section>
 
     <div id="list"></div>
     <p class="sr" role="status" id="status"></p>
+
+    <section id="mapview" aria-label="Events on a map" hidden>
+      <p class="mapstat" id="mapstat" role="status"></p>
+      <div id="map"></div>
+      <p class="mapattr">
+        © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors
+      </p>
+    </section>
 
     <section class="submit" id="submitpanel">
       <h3>Saw food? Add it</h3>
@@ -520,6 +656,7 @@ body.lbopen{overflow:hidden}
 </div>
 </main>
 
+<script src="../assets/vendor/leaflet/leaflet.js"></script>
 <script>
 /* ================= DATA =================
    The page ships with no event content. Everything below the gate comes from
@@ -789,6 +926,8 @@ document.getElementById("lockbtn").addEventListener("click", () => {
   DATA = null; BOX = null; INDEX = new Map();
   document.getElementById("list").innerHTML = "";
   document.getElementById("hero").innerHTML = "";
+  if (pinLayer) pinLayer.clearLayers();
+  mapSig = null; lastShown = [];
   pass.value = "";
   pass.removeAttribute("aria-invalid");
   termClear();
@@ -802,6 +941,13 @@ const SRC = { calendar:"Yale calendar", inbox:"Email announcement", submitted:"S
 const VERD = { free_food:"Free food", likely:"Likely", unclear:"Unclear" };
 const srcLabel = (e) => SRC[e.source] || "Source";
 const isPosterUrl = (e) => typeof e.url === "string" && e.url.indexOf("#poster-") === 0;
+
+/* A placed event has finite coordinates. Below 0.7 the geocoder itself is
+   unsure (README: the AI check downgrades an address or nominatim hit to 0.5,
+   a rejected match to 0.2), so the pin is drawn hollow and the details panel
+   says the pin may be wrong. */
+const hasGeo = (e) => !!(e.geo && Number.isFinite(e.geo.lat) && Number.isFinite(e.geo.lng));
+const geoUnsure = (e) => hasGeo(e) && typeof e.geo.confidence === "number" && e.geo.confidence < 0.7;
 
 // "This week" = today through the end of the coming Sunday, counted in board time
 // by walking whole days rather than by adding milliseconds, so a DST shift or a
@@ -871,6 +1017,13 @@ function details(e){
        '</dd>';
   if (e.added_at) h += '<dt>Added</dt><dd>' + esc(fFull.format(new Date(e.added_at))) + '</dd>';
   h += '</dl>';
+  // What the map cannot promise: a pin the geocoder doubts, or no pin at all.
+  if (!hasGeo(e)){
+    h += '<p class="geonote">Not on the map: location could not be placed</p>';
+  } else if (geoUnsure(e)){
+    const note = (e.geo.note || "").trim();
+    h += '<p class="geonote">This pin may be wrong' + (note ? ": " + esc(note) : "") + '</p>';
+  }
   h += poster
     ? '<button class="btn btn--ghost golink" type="button" data-poster="' + esc(e.id) + '">Open the poster</button>'
     : '<a class="btn btn--ghost golink" href="' + esc(e.url) + '" target="_blank" rel="noopener">Open event page ↗</a>';
@@ -928,7 +1081,7 @@ function render(){
   // otherwise rebuild the list and snap every open details panel shut.
   const next = filter + "|" + shown.map(e => e.id + (isLive(e, now) ? "!" : "")).join(",") +
                "|" + (shown[0] ? relative(new Date(shown[0].start), now) : "");
-  if (next === sig) return;
+  if (next === sig){ syncView(shown, now, next); return; }
   sig = next;
 
   document.getElementById("hero").innerHTML = heroHTML(shown[0], now);
@@ -956,6 +1109,202 @@ function render(){
   document.getElementById("updated").textContent = DATA.generated_at
     ? "Board updated " + fFull.format(new Date(DATA.generated_at)) + " · " + upcoming.length + " upcoming"
     : upcoming.length + " upcoming";
+
+  syncView(shown, now, next);
+}
+
+/* ================= MAP =================
+   The same filtered set the list shows, drawn on OpenStreetMap tiles inverted to the dark palette, with
+   Leaflet. The list and the map are two readings of one selection: the Today /
+   This week / All chips drive both, and the view chips only decide which one is
+   on screen. The map replaces the list and the hero; the topbar and the chips
+   stay put. */
+const VIEWKEY = "ff.board.view";
+let view = "list";
+try { if (localStorage.getItem(VIEWKEY) === "map") view = "map"; } catch(e){}
+
+const CENTER = [41.3115, -72.9270];
+// Wide enough to hold the medical campus (41.303, -72.935) and West Campus
+// (41.253, -72.994), tight enough that a drag cannot wander off to Hartford.
+const MAXB = [[41.200, -73.060], [41.420, -72.850]];
+const FLABEL = { today:"Today", week:"This week", all:"All" };
+
+let map = null, pinLayer = null, mapSig = null;
+let lastShown = [], lastNow = null;
+
+const mapview = document.getElementById("mapview");
+const mapstat = document.getElementById("mapstat");
+
+function ensureMap(){
+  if (map) return map;
+  map = L.map("map", {
+    center: CENTER, zoom: 15, minZoom: 13, maxZoom: 19,
+    maxBounds: MAXB, maxBoundsViscosity: 1,
+    attributionControl: false   // the credit is printed below the map, in mono
+  });
+  // OpenStreetMap tiles, inverted in CSS to sit on the dark board.
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    minZoom: 13, maxZoom: 19, crossOrigin: true
+  }).addTo(map);
+  pinLayer = L.layerGroup().addTo(map);
+  return map;
+}
+
+/* ---------- clustering ----------
+   Two events in the same room carry the same gazetteer coordinates, and a pin
+   drawn twice at one point just hides one of them. Anything within 15 m is one
+   pin with a count. Greedy and O(n²), which is nothing at board scale. */
+const M_PER_DEG = 111320;
+function metres(a, b){
+  const dy = (a[0] - b[0]) * M_PER_DEG;
+  const dx = (a[1] - b[1]) * M_PER_DEG * Math.cos(a[0] * Math.PI / 180);
+  return Math.sqrt(dx*dx + dy*dy);
+}
+function cluster(events){
+  const groups = [];
+  events.forEach(e => {
+    const p = [e.geo.lat, e.geo.lng];
+    const g = groups.find(x => metres(x.at, p) <= 15);
+    if (g) g.events.push(e); else groups.push({ at: p, events: [e] });
+  });
+  return groups;
+}
+
+// Square, in the board's primary, never Leaflet's blue teardrop.
+function pinIcon(g, now){
+  const live   = g.events.some(e => isLive(e, now));
+  const unsure = g.events.some(e => geoUnsure(e));
+  const soft   = g.events.every(e => e.eval.confidence < 0.7);
+  let cls = "pin";
+  if (live) cls += " pin--now";
+  if (unsure) cls += " pin--unsure";
+  if (soft) cls += " pin--soft";
+  const n = g.events.length;
+  return L.divIcon({
+    className: cls,
+    html: '<i>' + (unsure ? "?" : "") + '</i>' + (n > 1 ? '<b>' + n + '</b>' : ""),
+    iconSize: [18, 18], iconAnchor: [9, 9], popupAnchor: [0, -12]
+  });
+}
+
+// Built as nodes rather than a string so the Details button carries its own
+// handler and never depends on a click escaping Leaflet's popup container.
+function popupNode(g, now){
+  const wrap = document.createElement("div");
+  wrap.className = "mappop";
+  const named = g.events.find(e => e.geo && e.geo.place);
+  if (named){
+    const p = document.createElement("p");
+    p.className = "place";
+    p.textContent = named.geo.place;
+    wrap.appendChild(p);
+  }
+  g.events.forEach(e => {
+    const box = document.createElement("div");
+    box.className = "pev";
+    const s = new Date(e.start), t = splitTime(s);
+    const when = document.createElement("div");
+    when.className = "pt";
+    when.textContent = dayLabel(s, now) + " · " + t.hm + " " + t.mer + (isLive(e, now) ? " · NOW" : "");
+    box.appendChild(when);
+    const h = document.createElement("p");
+    h.className = "ph";
+    h.textContent = e.title;
+    box.appendChild(h);
+    if (e.food){
+      const f = document.createElement("span");
+      f.className = "pf";
+      f.textContent = e.food;
+      box.appendChild(f);
+    }
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn btn--ghost pd";
+    b.textContent = "Details";
+    b.addEventListener("click", () => jumpToEvent(e.id));
+    box.appendChild(b);
+    if (geoUnsure(e)){
+      const q = document.createElement("p");
+      q.className = "pq";
+      const note = (e.geo.note || "").trim();
+      q.textContent = "This pin may be wrong" + (note ? ": " + note : "");
+      box.appendChild(q);
+    }
+    wrap.appendChild(box);
+  });
+  return wrap;
+}
+
+function mapStatus(shown){
+  const placed = shown.filter(hasGeo).length, un = shown.length - placed;
+  if (!placed) return "Nothing to place for " + (FLABEL[filter] || "All");
+  return placed + (placed === 1 ? " event" : " events") + " on the map" +
+         (un ? " · " + un + " not placed" : "");
+}
+
+function renderMap(shown, now){
+  ensureMap();
+  pinLayer.clearLayers();
+  const groups = cluster(shown.filter(hasGeo));
+  const pts = [];
+  groups.forEach(g => {
+    const m = L.marker(g.at, {
+      icon: pinIcon(g, now),
+      title: g.events.length > 1 ? g.events.length + " events here" : g.events[0].title,
+      riseOnHover: true
+    });
+    m.bindPopup(popupNode(g, now), { minWidth:236, maxWidth:236, autoPanPadding:[16,16] });
+    m.addTo(pinLayer);
+    pts.push(g.at);
+  });
+  // Cap the fit: one pin left to itself would zoom to street level. animate:false
+  // because an animated pan is driven by requestAnimationFrame, which does not
+  // fire while the window is occluded: the model would move and the tiles and
+  // pins would stay where they were.
+  if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding:[34,34], maxZoom:17, animate:false });
+}
+
+// Leaflet measures the container when it is created and on invalidateSize, so a
+// map that was display:none while the filter changed has to be told twice: once
+// that it is visible, once what to fit.
+function syncView(shown, now, curSig){
+  lastShown = shown; lastNow = now;
+  const isMap = view === "map";
+  document.getElementById("hero").hidden = isMap;
+  document.getElementById("list").hidden = isMap;
+  mapview.hidden = !isMap;
+  document.querySelectorAll(".chip[data-v]").forEach(c =>
+    c.setAttribute("aria-pressed", String(c.dataset.v === view)));
+  if (!isMap) return;
+  if (typeof L === "undefined"){
+    mapstat.textContent = "The map could not be loaded.";
+    return;
+  }
+  mapstat.textContent = mapStatus(shown);
+  ensureMap();
+  map.invalidateSize(false);
+  if (curSig !== mapSig){
+    renderMap(shown, now);
+    mapSig = curSig;
+  }
+}
+
+function setView(v){
+  view = v === "map" ? "map" : "list";
+  try { localStorage.setItem(VIEWKEY, view); } catch(e){}
+  syncView(lastShown, lastNow || boardNow(), sig);
+}
+
+// The one way into a details panel from anywhere else on the board: the hero
+// CTA and every popup use it.
+function jumpToEvent(id){
+  if (map) map.closePopup();
+  setView("list");
+  const btn = document.querySelector('.evbtn[data-id="' + String(id).replace(/"/g, '\\"') + '"]');
+  if (!btn) return;
+  if (btn.getAttribute("aria-expanded") !== "true") btn.click();
+  btn.scrollIntoView({ block:"center", behavior: reduced() ? "auto" : "smooth" });
+  btn.focus();
 }
 
 /* ================= POSTER LIGHTBOX ================= */
@@ -1004,21 +1353,20 @@ document.getElementById("hero").addEventListener("click", (ev) => {
   const a = ev.target.closest("[data-jump]");
   if (!a) return;
   ev.preventDefault();
-  const btn = document.querySelector('.evbtn[data-id="' + a.dataset.jump + '"]');
-  if (!btn) return;
-  if (btn.getAttribute("aria-expanded") !== "true") btn.click();
-  btn.scrollIntoView({block:"center", behavior:
-    matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-  btn.focus();
+  jumpToEvent(a.dataset.jump);
 });
 
-document.querySelectorAll(".chip").forEach(c => {
+document.querySelectorAll(".chip[data-f]").forEach(c => {
   c.addEventListener("click", () => {
     filter = c.dataset.f;
-    document.querySelectorAll(".chip").forEach(o =>
+    document.querySelectorAll(".chip[data-f]").forEach(o =>
       o.setAttribute("aria-pressed", String(o.dataset.f === filter)));
     render();
   });
+});
+
+document.querySelectorAll(".chip[data-v]").forEach(c => {
+  c.addEventListener("click", () => setView(c.dataset.v));
 });
 
 /* ================= SUBMIT PANEL + MEASUREMENT ================= */
