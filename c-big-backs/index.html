@@ -3,337 +3,458 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex, nofollow">
 <title>C Big Backs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="../favicon.svg">
 <style>
+/* Standalone page: the site's tokens (assets/css/tokens.css) and the component
+   conventions from assets/css/base.css are inlined rather than linked, so the
+   board stays a single self-contained file behind the passphrase. Values are
+   copied, not approximated. */
 :root{
-  color-scheme: light dark;
-  --bg:#f2efe7; --panel:#fffdf8; --board:#17181a; --board-ink:#f6f2e7;
-  --ink:#141310; --ink2:#57503f; --dim:#6d6656;
-  --rule:#d9d2c2; --rule2:#b9b1a0;
-  --amber:#8a4b04; --amberbg:#ffe7c2;
-  --go:#186339; --gobg:#d6efdf;
-  --warn:#7a4a12; --warnbg:#f6e6cf;
-  --focus:#0a58ca;
-  --shadow:0 1px 0 rgba(0,0,0,.05);
+  color-scheme: dark;
+
+  --color-bg:#0A0A0B;
+  --color-surface:#141313;
+  --color-surface-elevated:#1c1b1b;
+  --color-surface-lowest:#0e0e0e;
+  --color-surface-highest:#2b2a2a;
+  --color-border:#27272A;
+  --color-border-variant:#46464a;
+  --color-text:#e5e2e1;
+  --color-text-muted:#c7c6ca;
+  --color-primary:#c8c6c7;
+  --color-primary-on:#141313;
+  --color-danger:#ff9d9d;
+
+  --font-display:'Geist', sans-serif;
+  --font-mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --space-unit:4px;
+  --space-1:calc(var(--space-unit) * 1);
+  --space-2:calc(var(--space-unit) * 2);
+  --space-3:calc(var(--space-unit) * 3);
+  --space-4:calc(var(--space-unit) * 4);
+  --space-6:calc(var(--space-unit) * 6);
+  --space-8:calc(var(--space-unit) * 8);
+  --space-12:calc(var(--space-unit) * 12);
+  --space-16:calc(var(--space-unit) * 16);
+
+  --radius:0px;
+  --grid-cell:32px;
   --topbar:56px;
 }
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0b0c0d; --panel:#141618; --board:#000; --board-ink:#ffd88a;
-    --ink:#f1eee5; --ink2:#a9a396; --dim:#8f8a7d;
-    --rule:#2b2e32; --rule2:#3d4147;
-    --amber:#fbbf24; --amberbg:#3a2a05;
-    --go:#5fd98d; --gobg:#0e2a1a;
-    --warn:#e3b25f; --warnbg:#2e2409;
-    --focus:#8cc6ff;
-    --shadow:none;
-  }
-}
-*{box-sizing:border-box}
+
+*, *::before, *::after{box-sizing:border-box}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font:400 16px/1.45 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-  -webkit-text-size-adjust:100%;
+  margin:0; background:var(--color-bg); color:var(--color-text);
+  font-family:var(--font-display); font-size:16px; line-height:1.5;
+  overflow-x:hidden; -webkit-text-size-adjust:100%;
 }
-.mono{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
-.wrap{max-width:720px; margin:0 auto; padding:0 12px 96px}
-:focus-visible{outline:3px solid var(--focus); outline-offset:2px; border-radius:4px}
+img{max-width:100%; display:block}
+a{color:inherit; text-decoration:none}
 button{font:inherit; color:inherit}
-a{color:inherit}
 
-/* ---------- gate ---------- */
-#gate, #boot{min-height:100svh; display:grid; place-items:center; padding:24px 16px}
-.gatecard{width:100%; max-width:400px}
-.gatemark{
-  font-family:"IBM Plex Mono",monospace; font-weight:600; letter-spacing:.16em;
-  font-size:12px; color:var(--dim); text-transform:uppercase; margin-bottom:10px;
+/* Nothing in the board may widen the page: long unbroken tokens (a pasted URL
+   in a title, a run-on location string) break anywhere rather than pushing the
+   layout sideways. Belt and braces alongside the per-link max-width below. */
+h1,h2,h3,h4,p,li,dt,dd,span,a,blockquote,div{overflow-wrap:anywhere}
+a{max-width:100%}
+
+.mono{font-family:var(--font-mono); font-variant-numeric:tabular-nums}
+.wrap{max-width:720px; margin:0 auto; padding:0 var(--space-3) var(--space-16)}
+:focus-visible{outline:2px solid var(--color-primary); outline-offset:2px}
+[hidden]{display:none !important}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* Grid background and the cursor-following grid glow, from base.css. */
+.u-grid-bg{
+  background-image:
+    linear-gradient(to right, var(--color-surface-elevated) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-surface-elevated) 1px, transparent 1px);
+  background-size:var(--grid-cell) var(--grid-cell);
 }
-.gateflap{
-  background:var(--board); color:var(--board-ink); border-radius:10px;
-  padding:22px 18px; box-shadow:var(--shadow);
-  border-bottom:1px solid rgba(255,255,255,.08);
+.u-cursor-glow{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-primary) 45%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 45%, transparent) 1px, transparent 1px);
+  background-size:var(--grid-cell) var(--grid-cell);
+  -webkit-mask-image:radial-gradient(circle at var(--glow-x,50%) var(--glow-y,50%), black 0%, transparent 180px);
+  mask-image:radial-gradient(circle at var(--glow-x,50%) var(--glow-y,50%), black 0%, transparent 180px);
+  opacity:0; transition:opacity .4s ease;
 }
-.gateflap h1{
-  margin:0; font-family:"IBM Plex Mono",monospace; font-weight:600;
-  font-size:clamp(26px,8vw,34px); line-height:1.05; letter-spacing:.02em;
-}
-.gateflap p{margin:10px 0 0; font-size:14px; color:#b9b3a4}
-.gateform{margin-top:18px}
-label.lbl{
-  display:block; font-size:12px; letter-spacing:.14em; text-transform:uppercase;
-  font-weight:600; color:var(--dim); margin-bottom:6px; font-family:"IBM Plex Mono",monospace;
-}
-input[type=password], input[type=text]{
-  width:100%; min-height:48px; padding:12px 14px; font:500 17px/1.2 "IBM Plex Mono",monospace;
-  background:var(--panel); color:var(--ink); border:1.5px solid var(--rule2); border-radius:8px;
-}
-input[aria-invalid=true]{border-color:#b32020}
-@media (prefers-color-scheme: dark){input[aria-invalid=true]{border-color:#ff8f8f}}
+.u-cursor-glow.has-pointer{opacity:1}
+@media (prefers-reduced-motion: reduce){ .u-cursor-glow{display:none} }
+
+/* Buttons, from base.css. */
 .btn{
-  width:100%; min-height:48px; margin-top:10px; border:0; border-radius:8px;
-  background:var(--ink); color:var(--bg); font-weight:600; letter-spacing:.02em; cursor:pointer;
+  font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  font-size:13px; padding:var(--space-3) var(--space-6); border:1px solid var(--color-border-variant);
+  background:transparent; color:var(--color-text); cursor:pointer;
+  transition:transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2);
+  min-height:44px;
 }
-.btn:hover{opacity:.9}
-.btn[disabled]{opacity:.55; cursor:progress}
-/* The flap is dark in both themes, so the error takes the light red that the
-   dark palette already uses. Scoped past .gateflap p, which would otherwise win. */
-.gateflap .err{
-  margin:10px 0 0; min-height:20px; font-size:14px; font-weight:500; color:#ff9d9d;
-}
-.stat{
-  margin:8px 0 0; min-height:18px; font-family:"IBM Plex Mono",monospace;
-  font-size:12.5px; letter-spacing:.04em; color:#b9b3a4;
-}
-.gatefoot{margin-top:16px; font-size:13px; color:var(--dim)}
+.btn--primary{background:var(--color-primary); color:var(--color-primary-on); border-color:var(--color-primary)}
+.btn--ghost{background:transparent; color:var(--color-text-muted); border-color:var(--color-border-variant)}
+.btn:hover{transform:translateY(-2px); border-color:var(--color-primary)}
+.btn--primary:hover{transform:translateY(-2px); opacity:.9}
+.btn--ghost:hover{transform:translateY(-2px); border-color:var(--color-primary); color:var(--color-text)}
+.btn[disabled]{opacity:.55; cursor:progress; transform:none}
+.btn--block{width:100%}
 
-/* ---------- top bar ---------- */
+/* ---------- gate: a terminal ---------- */
+#gate{
+  position:relative; min-height:100svh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:var(--space-12) var(--space-4);
+  transition:opacity .22s ease;
+}
+#gate.is-fading{opacity:0}
+.gatecard{position:relative; z-index:2; width:100%; max-width:520px; margin:0 auto}
+.gatemark{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--color-primary); margin-bottom:var(--space-4);
+  display:flex; align-items:center; gap:var(--space-2);
+}
+.gatemark::before{content:''; width:8px; height:8px; background:var(--color-primary); flex:none}
+.gatetitle{
+  margin:0 0 var(--space-4); font-family:var(--font-display); font-weight:700;
+  text-transform:uppercase; letter-spacing:-.03em; line-height:1.05;
+  font-size:clamp(30px,9vw,44px);
+}
+.gaterule{
+  width:96px; height:4px; background:var(--color-primary);
+  box-shadow:0 0 15px rgba(200,198,199,.2); margin-bottom:var(--space-8);
+}
+.term{
+  border:1px solid var(--color-border-variant); background:var(--color-surface-lowest);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.term__bar{
+  display:flex; align-items:center; gap:var(--space-2);
+  padding:var(--space-2) var(--space-3); border-bottom:1px solid var(--color-border-variant);
+  background:var(--color-surface); font-family:var(--font-mono); font-size:10px;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--color-text-muted);
+}
+.term__bar span.dot{width:7px; height:7px; background:var(--color-primary); flex:none}
+.term__body{padding:var(--space-4); font-family:var(--font-mono); font-size:13px; line-height:1.8}
+.term__log{min-height:126px}
+.term__log:empty{min-height:0}
+.term__line{white-space:pre-wrap; color:var(--color-primary)}
+.term__line.is-err{color:var(--color-danger)}
+.term__line.is-dim{color:var(--color-text-muted)}
+/* Same block cursor the journey panel's `> cat …` flourish uses. */
+.term__line.is-typing::after{
+  content:''; display:inline-block; width:7px; height:13px; margin-left:2px;
+  vertical-align:-1px; background:var(--color-primary);
+  animation:term-cursor .5s step-end infinite;
+}
+@keyframes term-cursor{50%{opacity:0}}
+@media (prefers-reduced-motion: reduce){ .term__line.is-typing::after{animation:none} }
+
+.term__prompt{display:flex; align-items:center; gap:var(--space-2)}
+.term__ps1{
+  font-family:var(--font-mono); font-size:13px; color:var(--color-primary);
+  white-space:nowrap; overflow-wrap:normal;
+}
+.term__input{
+  flex:1 1 auto; min-width:0; background:transparent; border:0;
+  border-bottom:1px solid var(--color-border-variant); color:var(--color-text);
+  font:500 15px/1.4 var(--font-mono); letter-spacing:.2em;
+  min-height:44px; padding:0 2px;
+}
+.term__input:focus{outline:none; border-bottom-color:var(--color-primary)}
+.term__input[aria-invalid=true]{border-bottom-color:var(--color-danger)}
+.term__go{margin-top:var(--space-4)}
+.gatefoot{
+  margin:var(--space-4) 0 0; font-family:var(--font-mono); font-size:11px;
+  letter-spacing:.04em; color:var(--color-text-muted);
+}
+
+/* ---------- board shell ---------- */
+#board{opacity:1; transition:opacity .3s ease}
+#board.is-pending{opacity:0}
 .topbar{
-  position:sticky; top:0; z-index:30; background:var(--bg);
-  border-bottom:1.5px solid var(--rule2);
+  position:sticky; top:0; z-index:30;
+  background:color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--color-border-variant);
 }
 .topbar .row{
-  max-width:720px; margin:0 auto; padding:0 12px; height:var(--topbar);
-  display:flex; align-items:center; gap:10px;
+  max-width:720px; margin:0 auto; padding:0 var(--space-3); height:var(--topbar);
+  display:flex; align-items:center; gap:var(--space-2);
 }
 .brand{
-  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px;
-  letter-spacing:.18em; text-transform:uppercase; white-space:nowrap;
+  font-family:var(--font-mono); font-weight:700; font-size:13px; letter-spacing:.04em;
+  text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
-.clock{
-  margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:13px;
-  font-variant-numeric:tabular-nums; color:var(--ink2);
-}
-.lock{
-  min-height:44px; min-width:44px; padding:0 10px; background:none; border:1.5px solid var(--rule2);
-  border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; display:flex;
-  align-items:center; gap:6px;
-}
+.clock{margin-left:auto; font-family:var(--font-mono); font-size:12px; color:var(--color-text-muted)}
+.lock{padding:0 var(--space-3); font-size:11px}
 
 /* ---------- filters ---------- */
-.filters{
-  display:flex; gap:8px; padding:12px 0 4px; overflow-x:auto; scrollbar-width:none;
-}
+.filters{display:flex; gap:var(--space-2); padding:var(--space-4) 0 var(--space-1); overflow-x:auto; scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .chip{
-  min-height:44px; padding:0 16px; border-radius:22px; border:1.5px solid var(--rule2);
-  background:var(--panel); font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap;
+  flex:none; min-height:44px; padding:0 var(--space-4); border:1px solid var(--color-border-variant);
+  background:transparent; color:var(--color-text-muted); cursor:pointer; white-space:nowrap;
+  font-family:var(--font-mono); font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  transition:border-color .2s ease, color .2s ease, background .2s ease;
 }
-.chip[aria-pressed=true]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
-.chip .n{opacity:.6; font-weight:500; margin-left:6px; font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--color-primary); color:var(--color-text)}
+.chip[aria-pressed=true]{background:var(--color-primary); color:var(--color-primary-on); border-color:var(--color-primary)}
+.chip .n{opacity:.7; font-weight:500; margin-left:var(--space-2); font-variant-numeric:tabular-nums}
 
-/* ---------- hero / next departure ---------- */
+/* ---------- hero: the next departure ---------- */
 .hero{
-  background:var(--board); color:var(--board-ink); border-radius:12px; padding:16px;
-  margin-top:8px; position:relative; overflow:hidden; border:1px solid var(--rule);
+  position:relative; overflow:hidden; margin-top:var(--space-2); padding:var(--space-4);
+  border:1px solid var(--color-border-variant); background:var(--color-surface-lowest);
+}
+.hero__bracket{
+  position:absolute; top:-1px; right:-1px; width:56px; height:56px; pointer-events:none;
+  border-top:2px solid var(--color-primary); border-right:2px solid var(--color-primary);
 }
 .hero .kicker{
-  display:flex; align-items:center; gap:8px; font-family:"IBM Plex Mono",monospace;
-  font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#c9c2b1;
+  position:relative; display:flex; align-items:center; gap:var(--space-2);
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--color-primary);
 }
 .dotlive{
-  width:9px; height:9px; border-radius:50%; background:#3ddc84; flex:none;
-  box-shadow:0 0 0 0 rgba(61,220,132,.7); animation:pulse 2s infinite;
+  width:8px; height:8px; background:var(--color-primary); flex:none;
+  box-shadow:0 0 0 0 rgba(200,198,199,.7); animation:pulse 2s infinite;
 }
-@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(200,198,199,0)}100%{box-shadow:0 0 0 0 rgba(200,198,199,0)}}
 .hero .time{
-  font-family:"IBM Plex Mono",monospace; font-weight:600; font-variant-numeric:tabular-nums;
-  font-size:clamp(52px,17vw,76px); line-height:.92; letter-spacing:-.02em; margin:6px 0 2px;
-  display:flex; align-items:baseline; gap:10px;
+  position:relative; font-family:var(--font-mono); font-weight:700; font-variant-numeric:tabular-nums;
+  font-size:clamp(48px,16vw,72px); line-height:.92; letter-spacing:-.04em;
+  margin:var(--space-3) 0 var(--space-1); display:flex; align-items:baseline; gap:var(--space-2);
 }
-.hero .time .mer{font-size:.32em; letter-spacing:.16em; color:#c9c2b1}
-.hero .in{font-family:"IBM Plex Mono",monospace; font-size:14px; color:#f0c469}
-.hero h2{margin:12px 0 4px; font-size:19px; line-height:1.25; font-weight:700}
-.hero .where{font-size:14px; color:#c9c2b1}
+.hero .time .mer{font-size:.3em; letter-spacing:.16em; color:var(--color-primary)}
+.hero .in{position:relative; font-family:var(--font-mono); font-size:13px; color:var(--color-primary)}
+.hero h2{
+  position:relative; margin:var(--space-4) 0 var(--space-1);
+  font-family:var(--font-display); font-size:19px; font-weight:600; line-height:1.25; letter-spacing:-.01em;
+}
+.hero .where{position:relative; font-size:14px; color:var(--color-text-muted)}
 .hero .food{
-  display:inline-block; margin-top:12px; padding:7px 12px; border-radius:8px;
-  background:rgba(255,255,255,.1); font-size:14px; font-weight:600;
+  position:relative; display:inline-block; margin-top:var(--space-3); padding:var(--space-1) var(--space-2);
+  border:1px solid var(--color-border-variant); background:var(--color-surface-elevated);
+  font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--color-primary);
 }
-.hero .open{
-  display:block; margin-top:14px; min-height:44px; line-height:44px; text-align:center;
-  border-radius:8px; background:var(--board-ink); color:#111; font-weight:700;
-  text-decoration:none; font-size:15px;
-}
+/* display:flex, not the .btn default inline-flex, so the CTA always starts its
+   own line under the inline food chip. */
+.hero .open{position:relative; display:flex; margin-top:var(--space-4); width:100%}
 
 /* ---------- day dividers ---------- */
 .day{
-  position:sticky; top:var(--topbar); z-index:20; background:var(--bg);
-  display:flex; align-items:baseline; gap:10px; padding:22px 2px 6px;
-  border-bottom:1.5px solid var(--rule2); margin-bottom:0;
+  position:sticky; top:var(--topbar); z-index:20; background:var(--color-bg);
+  display:flex; align-items:baseline; gap:var(--space-3);
+  padding:var(--space-6) var(--space-1) var(--space-2);
+  border-bottom:1px solid var(--color-border-variant);
 }
 .day h3{
-  margin:0; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600;
+  margin:0; font-family:var(--font-mono); font-size:13px; font-weight:700;
   letter-spacing:.18em; text-transform:uppercase;
 }
-.day .date{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--dim); margin-left:auto}
+.day .date{
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--color-text-muted); margin-left:auto;
+}
 
 /* ---------- rows ---------- */
-.ev{border-bottom:1px solid var(--rule)}
+.ev{border-bottom:1px solid var(--color-border)}
 .evbtn{
-  width:100%; background:none; border:0; padding:12px 2px; text-align:left; cursor:pointer;
-  display:grid; grid-template-columns:76px 1fr 18px; gap:12px; align-items:start; min-height:56px;
+  width:100%; background:none; border:0; padding:var(--space-3) var(--space-1); text-align:left;
+  cursor:pointer; display:grid; grid-template-columns:72px minmax(0,1fr) 14px; gap:var(--space-3);
+  align-items:start; min-height:56px; transition:background .2s ease;
 }
-.evbtn:hover{background:color-mix(in srgb, var(--panel) 70%, transparent)}
+.evbtn > span{min-width:0}
+.evbtn:hover{background:var(--color-surface-elevated)}
 .evtime{
-  font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
-  font-weight:600; font-size:19px; line-height:1.2; padding-top:1px;
+  font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-weight:700;
+  font-size:19px; line-height:1.2; letter-spacing:-.02em; padding-top:1px;
 }
-.evtime .mer{font-size:11px; letter-spacing:.1em; color:var(--dim); display:block; margin-top:1px}
-.evtitle{display:block; font-size:16px; font-weight:600; line-height:1.3}
-.evmeta{display:block; font-size:13.5px; color:var(--ink2); margin-top:3px}
-.evfood{display:block; font-size:14px; font-weight:600; color:var(--amber); margin-top:5px}
-.tags{display:flex; flex-wrap:wrap; gap:6px; margin-top:7px}
+.evtime .mer{
+  display:block; margin-top:2px; font-size:10px; font-weight:500; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--color-text-muted);
+}
+.evtitle{display:block; font-family:var(--font-display); font-size:16px; font-weight:600; line-height:1.3}
+.evmeta{display:block; font-size:13px; color:var(--color-text-muted); margin-top:var(--space-1)}
+.evfood{
+  display:block; margin-top:var(--space-1); font-family:var(--font-mono); font-size:11px;
+  font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--color-primary);
+}
+.tags{display:flex; flex-wrap:wrap; gap:var(--space-1); margin-top:var(--space-2)}
 .tag{
-  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
-  font-weight:600; padding:3px 7px; border-radius:5px; background:var(--panel);
-  border:1px solid var(--rule2); color:var(--ink2);
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:700; padding:2px 6px; border:1px solid var(--color-border-variant);
+  background:var(--color-surface-elevated); color:var(--color-text-muted);
 }
-.tag.now{background:var(--gobg); border-color:var(--go); color:var(--go)}
-.tag.soft{background:var(--warnbg); border-color:var(--warn); color:var(--warn)}
+.tag.now{background:var(--color-primary); border-color:var(--color-primary); color:var(--color-primary-on)}
+.tag.soft{background:transparent; border-style:dashed; border-color:var(--color-border-variant); color:var(--color-text-muted)}
 .caret{
-  justify-self:end; align-self:center; width:10px; height:10px; border-right:2px solid var(--dim);
-  border-bottom:2px solid var(--dim); transform:rotate(45deg); transition:transform .18s ease;
+  justify-self:end; align-self:center; width:9px; height:9px;
+  border-right:2px solid var(--color-text-muted); border-bottom:2px solid var(--color-text-muted);
+  transform:rotate(45deg); transition:transform .18s ease;
 }
-.evbtn[aria-expanded=true] .caret{transform:rotate(225deg)}
-.ev.live{background:linear-gradient(90deg, var(--gobg), transparent 55%); box-shadow:inset 3px 0 0 var(--go)}
-.ev.soft .evtitle, .ev.soft .evmeta{color:var(--dim)}
+.evbtn[aria-expanded=true] .caret{transform:rotate(225deg); border-color:var(--color-primary)}
+.ev.live{
+  background:linear-gradient(90deg, color-mix(in srgb, var(--color-primary) 9%, transparent), transparent 55%);
+  box-shadow:inset 3px 0 0 var(--color-primary);
+}
+.ev.soft{box-shadow:inset 3px 0 0 var(--color-border-variant)}
+.ev.soft .evtitle, .ev.soft .evmeta{color:var(--color-text-muted)}
 .ev.soft .evtime{opacity:.72}
-.ev.soft .evfood{color:var(--warn)}
-.ev.soft{box-shadow:inset 3px 0 0 var(--rule2)}
+.ev.soft .evfood{color:var(--color-text-muted)}
 
 /* ---------- details ---------- */
-.det{padding:2px 2px 18px 88px; font-size:14.5px}
-@media (max-width:420px){.det{padding-left:8px}}
-.det p{margin:0 0 10px; color:var(--ink2)}
-.dl{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:0 0 12px}
+.det{padding:var(--space-1) var(--space-1) var(--space-4) 84px; font-size:14px}
+@media (max-width:460px){ .det{padding-left:var(--space-2)} }
+.det p{margin:0 0 var(--space-3); color:var(--color-text-muted); line-height:1.6}
+.dl{display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--space-1) var(--space-3); margin:0 0 var(--space-3)}
 .dl dt{
-  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase;
-  color:var(--dim); padding-top:3px;
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--color-primary); padding-top:3px;
 }
-.dl dd{margin:0; font-size:14.5px}
-.posterbtn{margin:0 0 12px; padding:0; border:0; background:none; cursor:pointer; display:block}
-.posterbtn img{width:100%; max-width:280px; border-radius:8px; border:1px solid var(--rule2); display:block}
-.golink{
-  display:inline-flex; align-items:center; min-height:44px; padding:0 14px; border-radius:8px;
-  border:1.5px solid var(--rule2); background:var(--panel); font-weight:600; font-size:14px;
-  text-decoration:none; cursor:pointer;
-}
-.ai{
-  margin-top:14px; border:1px solid var(--rule2); border-radius:10px; overflow:hidden;
-  background:var(--panel);
-}
+.dl dd{margin:0; font-size:14px; min-width:0}
+.posterbtn{margin:0 0 var(--space-3); padding:0; border:0; background:none; cursor:pointer; display:block}
+.posterbtn img{width:100%; max-width:280px; border:1px solid var(--color-border-variant)}
+/* Every outbound link is a labelled control, never a printed URL, and it can
+   never be wider than its column. */
+.golink{max-width:100%; text-align:center}
+.ai{margin-top:var(--space-4); border:1px solid var(--color-border-variant); background:var(--color-surface-elevated)}
 .ai .aihd{
-  display:flex; align-items:center; gap:8px; padding:9px 12px; border-bottom:1px solid var(--rule);
-  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-  color:var(--dim);
+  display:flex; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-3);
+  border-bottom:1px solid var(--color-border);
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--color-text-muted);
 }
 .verdict{
-  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; font-weight:600;
-  padding:3px 7px; border-radius:5px; margin-left:auto;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:700; padding:2px 6px; margin-left:auto; white-space:nowrap; border:1px solid transparent;
 }
-.v-free_food{background:var(--gobg); color:var(--go)}
-.v-likely{background:var(--amberbg); color:var(--amber)}
-.v-unclear{background:var(--warnbg); color:var(--warn)}
-.ai .aibd{padding:12px}
-.meter{display:flex; align-items:center; gap:10px; margin-bottom:10px}
-.meter .bar{flex:1; height:8px; border-radius:5px; background:var(--rule); overflow:hidden}
-.meter .fill{height:100%; background:var(--go)}
-.meter.low .fill{background:var(--warn)}
+.v-free_food{background:var(--color-primary); color:var(--color-primary-on); border-color:var(--color-primary)}
+.v-likely{border-color:var(--color-primary); color:var(--color-primary)}
+.v-unclear{border-style:dashed; border-color:var(--color-border-variant); color:var(--color-text-muted)}
+.ai .aibd{padding:var(--space-3)}
+.meter{display:flex; align-items:center; gap:var(--space-3); margin-bottom:var(--space-3)}
+.meter .bar{flex:1; min-width:0; height:6px; background:var(--color-border); overflow:hidden}
+.meter .fill{height:100%; background:var(--color-primary)}
+.meter.low .fill{background:color-mix(in srgb, var(--color-primary) 45%, var(--color-border))}
 .meter .num{
-  font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; font-variant-numeric:tabular-nums;
+  font-family:var(--font-mono); font-size:13px; font-weight:700; font-variant-numeric:tabular-nums;
 }
-.ai .why{margin:0 0 10px; color:var(--ink2)}
+.ai .why{margin:0 0 var(--space-3); color:var(--color-text-muted)}
 .ai blockquote{
-  margin:0; padding:9px 11px; border-left:3px solid var(--rule2); background:var(--bg);
-  border-radius:0 6px 6px 0; font-size:13.5px; color:var(--ink2);
+  margin:0; padding:var(--space-2) var(--space-3); border-left:2px solid var(--color-border-variant);
+  background:var(--color-surface-lowest); font-size:13px; color:var(--color-text-muted); line-height:1.6;
 }
-.ai .stamp{margin:10px 0 0; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--dim)}
+.ai .stamp{
+  margin:var(--space-3) 0 0; font-family:var(--font-mono); font-size:11px;
+  letter-spacing:.04em; color:var(--color-text-muted);
+}
 
 /* ---------- lightbox ---------- */
 .lb{
-  position:fixed; inset:0; z-index:60; background:rgba(0,0,0,.9);
+  position:fixed; inset:0; z-index:60; background:rgba(0,0,0,.92);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:14px; padding:16px;
+  gap:var(--space-4); padding:var(--space-4);
 }
-.lb img{max-width:100%; max-height:calc(100svh - 96px); border-radius:8px; object-fit:contain}
-.lbclose{
-  min-height:44px; padding:0 20px; border-radius:8px; border:1.5px solid rgba(255,255,255,.42);
-  background:rgba(255,255,255,.1); color:#fff; font-weight:600; cursor:pointer;
-}
+.lb img{max-width:100%; max-height:calc(100svh - 110px); object-fit:contain; border:1px solid var(--color-border-variant)}
 body.lbopen{overflow:hidden}
 
 /* ---------- empty / submit / how / footer ---------- */
 .empty{
-  text-align:center; padding:44px 16px; border:1.5px dashed var(--rule2); border-radius:12px;
-  margin-top:16px; color:var(--ink2);
+  text-align:center; padding:var(--space-12) var(--space-4); margin-top:var(--space-4);
+  border:1px dashed var(--color-border-variant); color:var(--color-text-muted);
 }
-.empty strong{display:block; font-size:17px; color:var(--ink); margin-bottom:6px}
+.empty strong{
+  display:block; margin-bottom:var(--space-2); font-family:var(--font-mono); font-size:13px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--color-text);
+}
 .submit, .how{
-  margin-top:28px; background:var(--panel); border:1.5px solid var(--rule2); border-radius:12px; padding:16px;
+  margin-top:var(--space-8); padding:var(--space-6);
+  border:1px solid var(--color-border-variant); background:var(--color-surface-elevated);
 }
 .submit h3, .how h3{
-  margin:0 0 8px; font-family:"IBM Plex Mono",monospace; font-size:13px; letter-spacing:.16em;
-  text-transform:uppercase;
+  margin:0 0 var(--space-3); font-family:var(--font-mono); font-size:13px; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase;
 }
-.submit p, .how p{margin:0 0 10px; font-size:14.5px; color:var(--ink2)}
+.submit p, .how p{margin:0 0 var(--space-3); font-size:14px; line-height:1.6; color:var(--color-text-muted)}
 .how p:last-child{margin-bottom:0}
-.submit ol{margin:0 0 14px; padding-left:20px; font-size:14.5px; color:var(--ink2)}
-.submit li{margin-bottom:4px}
+.submit ol{margin:0 0 var(--space-3); padding-left:var(--space-6); font-size:14px; line-height:1.7; color:var(--color-text-muted)}
+.submit li{margin-bottom:var(--space-1)}
+.addr{
+  display:inline-block; max-width:100%; padding:1px 5px;
+  border:1px solid var(--color-border-variant); background:var(--color-surface-lowest);
+  font-family:var(--font-mono); font-size:13px; color:var(--color-text);
+}
+.fine{margin:var(--space-3) 0 0; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; color:var(--color-text-muted)}
 .measure{
-  font-family:"IBM Plex Mono",monospace; font-size:12.5px; line-height:1.6; color:var(--dim);
-  border-top:1px solid var(--rule); padding-top:10px;
+  margin:0; padding-top:var(--space-3); border-top:1px solid var(--color-border);
+  font-family:var(--font-mono); font-size:11px; line-height:1.7; letter-spacing:.04em;
+  color:var(--color-text-muted);
 }
-.mailto{
-  display:flex; align-items:center; justify-content:center; min-height:48px; border-radius:8px;
-  background:var(--ink); color:var(--bg); font-weight:700; text-decoration:none; font-size:15px;
+.site-footer{
+  display:flex; flex-wrap:wrap; gap:var(--space-4); justify-content:space-between; align-items:center;
+  margin-top:var(--space-12); padding:var(--space-4) var(--space-4);
+  border-top:1px solid var(--color-border-variant); background:var(--color-surface-lowest);
+  font-family:var(--font-mono); font-size:11px; letter-spacing:.04em;
+  color:var(--color-text-muted); text-transform:uppercase;
 }
-.fine{font-size:12.5px; color:var(--dim); margin:10px 0 0}
-footer{margin-top:24px; font-size:12.5px; color:var(--dim); text-align:center; line-height:1.7}
-[hidden]{display:none !important}
-.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.site-footer__links{display:flex; gap:var(--space-6)}
+.site-footer__links a:hover{color:var(--color-text)}
+.text-accent{color:var(--color-primary)}
+
 @media (prefers-reduced-motion: reduce){
-  *{animation:none !important; transition:none !important}
+  *, *::before, *::after{
+    animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
 }
 @media (min-width:600px){
-  .evbtn{grid-template-columns:96px 1fr 18px}
-  .hero{padding:22px}
+  .evbtn{grid-template-columns:92px minmax(0,1fr) 14px}
+  .hero{padding:var(--space-6)}
   .hero h2{font-size:22px}
+  .hero .open{width:280px}
+  .term__body{padding:var(--space-6)}
+  .term__go{width:auto; min-width:220px}
 }
 </style>
 </head>
 <body>
 <main>
-<!-- ============ BOOT (stored passphrase, decrypting) ============ -->
-<section id="boot" hidden>
+<!-- ============ PASSPHRASE GATE (terminal) ============ -->
+<section id="gate" class="u-grid-bg" hidden>
+  <div class="u-cursor-glow" aria-hidden="true"></div>
   <div class="gatecard">
-    <div class="gatemark">Private · CBB cohort</div>
-    <div class="gateflap">
-      <h1>FREE FOOD<br>BOARD</h1>
-      <p class="stat" id="bootstat" role="status">Unlocking the board…</p>
-    </div>
-  </div>
-</section>
+    <div class="gatemark">Private // CBB cohort</div>
+    <h1 class="gatetitle">Free Food Board</h1>
+    <div class="gaterule" aria-hidden="true"></div>
 
-<!-- ============ PASSPHRASE GATE ============ -->
-<section id="gate" hidden>
-  <div class="gatecard">
-    <div class="gatemark">Private · CBB cohort</div>
-    <div class="gateflap">
-      <h1>FREE FOOD<br>BOARD</h1>
-      <p>Enter the cohort passphrase to see today's departures.</p>
-      <form class="gateform" id="gateform" novalidate>
-        <label class="lbl" for="pass">Passphrase</label>
-        <input id="pass" type="password" autocomplete="current-password" autocapitalize="off"
-               spellcheck="false" aria-describedby="gateerr gatestat" required>
-        <button class="btn" type="submit" id="gatebtn">Unlock board</button>
-        <p class="err" id="gateerr" role="alert"></p>
-        <p class="stat" id="gatestat" role="status"></p>
-      </form>
+    <div class="term">
+      <div class="term__bar"><span class="dot" aria-hidden="true"></span> c-big-backs — secure shell</div>
+      <div class="term__body">
+        <div class="term__log" id="termlog" role="status" aria-live="polite"></div>
+        <form class="gateform" id="gateform" novalidate>
+          <div class="term__prompt">
+            <label class="sr" for="pass">Cohort passphrase</label>
+            <span class="term__ps1" aria-hidden="true">passphrase&nbsp;$</span>
+            <input class="term__input" id="pass" type="password" autocomplete="current-password"
+                   autocapitalize="off" spellcheck="false" aria-describedby="gateerr" required>
+          </div>
+          <button class="btn btn--primary btn--block term__go" type="submit" id="gatebtn">Unlock board</button>
+          <p class="err sr" id="gateerr" role="alert"></p>
+        </form>
+      </div>
     </div>
+
     <p class="gatefoot">Unlocks stay on this device until you lock the board again.</p>
   </div>
 </section>
@@ -342,9 +463,9 @@ footer{margin-top:24px; font-size:12.5px; color:var(--dim); text-align:center; l
 <div id="board" hidden>
   <div class="topbar">
     <div class="row">
-      <span class="brand">Free Food · Departures</span>
-      <span class="clock mono" id="clock" aria-hidden="true"></span>
-      <button class="lock" id="lockbtn" type="button">Lock</button>
+      <span class="brand">Free_Food // Departures</span>
+      <span class="clock" id="clock" aria-hidden="true"></span>
+      <button class="btn btn--ghost lock" id="lockbtn" type="button">Lock</button>
     </div>
   </div>
 
@@ -364,11 +485,10 @@ footer{margin-top:24px; font-size:12.5px; color:var(--dim); text-align:center; l
       <h3>Saw food? Add it</h3>
       <p>Anyone with a university address can put an event on the board.</p>
       <ol>
-        <li>Email <span class="mono" id="semail"></span> with <strong>FREE FOOD</strong> in the subject.</li>
+        <li>Email <span class="addr" id="semail"></span> with <strong>FREE FOOD</strong> in the subject.</li>
         <li>Paste the announcement text, or attach a photo of the poster.</li>
         <li>It gets screened and appears here, credited to your first name and last initial.</li>
       </ol>
-      <a class="mailto" id="mailtolink" href="#">Email a new event</a>
       <p class="fine">Only <span class="mono">.edu</span> senders are accepted. Anything else is dropped without a reply.</p>
     </section>
 
@@ -381,17 +501,20 @@ footer{margin-top:24px; font-size:12.5px; color:var(--dim); text-align:center; l
          it leaned on are shown under each event, so you can judge the call yourself.</p>
       <p class="measure" id="measure" hidden></p>
     </section>
-
-    <footer>
-      <span id="updated"></span>
-    </footer>
   </div>
+
+  <footer class="site-footer">
+    <div class="site-footer__copy">© 2026 <span class="text-accent">DAANISH_Q_SYSTEMS</span> · <span id="updated"></span></div>
+    <div class="site-footer__links">
+      <a href="https://daanishqureshi.com/" target="_blank" rel="noopener">Portfolio</a>
+    </div>
+  </footer>
 </div>
 
 <!-- ============ POSTER LIGHTBOX ============ -->
 <div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Event poster" hidden>
   <img id="lbimg" alt="">
-  <button class="lbclose" id="lbclose" type="button">Close poster</button>
+  <button class="btn btn--ghost" id="lbclose" type="button">Close poster</button>
 </div>
 </main>
 
@@ -487,14 +610,13 @@ function dayLabel(d, now){
    The salt is new on every publish, so the passphrase itself is what is
    remembered, not a derived key or an "unlocked" flag. */
 const KEY = "ff.board.pass";
-const boot = document.getElementById("boot");
-const bootstat = document.getElementById("bootstat");
 const gate = document.getElementById("gate");
 const board = document.getElementById("board");
 const gateerr = document.getElementById("gateerr");
-const gatestat = document.getElementById("gatestat");
 const gatebtn = document.getElementById("gatebtn");
+const gateform = document.getElementById("gateform");
 const pass = document.getElementById("pass");
+const termlog = document.getElementById("termlog");
 
 const LOAD_MSG = "The list could not be loaded. Check your connection and try again.";
 const PASS_MSG = "That passphrase did not unlock the board. Check for a stray space and try again.";
@@ -503,49 +625,146 @@ function savedPass(){ try { return localStorage.getItem(KEY) || ""; } catch(e){ 
 function rememberPass(p){ try { localStorage.setItem(KEY, p); } catch(e){} }
 function forgetPass(){ try { localStorage.removeItem(KEY); } catch(e){} }
 
+/* ---------- terminal ----------
+   A boot sequence typed line by line, in the spirit of the journey panel's
+   `> cat …` flourish and the home page's boot overlay. The real work (fetch,
+   PBKDF2, AES-GCM) runs concurrently: the sequence types up to "decrypting
+   events.enc" and then waits on the actual result before it prints "ok" and
+   the event count, so the animation never claims something that has not
+   happened. Under reduced motion the lines land at once with no typing. */
+const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+function termClear(){ termlog.innerHTML = ""; }
+
+function termLine(text, cls){
+  const el = document.createElement("div");
+  el.className = "term__line" + (cls ? " " + cls : "");
+  el.textContent = text || "";
+  termlog.appendChild(el);
+  return el;
+}
+
+async function termType(text, charDelay, cls){
+  const el = termLine("", cls);
+  if (reduced()){ el.textContent = text; return el; }
+  el.classList.add("is-typing");
+  for (let i = 0; i < text.length; i++){
+    el.textContent = text.slice(0, i + 1);
+    await sleep(charDelay);
+  }
+  el.classList.remove("is-typing");
+  return el;
+}
+
+async function termAppend(el, text, charDelay){
+  if (reduced()){ el.textContent += text; el.classList.remove("is-typing"); return; }
+  const head = el.textContent;
+  for (let i = 0; i < text.length; i++){
+    el.textContent = head + text.slice(0, i + 1);
+    await sleep(charDelay);
+  }
+  el.classList.remove("is-typing");
+}
+
+// hold() collapses to nothing under reduced motion, so the sequence is just
+// "print everything, wait for the work, print the rest".
+const hold = (ms) => reduced() ? Promise.resolve() : sleep(ms);
+
+// Runs the sequence against a promise of the decrypted board. Resolves with
+// {data} on success, or {err} once it has printed the failure and the caller
+// should return to the prompt.
+async function runBoot(work, profile){
+  const short = profile === "short";
+  const cd = short ? 9 : 14;
+  const h  = short ? 90 : 200;
+
+  let data = null, error = null;
+  const settled = work.then(d => { data = d; }, e => { error = e; });
+
+  termClear();
+  await termType("> unlock c-big-backs", short ? cd : 18);
+  await hold(short ? 70 : 170);
+
+  if (!short){
+    await termType("verifying passphrase", cd);
+    await hold(h);
+    await termType("deriving key  pbkdf2 sha-256 600k", cd);
+    await hold(h);
+  }
+
+  const line = await termType(short ? "restoring session" : "decrypting events.enc", cd);
+  line.classList.add("is-typing");
+  await settled;
+
+  if (error){
+    await termAppend(line, "  failed", cd);
+    if (error.kind === "load"){
+      termLine("unlock: events.enc unavailable", "is-err");
+      termLine("check your connection and try again", "is-dim");
+    } else {
+      termLine("unlock: passphrase rejected", "is-err");
+      termLine("check for a stray space and try again", "is-dim");
+    }
+    return { err: error };
+  }
+
+  await termAppend(line, "  ok", cd);
+  await hold(h);
+  await termType("loading " + data.events.length + " events", cd);
+  await hold(short ? 110 : h + 60);
+  return { data: data };
+}
+
 function showGate(msg){
-  boot.hidden = true;
   board.hidden = true;
   gate.hidden = false;
+  gate.classList.remove("is-fading");
+  gateform.hidden = false;
+  gatebtn.disabled = false;
   gateerr.textContent = msg || "";
-  gatestat.textContent = "";
+  if (msg) termLine(msg, "is-dim");
   pass.focus();
 }
 
-function showBoard(){
-  boot.hidden = true;
-  gate.hidden = true;
-  board.hidden = false;
+async function revealBoard(){
   INDEX = new Map(DATA.events.map(e => [e.id, e]));
   fillSubmit();
   fillMeasure();
   sig = null;
+  gate.classList.add("is-fading");
+  await hold(220);
+  gate.hidden = true;
+  board.hidden = false;
+  board.classList.add("is-pending");
   render();
   tick();
+  // Flush the pre-transition state with a forced layout rather than waiting on
+  // requestAnimationFrame, which never fires while the tab is in the
+  // background and would leave the board sitting at opacity 0.
+  void board.offsetHeight;
+  board.classList.remove("is-pending");
 }
 
-function busy(on){
-  gatebtn.disabled = on;
-  gatebtn.textContent = on ? "Unlocking…" : "Unlock board";
-  gatestat.textContent = on ? "Fetching the list and deriving the key. This takes a moment on a phone." : "";
-}
-
-document.getElementById("gateform").addEventListener("submit", async (ev) => {
+gateform.addEventListener("submit", async (ev) => {
   ev.preventDefault();
   const value = pass.value.trim();
   gateerr.textContent = "";
   if (!value){
     pass.setAttribute("aria-invalid","true");
     gateerr.textContent = PASS_MSG;
+    termClear();
+    termLine("unlock: no passphrase given", "is-err");
     pass.focus();
     return;
   }
-  busy(true);
-  try {
-    DATA = await decryptBoard(value);
-  } catch(err){
-    busy(false);
-    if (err && err.kind === "load"){
+  gatebtn.disabled = true;
+  gateform.hidden = true;
+  const out = await runBoot(decryptBoard(value), "full");
+  if (out.err){
+    gateform.hidden = false;
+    gatebtn.disabled = false;
+    if (out.err.kind === "load"){
       pass.removeAttribute("aria-invalid");
       gateerr.textContent = LOAD_MSG;
     } else {
@@ -555,11 +774,12 @@ document.getElementById("gateform").addEventListener("submit", async (ev) => {
     pass.focus();
     return;
   }
-  busy(false);
+  DATA = out.data;
+  gatebtn.disabled = false;
   pass.removeAttribute("aria-invalid");
   pass.value = "";
   rememberPass(value);
-  showBoard();
+  await revealBoard();
 });
 
 document.getElementById("lockbtn").addEventListener("click", () => {
@@ -569,6 +789,7 @@ document.getElementById("lockbtn").addEventListener("click", () => {
   document.getElementById("hero").innerHTML = "";
   pass.value = "";
   pass.removeAttribute("aria-invalid");
+  termClear();
   showGate("");
 });
 
@@ -628,6 +849,8 @@ function eventRow(e, now){
   '</article>';
 }
 
+// Exactly one outbound link per event: the event page, or the poster when the
+// url is a `#poster-` marker. Never the raw URL as text, and never a mail link.
 function details(e){
   const ev = e.eval, pct = Math.round(ev.confidence * 100);
   const low = ev.confidence < 0.7;
@@ -647,8 +870,8 @@ function details(e){
   if (e.added_at) h += '<dt>Added</dt><dd>' + esc(fFull.format(new Date(e.added_at))) + '</dd>';
   h += '</dl>';
   h += poster
-    ? '<button class="golink" type="button" data-poster="' + esc(e.id) + '">Open the poster</button>'
-    : '<a class="golink" href="' + esc(e.url) + '" target="_blank" rel="noopener">Open event page ↗</a>';
+    ? '<button class="btn btn--ghost golink" type="button" data-poster="' + esc(e.id) + '">Open the poster</button>'
+    : '<a class="btn btn--ghost golink" href="' + esc(e.url) + '" target="_blank" rel="noopener">Open event page ↗</a>';
   h += '<div class="ai">' +
     '<div class="aihd">AI review <span class="verdict v-' + esc(ev.verdict) + '">' + esc(VERD[ev.verdict] || ev.verdict) + '</span></div>' +
     '<div class="aibd">' +
@@ -669,7 +892,8 @@ function heroHTML(e, now){
   const t = splitTime(s);
   const live = isLive(e, now);
   return '' +
-  '<div class="hero">' +
+  '<div class="hero u-grid-bg">' +
+    '<span class="hero__bracket" aria-hidden="true"></span>' +
     '<div class="kicker">' + (live
       ? '<span class="dotlive"></span> Happening now · ends ' + esc(fT.format(endOf(e)))
       : 'Next departure · ' + esc(dayLabel(s, now))) + '</div>' +
@@ -678,7 +902,7 @@ function heroHTML(e, now){
     '<h2>' + esc(e.title) + '</h2>' +
     '<div class="where">' + esc(e.location) + (e.room ? " · " + esc(e.room) : "") + '</div>' +
     (e.food ? '<div class="food">' + esc(e.food) + '</div>' : "") +
-    '<a class="open" href="#d-' + esc(e.id) + '" data-jump="' + esc(e.id) + '">Details and AI review</a>' +
+    '<a class="btn btn--primary open" href="#d-' + esc(e.id) + '" data-jump="' + esc(e.id) + '">Details and AI review</a>' +
   '</div>';
 }
 
@@ -796,16 +1020,14 @@ document.querySelectorAll(".chip").forEach(c => {
 });
 
 /* ================= SUBMIT PANEL + MEASUREMENT ================= */
+// The address is written out as plain text for copying: no mail link, here or
+// anywhere else on the board.
 function fillSubmit(){
   const mail = DATA.submit_email;
   const panel = document.getElementById("submitpanel");
   if (!mail){ panel.hidden = true; return; }
   panel.hidden = false;
   document.getElementById("semail").textContent = mail;
-  document.getElementById("mailtolink").href =
-    "mailto:" + mail + "?subject=" + encodeURIComponent("FREE FOOD") +
-    "&body=" + encodeURIComponent(
-      "What: \nWhen: \nWhere (building + room): \nFood: \nLink or attach the poster photo: \n\nSent from the Free Food Board.");
 }
 
 // e.g. "Last checked against 23 hand-labelled events: precision 1.00, recall 1.00 (claude-haiku-4-5, Sep 9)"
@@ -828,15 +1050,41 @@ function tick(){
 }
 setInterval(() => { tick(); if (!board.hidden) render(); }, 60000);
 
+/* ================= CURSOR GLOW ================= */
+// Eased, lagging pointer follow, same as assets/js/motion.js initCursorGlow.
+(function initCursorGlow(){
+  const container = document.getElementById("gate");
+  const glow = container && container.querySelector(".u-cursor-glow");
+  if (!glow) return;
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0, hasPointer = false;
+  const ease = reduced() ? 1 : 0.08;
+  container.addEventListener("pointermove", (e) => {
+    const rect = container.getBoundingClientRect();
+    targetX = e.clientX - rect.left;
+    targetY = e.clientY - rect.top;
+    if (!hasPointer){ currentX = targetX; currentY = targetY; }
+  });
+  container.addEventListener("pointerenter", () => { hasPointer = true; glow.classList.add("has-pointer"); });
+  container.addEventListener("pointerleave", () => { hasPointer = false; glow.classList.remove("has-pointer"); });
+  function step(){
+    currentX += (targetX - currentX) * ease;
+    currentY += (targetY - currentY) * ease;
+    glow.style.setProperty("--glow-x", currentX + "px");
+    glow.style.setProperty("--glow-y", currentY + "px");
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+
 /* ================= BOOT ================= */
 (async function start(){
   const saved = savedPass();
   if (!saved){ showGate(""); return; }
-  boot.hidden = false;
-  try {
-    DATA = await decryptBoard(saved);
-  } catch(err){
-    if (err && err.kind === "load"){
+  gate.hidden = false;
+  gateform.hidden = true;
+  const out = await runBoot(decryptBoard(saved), "short");
+  if (out.err){
+    if (out.err.kind === "load"){
       showGate(LOAD_MSG);
     } else {
       forgetPass();
@@ -844,7 +1092,8 @@ setInterval(() => { tick(); if (!board.hidden) render(); }, 60000);
     }
     return;
   }
-  showBoard();
+  DATA = out.data;
+  await revealBoard();
 })();
 </script>
 </body>
