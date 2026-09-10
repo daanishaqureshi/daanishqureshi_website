@@ -342,6 +342,7 @@ a{max-width:100%}
 /* Every outbound link is a labelled control, never a printed URL, and it can
    never be wider than its column. */
 .golink{max-width:100%; text-align:center}
+.subscribe .btn--primary{margin-top:var(--space-3); display:inline-block; text-decoration:none}
 .ai{margin-top:var(--space-4); border:1px solid var(--color-border-variant); background:var(--color-surface-elevated)}
 .ai .aihd{
   display:flex; align-items:center; gap:var(--space-2); padding:var(--space-2) var(--space-3);
@@ -619,6 +620,14 @@ body.lbopen{overflow:hidden}
       </p>
     </section>
 
+    <section class="subscribe" id="subscribe" hidden>
+      <h3>Add to your calendar</h3>
+      <p>Subscribe once and free-food events show up in your own Google Calendar,
+         in a colour you pick, refreshing on their own as the board updates.</p>
+      <a class="btn btn--primary" id="subgcal" target="_blank" rel="noopener">Subscribe in Google Calendar ↗</a>
+      <p class="fine">Keep this link to yourself. Anyone with it can read the feed.</p>
+    </section>
+
     <section class="submit" id="submitpanel">
       <h3>Saw food? Add it</h3>
       <p>Anyone with a university address can put an event on the board.</p>
@@ -869,6 +878,7 @@ function showGate(msg){
 async function revealBoard(){
   INDEX = new Map(DATA.events.map(e => [e.id, e]));
   fillSubmit();
+  fillSubscribe();
   fillMeasure();
   sig = null;
   gate.classList.add("is-fading");
@@ -1378,6 +1388,15 @@ function fillSubmit(){
   if (!mail){ panel.hidden = true; return; }
   panel.hidden = false;
   document.getElementById("semail").textContent = mail;
+}
+
+function fillSubscribe(){
+  const sec = document.getElementById("subscribe");
+  const url = DATA.calendar && DATA.calendar.google;
+  if (!url){ sec.hidden = true; return; }
+  const a = document.getElementById("subgcal");
+  a.href = url;
+  sec.hidden = false;
 }
 
 // e.g. "Last checked against 23 hand-labelled events: precision 1.00, recall 1.00 (claude-haiku-4-5, Sep 9)"
