@@ -32,6 +32,16 @@ def check_external(url):
         req = Request(url, method="HEAD", headers={"User-Agent": "check-links/1.0"})
         with urlopen(req, timeout=10) as resp:
             return resp.status < 400
+    except HTTPError as e:
+        # Some hosts (zhaoqinresearch.com) answer HEAD with 405, so retry as GET.
+        if e.code not in (403, 405, 501):
+            return False
+    except URLError:
+        return False
+    try:
+        req = Request(url, headers={"User-Agent": "check-links/1.0"})
+        with urlopen(req, timeout=10) as resp:
+            return resp.status < 400
     except (URLError, HTTPError):
         return False
 
