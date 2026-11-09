@@ -3,153 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daanish A. Qureshi // Portfolio</title>
-<meta name="description" content="Portfolio of Daanish A. Qureshi, applied mathematician, PhD Candidate in Computational Biology at Yale, and VP of AI Engineering leading agentic AI systems in healthcare technology.">
-<meta property="og:title" content="Daanish A. Qureshi // Portfolio">
-<meta property="og:description" content="Portfolio of Daanish A. Qureshi, applied mathematician, PhD Candidate in Computational Biology at Yale, and VP of AI Engineering leading agentic AI systems in healthcare technology.">
+<title>Daanish Qureshi</title>
+<meta name="description" content="Daanish Qureshi, PhD student in Computational Biology and Biomedical Informatics at Yale, working on AI agents and foundation models for biology.">
+<meta property="og:title" content="Daanish Qureshi">
+<meta property="og:description" content="PhD student in Computational Biology and Biomedical Informatics at Yale, working on AI agents and foundation models for biology.">
 <meta property="og:type" content="website">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/tokens.css">
-<link rel="stylesheet" href="assets/css/base.css">
-<link rel="stylesheet" href="assets/css/home.css">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/academic.css">
 <link rel="icon" href="favicon.svg">
 </head>
-<body data-page="home">
+<body>
 
-<nav class="site-nav">
-  <div class="site-nav__brand">DAANISH_A_QURESHI</div>
-  <div class="site-nav__links">
-    <a class="site-nav__link" data-page="home" href="index.html" data-internal>HOME</a>
-    <a class="site-nav__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
-    <a class="site-nav__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
-    <a class="site-nav__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
-    <span class="site-nav__underline"></span>
+<header class="site-header">
+  <div class="wrap">
+    <a class="site-name" href="index.html">Daanish Qureshi</a>
+    <nav class="site-menu" aria-label="Main">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="research.html">Research</a>
+      <!-- Until step 2 builds cv.html and industry.html, these point at the old pages,
+           which become redirects to the new ones. -->
+      <a href="journey.html">CV</a>
+      <a href="leadership.html">Industry</a>
+    </nav>
   </div>
-  <button class="site-nav__toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-</nav>
+</header>
 
-<div class="site-drawer" inert>
-  <button class="site-drawer__close" type="button" aria-label="Close navigation menu">✕</button>
-  <a class="site-drawer__link" data-page="home" href="index.html" data-internal>HOME</a>
-  <a class="site-drawer__link" data-page="journey" href="journey.html" data-internal>JOURNEY</a>
-  <a class="site-drawer__link" data-page="leadership" href="leadership.html" data-internal>LEADERSHIP</a>
-  <a class="site-drawer__link" data-page="research" href="research.html" data-internal>RESEARCH</a>
-</div>
+<main class="wrap">
 
-<main>
-  <section class="home-hero u-grid-bg">
-    <canvas id="ambient-canvas" class="home-hero__canvas" aria-hidden="true"></canvas>
-    <div class="u-cursor-glow" aria-hidden="true"></div>
-    <div id="boot-sequence" class="home-boot" aria-hidden="true"></div>
-    <div id="hero-content" class="home-hero__content home-hero__content--pending">
-      <div class="home-hero__badge">
-        <span class="home-hero__badge-dot" aria-hidden="true"></span>
-        <span class="home-hero__badge-text">INITIALIZING_SEQUENCE_091</span>
-      </div>
-
-      <h1 class="home-hero__headline">
-        DAANISH A. QURESHI //
-        <span class="home-hero__accent">ARCHITECTING AGENTIC SYSTEMS</span>
-      </h1>
-      <div class="home-hero__rule" aria-hidden="true"></div>
-
-      <p class="home-hero__subtext">
-        PhD Candidate in Computational Biology (Yale) | VP of AI Engineering (Impiricus).
-        Studied <strong>applied mathematics, biology, and engineering</strong> at Brown. Now building agentic AI systems at the intersection of healthcare and technology.
-      </p>
-
-      <div class="home-hero__cta">
-        <a class="btn btn--primary" href="journey.html" data-internal>JOURNEY</a>
-        <a class="btn btn--ghost" href="research.html" data-internal>
-          <span class="material-symbols-outlined" aria-hidden="true">north_east</span>
-          RESEARCH
-        </a>
-      </div>
-
-      <div class="home-hero__meta">
-        <div class="home-hero__meta-item">
-          <span class="home-hero__meta-label">LATENCY_INDEX</span>
-          <span class="home-hero__meta-value"><span id="latency-value" data-counter-to="14" data-counter-ms="1500" data-jitter-base="14" data-jitter-range="4">0</span>ms [STABLE]</span>
-        </div>
-        <div class="home-hero__meta-item">
-          <span class="home-hero__meta-label">SYSTEM_STATUS</span>
-          <span class="home-hero__meta-value"><span class="home-hero__status-dot" aria-hidden="true"></span>OPTIMAL_OPERATIONAL</span>
-        </div>
-        <div class="home-hero__meta-item">
-          <span class="home-hero__meta-label">GEO_LOCK</span>
-          <span class="home-hero__meta-value">NEW_HAVEN.CT // YALE_UNIV</span>
-        </div>
-      </div>
+  <section class="intro">
+    <!-- PHOTO PLACEHOLDER: new headshot coming from Daanish. Replace this div with
+         <img class="photo" src="assets/img/headshot.jpg" alt="Daanish Qureshi">
+         (square head-and-shoulders crop, at least 400 x 400 px). -->
+    <div class="photo photo--placeholder" role="img" aria-label="Photo coming soon">Photo coming soon</div>
+    <div>
+      <h1>Daanish Qureshi</h1>
+      <p class="role">PhD student, Computational Biology and Biomedical Informatics<br>Yale University</p>
+      <ul class="links">
+        <li><a href="mailto:daanish.qureshi@yale.edu">Email</a></li>
+        <li><a href="https://github.com/daanishaqureshi">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/dq03">LinkedIn</a></li>
+      </ul>
     </div>
   </section>
 
-  <section id="identity" class="home-about u-reveal">
-    <div class="home-about__narrative">
-      <div id="interests" class="home-about__grid">
-        <div class="card u-reveal">
-          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">functions</span>
-          <h3 class="home-about__card-title">Applied Mathematics</h3>
-          <p class="home-about__card-body">Physics-informed neural networks and quantitative modeling, from mussel adhesion mechanics to drug-delivery systems. Grounded in a Brown University Sc.B. in Applied Mathematics, Biology, and Engineering.</p>
-        </div>
-        <div class="card u-reveal">
-          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">psychology</span>
-          <h3 class="home-about__card-title">AI Leadership</h3>
-          <p class="home-about__card-body">Leading AI at Impiricus: agentic systems, optimization, and operations research. Building software that reaches physicians and pharmaceutical teams at scale.</p>
-        </div>
-        <div class="card u-reveal">
-          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">genetics</span>
-          <h3 class="home-about__card-title">Computational Biology</h3>
-          <p class="home-about__card-body">PhD research at Yale, exploring the intersection of AI, healthcare, and biology. Still choosing a specific focus, from medical imaging to genomics.</p>
-        </div>
-        <div class="card u-reveal">
-          <span class="material-symbols-outlined home-about__card-icon" aria-hidden="true">rocket_launch</span>
-          <h3 class="home-about__card-title">Physical Sciences</h3>
-          <p class="home-about__card-body">Published research in structural mechanics and materials science: NASA-funded work, plus a first-author paper in <em>Matter</em> (Cell Press) on mussel adhesion mechanics.</p>
-        </div>
-      </div>
-    </div>
+  <p>I am a PhD student in Computational Biology and Biomedical Informatics at Yale, working under <a href="https://www.vandijklab.org/">David van Dijk</a>. I work on AI agents and foundation models for biology: how agents store and retrieve biological knowledge, how to evaluate the science they produce honestly, and what biological foundation models learn. Before Yale I studied applied mathematics, biology and engineering at Brown, then co-founded LitGrab, which was acquired by Impiricus, where I am VP of AI Engineering. I am also an angel investor in various early-stage AI startups. I want these methods to reach drug discovery and clinical development.</p>
 
-    <div id="biography" class="home-portrait">
-      <div class="home-portrait__frame home-portrait__frame--top" aria-hidden="true"></div>
-      <div class="home-portrait__frame home-portrait__frame--bottom" aria-hidden="true"></div>
-      <div class="home-portrait__media">
-        <img class="home-portrait__image" alt="Daanish A. Qureshi portrait" src="assets/img/portrait.png">
-        <div class="home-portrait__caption">
-          <span class="home-portrait__caption-eyebrow">IMAGE_SOURCE_IDENTIFIED</span>
-          <span class="home-portrait__caption-subject">SUBJECT: D.Q. [PRIMARY_NODE]</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <h2>Research interests</h2>
+  <ul class="plain">
+    <li>AI agents for biological discovery</li>
+    <li>Knowledge stores that agents can retrieve from</li>
+    <li>Honest evaluation of the science agents produce</li>
+    <li>What biological foundation models learn</li>
+  </ul>
+
+  <h2>News</h2>
+  <ul class="news">
+    <!-- WEIGHT PREPRINT NEWS SLOT: uncomment once the arXiv ID exists.
+    <li><time>Nov 2026</time><span>Preprint on weight-space programming in biological foundation models, on <a href="https://arxiv.org/abs/XXXX.XXXXX">arXiv</a>.</span></li>
+    -->
+    <li><time>Nov 2026</time><span>Our work on social and lifestyle determinants of mental health is a podium abstract at AMIA 2026 in Dallas.</span></li>
+    <li><time>Nov 2026</time><span>Drug release modeling with physics-informed neural networks is out in the <a href="https://doi.org/10.1016/j.jddst.2026.108654"><em>Journal of Drug Delivery Science and Technology</em></a>.</span></li>
+    <li><time>Oct 2026</time><span>Blepharospasm in the All of Us Research Program, a poster at the ASOPRS Fall Scientific Symposium in New Orleans.</span></li>
+    <li><time>Aug 2026</time><span>Started the PhD in Computational Biology and Biomedical Informatics at Yale.</span></li>
+    <li><time>Jul 2026</time><span>The drug release work was featured in <a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery">Brown News</a>.</span></li>
+    <li><time>Dec 2025</time><span>Ultrasound crack measurement in HDPE is out in <a href="https://doi.org/10.1115/1.4070539"><em>ASME JNDE</em></a>.</span></li>
+  </ul>
+
+  <h2>Publications</h2>
+
+  <h3>Preprints</h3>
+  <ul class="pubs">
+    <!-- WEIGHT PREPRINT SLOT: list only once the arXiv ID exists.
+    <li>
+      <span class="pub-title">Initial Controlled Studies of Weight Space Programming in Biological Foundation Models</span>
+      <span class="pub-authors"><strong>D. Qureshi</strong>, A. Patel, S. A. Rizvi, D. van Dijk</span>
+      <span class="pub-venue">arXiv preprint, 2026</span>
+      <span class="pub-links"><a href="https://arxiv.org/abs/XXXX.XXXXX">arXiv</a><a href="https://github.com/XXXX">code</a></span>
+    </li>
+    -->
+    <li>
+      <span class="pub-title">Predicting Healthcare Provider Engagement in SMS Campaigns</span>
+      <span class="pub-authors"><strong>D. A. Qureshi</strong>, R. Chaudhary, K. S. Tan, O. Maoz, S. Burian, M. Gelber, P. H. Kang, A. G. Labouseur</span>
+      <span class="pub-venue">arXiv:2511.17658, 2025</span>
+      <span class="pub-links"><a href="https://arxiv.org/abs/2511.17658">arXiv</a></span>
+    </li>
+  </ul>
+
+  <h3>Journal articles</h3>
+  <ul class="pubs">
+    <li>
+      <span class="pub-title">Drug release modeling using Physics-Informed Neural Networks</span>
+      <span class="pub-authors"><strong>D. A. Qureshi</strong>, K. Shukla, V. Srivastava</span>
+      <span class="pub-venue"><em>Journal of Drug Delivery Science and Technology</em> 125, 108654 (2026)</span>
+      <span class="pub-links"><a href="https://doi.org/10.1016/j.jddst.2026.108654">paper</a><a href="https://arxiv.org/abs/2602.09963">arXiv</a><a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery">Brown News</a></span>
+    </li>
+    <li>
+      <span class="pub-title">A Machine Learning Method to Measure the Embedded Crack Length and Position in High-Density Polyethylene Using Ultrasound Time Signal</span>
+      <span class="pub-authors"><strong>D. Aleem Qureshi</strong>, V. Bellala, S. Niu, V. Srivastava</span>
+      <span class="pub-venue"><em>ASME Journal of Nondestructive Evaluation, Diagnostics and Prognostics of Engineering Systems</em> 9(1), 011004 (2026)</span>
+      <span class="pub-links"><a href="https://doi.org/10.1115/1.4070539">paper</a><a href="https://arxiv.org/abs/2304.11497">arXiv</a></span>
+    </li>
+    <li>
+      <span class="pub-title">Why mussel byssal plaques are tiny yet strong in attachment</span>
+      <span class="pub-authors"><strong>D. A. Qureshi</strong>, S. Goffredo, Y. Kim, Y. Han, M. Guo, S. Ryu, Z. Qin</span>
+      <span class="pub-venue"><em>Matter</em> 5(2), 710&ndash;724 (2022)</span>
+      <span class="pub-links"><a href="https://doi.org/10.1016/j.matt.2021.12.001">paper</a></span>
+    </li>
+  </ul>
+
+  <h3>Abstracts and posters</h3>
+  <ul class="pubs">
+    <li>
+      <span class="pub-title">Comparison of Social and Lifestyle Determinants of Mental Health Across Racial Cohorts: An Explainable Machine Learning Analysis</span>
+      <span class="pub-authors">M. Pancholy, <strong>D. Qureshi</strong>, N. Sarkar</span>
+      <span class="pub-venue">AMIA 2026 Annual Symposium, podium abstract, Dallas, 2026</span>
+    </li>
+    <li>
+      <span class="pub-title">Phenome-Wide Analysis of Blepharospasm in the All of Us Research Program</span>
+      <span class="pub-authors">K. Pamurthy, <strong>D. Qureshi</strong>, D. Suresh, M. Soucy, I. Maumenee, L. Dagi Glass</span>
+      <span class="pub-venue">ASOPRS 57th Annual Fall Scientific Symposium, poster, New Orleans, 2026</span>
+    </li>
+  </ul>
+
 </main>
 
 <footer class="site-footer">
-  <div class="site-footer__copy">© 2026 <span class="text-accent">DAANISH_Q_SYSTEMS</span>. ALL RIGHTS RESERVED. [STATUS: <span class="text-accent">OPTIMAL</span>]</div>
-  <div class="site-footer__links">
-    <a href="https://linkedin.com/in/dq03" target="_blank" rel="noopener">LINKEDIN</a>
-    <a href="mailto:daanish.qureshi@yale.edu">EMAIL</a>
-  </div>
+  <div class="wrap">Last updated November 2026</div>
 </footer>
 
-<script type="module">
-  import { initSiteNav } from './assets/js/nav.js';
-  import { initScrollReveal, initCounters, initCursorGlow } from './assets/js/motion.js';
-  import { initParticles, initBootSequence, initLatencyJitter } from './assets/js/home.js?v=2';
-  initSiteNav();
-  initScrollReveal();
-  initParticles('#ambient-canvas');
-  initCursorGlow('.home-hero');
-  initBootSequence('#boot-sequence', '#hero-content', [
-    'BOOTING SYSTEM...',
-    'LOADING PROFILE: DAANISH_A_QURESHI',
-    'STATUS: READY',
-  ], {
-    onDone: () => {
-      initCounters();
-      initLatencyJitter('#latency-value');
-    },
-  });
-</script>
 </body>
 </html>

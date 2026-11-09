@@ -12,7 +12,22 @@ PAGES = ["index.html", "journey.html", "research.html", "leadership.html"]
 REF_RE = re.compile(r'(?:href|src)="([^"]+)"')
 ID_RE = re.compile(r'id="([^"]+)"')
 
+COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+
+def check_doi(url):
+    # Publisher sites (ASME) refuse scripted requests, so a DOI counts as
+    # resolving when the DOI registry has a URL for it.
+    handle = url.split("doi.org/", 1)[1]
+    try:
+        req = Request(f"https://doi.org/api/handles/{handle}", headers={"User-Agent": "check-links/1.0"})
+        with urlopen(req, timeout=10) as resp:
+            return b'"responseCode":1' in resp.read()
+    except (URLError, HTTPError):
+        return False
+
 def check_external(url):
+    if url.startswith("https://doi.org/"):
+        return check_doi(url)
     try:
         req = Request(url, method="HEAD", headers={"User-Agent": "check-links/1.0"})
         with urlopen(req, timeout=10) as resp:
@@ -25,7 +40,7 @@ def main():
     warnings = []
     for page in PAGES:
         path = ROOT / page
-        text = path.read_text()
+        text = COMMENT_RE.sub("", path.read_text())
         ids_in_page = set(ID_RE.findall(text))
         for ref in REF_RE.findall(text):
             if ref.startswith(("mailto:", "http://", "https://")):
