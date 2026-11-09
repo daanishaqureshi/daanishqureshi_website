@@ -4,7 +4,7 @@
    new start fades in. Same Fick's law the PINN work builds in.
    Pauses off screen and in a hidden tab. prefers-reduced-motion draws one still frame. */
 (function () {
-  var host = document.querySelector('.anim-strip');
+  var me = document.currentScript, host = document.querySelector((me && me.dataset.host) || '.anim-strip');
   if (!host) return;
   var c = host.querySelector('canvas'), g = c.getContext('2d');
   var W = 0, H = 0, t = 0, last = 0, raf = 0, running = false, seen = true;

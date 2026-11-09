@@ -10,7 +10,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/academic.css">
 <script>document.documentElement.className += ' anim-page';</script>
-<link rel="icon" href="favicon.svg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 
@@ -28,9 +30,6 @@
 
 <main class="wrap">
 
-  <!-- A heat (diffusion) equation relaxing, after the PINN drug release work. -->
-  <div class="anim-strip" aria-hidden="true"><canvas></canvas></div>
-
   <div class="page-head">
     <h1>Research</h1>
     <p class="lede">Machine learning for biology and medicine, from physics-informed models of drug release to AI agents for biological discovery. The full publication list is on the <a href="index.html#publications">home page</a>, and my work in industry is on the <a href="industry.html">Industry</a> page.</p>
@@ -41,80 +40,44 @@
   <section class="project">
     <h3>AI agents and foundation models for biology</h3>
     <p class="meta">PhD research, working under David van Dijk, 2026 to present</p>
-    <p>I study how AI agents store and retrieve biological knowledge, how to evaluate the science they produce honestly, and what biological foundation models learn. Papers from this work will be listed here once they are posted.</p>
+    <p>I build AI agents for biological discovery and study the foundation models they work with: accurate and efficient knowledge stores for agentic retrieval, rigorous evaluation of the hypotheses agents generate, and the interpretability and weight-space programming of single-cell foundation models such as Cell2Sentence-Scale (C2S-Scale). Papers from this work will be listed here once they are posted.</p>
   </section>
 
-  <h2 id="applied-ml">Papers</h2>
+  <!-- A heat (diffusion) equation relaxing, after the PINN drug release work. -->
+  <div class="anim-strip anim-mid" id="anim-heat" aria-hidden="true"><canvas></canvas></div>
 
-  <section class="project" id="pinn">
-    <h3>Physics-informed neural networks for drug release</h3>
-    <p class="meta">Brown University, with Khemraj Shukla, George Em Karniadakis and Vikas Srivastava</p>
+  <h2 id="brown">Research at Brown</h2>
+
+  <section class="project" id="karniadakis">
+    <h3>Applied mathematics and physics-informed machine learning</h3>
+    <p class="meta">Division of Applied Mathematics, Brown University, with Khemraj Shukla in George Em Karniadakis's CRUNCH group, 2024 to 2025</p>
+    <p>Scientific machine learning: neural networks that are trained to obey a governing differential equation as well as to fit data, so they need far less data and extrapolate more sensibly than a purely data-driven model.</p>
+    <h4 id="pinn">Physics-informed neural networks for drug release</h4>
     <figure>
       <img src="assets/img/research/pinn-vs-classical.png" alt="Plot comparing the PINN's predicted drug release curve with the classical Fick, Higuchi and Peppas models and the experimental data" loading="lazy" width="800" height="600">
       <figcaption>PINN predictions against the classical release models.</figcaption>
     </figure>
-    <p>Controlled-release films for patches, bandages and implants are usually characterised by running long release experiments. We built physics-informed and Bayesian neural networks that build Fick's diffusion law into training, so a short stretch of measurements predicts the long-term release. Benchmarked against the classical Fick, Higuchi and Peppas models on planar, wrinkled and crumpled films, the PINN reached an RMSE under 0.05 from the first 4% of the release data for planar films and from 25% for wrinkled and crumpled ones. Built in PyTorch and JAX.</p>
+    <p>Controlled-release films for patches, bandages and implants are usually characterised by running long release experiments. We built physics-informed and Bayesian neural networks that build Fick's diffusion law into training, so a short stretch of measurements predicts the long-term release. Benchmarked against the classical Fick, Higuchi and Peppas models on planar, wrinkled and crumpled films, the PINN reached an RMSE under 0.05 from the first 4% of the release data for planar films and from 25% for wrinkled and crumpled ones. Built in PyTorch and JAX. The paper joins the two Brown labs on this page: the modeling with Khemraj Shukla in Applied Mathematics, the release films from Vikas Srivastava's lab in Engineering.</p>
     <p class="cite"><strong>D. A. Qureshi</strong>, K. Shukla, V. Srivastava. Drug release modeling using Physics-Informed Neural Networks. <em>Journal of Drug Delivery Science and Technology</em> 125, 108654 (2026).</p>
-    <p class="more"><a href="https://doi.org/10.1016/j.jddst.2026.108654">paper</a><a href="https://arxiv.org/abs/2602.09963">arXiv</a><a href="https://github.com/SrivastavaResearchLab/drug_release_modeling_PINN-2025">code</a><a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery">Brown News, July 2026</a></p>
+    <p class="more"><a href="https://doi.org/10.1016/j.jddst.2026.108654" target="_blank" rel="noopener">paper</a><a href="https://arxiv.org/abs/2602.09963" target="_blank" rel="noopener">arXiv</a><a href="https://github.com/SrivastavaResearchLab/drug_release_modeling_PINN-2025" target="_blank" rel="noopener">code</a><a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery" target="_blank" rel="noopener">Brown News, July 2026</a></p>
   </section>
 
-  <section class="project" id="sms">
-    <h3>Predicting healthcare provider engagement in SMS campaigns</h3>
-    <p class="meta">Impiricus, 2025</p>
-    <p>A predictive model of how individual healthcare providers respond to SMS outreach, written up as a standalone study from the provider-behavior modeling behind products at Impiricus.</p>
-    <p class="cite"><strong>D. A. Qureshi</strong>, R. Chaudhary, K. S. Tan, O. Maoz, S. Burian, M. Gelber, P. H. Kang, A. G. Labouseur. Predicting Healthcare Provider Engagement in SMS Campaigns. arXiv:2511.17658 (2025).</p>
-    <p class="more"><a href="https://arxiv.org/abs/2511.17658">arXiv</a></p>
-  </section>
-
-  <section class="project" id="brown-research">
-    <h3>Measuring embedded cracks in polyethylene with ultrasound</h3>
-    <p class="meta">Brown University, Vikas Srivastava's lab</p>
+  <section class="project" id="srivastava">
+    <h3>Deep learning for crack detection, soft materials and drug delivery</h3>
+    <p class="meta">School of Engineering, Brown University, Vikas Srivastava's lab, 2021 to 2025</p>
+    <p>Machine learning and mechanics for structural and biomedical materials: finding cracks hidden inside polymers, the mechanics of soft materials and hydrogels, and controlled-release films for drug delivery, which became the <a href="#pinn">drug release paper</a> above.</p>
+    <h4 id="hdpe">Measuring embedded cracks in polyethylene with ultrasound</h4>
     <figure>
       <img src="assets/img/research/hdpe-cnn-prediction.png" alt="CNN predictions of crack length and position plotted against the experimentally measured values" loading="lazy" width="1661" height="771">
       <figcaption>CNN predictions against experimental measurements.</figcaption>
     </figure>
     <p>High-density polyethylene is used in nuclear plant cooling pipelines, gas pipelines and biomedical implants, and cracks hidden inside it can grow until the part fails. We trained a convolutional neural network entirely on finite element simulations of ultrasound, then applied it to real microsecond ultrasound signals. With no experimental data in training, it predicted crack length with a mean absolute percent error of 3.2% and crack position with 3.8%.</p>
     <p class="cite"><strong>D. Aleem Qureshi</strong>, V. Bellala, S. Niu, V. Srivastava. A Machine Learning Method to Measure the Embedded Crack Length and Position in High-Density Polyethylene Using Ultrasound Time Signal. <em>ASME Journal of Nondestructive Evaluation, Diagnostics and Prognostics of Engineering Systems</em> 9(1), 011004 (2026).</p>
-    <p class="more"><a href="https://doi.org/10.1115/1.4070539">paper</a><a href="https://arxiv.org/abs/2304.11497">arXiv</a></p>
-  </section>
-
-  <section class="project" id="mussels">
-    <h3>Why mussel byssal plaques are tiny yet strong</h3>
-    <p class="meta">MIT, with Zhao Qin, 2018 to 2021</p>
-    <figure class="narrow">
-      <img src="assets/img/research/why-mussels-figure.jpg" alt="Graphical abstract: mussels attached to a rock, a byssal plaque under the microscope, and the modeling, 3D printing and testing workflow" loading="lazy" width="996" height="996" style="max-width:420px">
-    </figure>
-    <p>Mussels hold onto wave-battered rock with small adhesive plaques at the ends of their threads. Combining mechanical testing, 3D printing and numerical modeling, we showed why a small plaque, sized to its thread, already gives near-optimal attachment, and that the overall strength of the anchor depends more on the architecture of the thread network than on the size of each plaque.</p>
-    <p class="cite"><strong>D. A. Qureshi</strong>, S. Goffredo, Y. Kim, Y. Han, M. Guo, S. Ryu, Z. Qin. Why mussel byssal plaques are tiny yet strong in attachment. <em>Matter</em> 5(2), 710&ndash;724 (2022).</p>
-    <p class="more"><a href="https://doi.org/10.1016/j.matt.2021.12.001">paper</a></p>
-  </section>
-
-  <h2 id="earlier">Earlier work</h2>
-
-  <section class="project" id="nasa">
-    <h3>NASA Space Grant: a new geometric structure under load</h3>
-    <p class="meta">NASA Space Grant research scholar, 2022</p>
-    <div class="fig-pair">
-      <figure><img src="assets/img/research/nasa-shape-web.jpg" alt="Assembling a large array of the folded paper structure in a workshop" loading="lazy" width="1200" height="894"></figure>
-      <figure><img src="assets/img/research/structural-research-web.jpg" alt="A single folded unit of the structure being compressed in a testing machine" loading="lazy" width="1200" height="705"></figure>
-    </div>
-    <p>I designed a new folded geometric structure and used mechanics and statistics to study how it carries stress and when it starts to fail, for materials and structures that have to survive the loads of space missions.</p>
-  </section>
-
-  <section class="project">
-    <h3>Machine learning for structural and biomedical materials</h3>
-    <p class="meta">Brown University, Vikas Srivastava's lab</p>
-    <p>Alongside the two papers above, other projects in the lab:</p>
-    <ul>
-      <li>Finding structural defects in polymers with machine learning</li>
-      <li>The mechanics of hydrogels for biomedical applications</li>
-      <li>Predicting dietary intake and health status with machine learning</li>
-    </ul>
-  </section>
-
-  <section class="project" id="hands">
-    <h3>Reading diet and health from photos of hands</h3>
-    <p class="meta">Independent study, Brown University, Vikas Srivastava's lab. Unpublished</p>
+    <p class="more"><a href="https://doi.org/10.1115/1.4070539" target="_blank" rel="noopener">paper</a><a href="https://arxiv.org/abs/2304.11497" target="_blank" rel="noopener">arXiv</a></p>
+    <h4>Soft materials and hydrogels</h4>
+    <p>The mechanics of hydrogels for biomedical applications, and machine learning for finding structural defects in polymers.</p>
+    <h4 id="hands">Reading diet and health from photos of hands</h4>
+    <p class="meta">Independent study in the lab. Unpublished</p>
     <figure>
       <img src="assets/img/research/independent-study-hand-analysis.png" alt="Pipeline diagram: raw hand image, color calibration, background removal, hand detection, keypoints, finger and palm segmentation, features, modeling" loading="lazy" width="1506" height="667">
       <figcaption>The segmentation and feature extraction pipeline.</figcaption>
@@ -122,20 +85,57 @@
     <p>Can a photo of someone's hand say something about their diet and health? The pipeline calibrates color across cameras and lighting, finds and separates each hand, splits it into fingers and palm from keypoints, and extracts color and shape features on a common scale. The next step, proposed but not yet done, is to predict health outcomes from those features. If you are interested in this work, please reach out.</p>
   </section>
 
+  <section class="project" id="sarkar">
+    <h3>Biomedical informatics and health disparities</h3>
+    <p class="meta">Center for Biomedical Informatics, Brown University, Neil Sarkar's lab, 2024 to 2026</p>
+    <p>This is where I came into biomedical informatics. With Neil Sarkar and Manan Pancholy, I worked on an explainable machine learning analysis of social and lifestyle determinants of mental health across racial cohorts, accepted as a podium abstract at AMIA 2026.</p>
+    <p class="cite">M. S. Pancholy, <strong>D. A. Qureshi</strong>, I. N. Sarkar. Comparison of Social and Lifestyle Determinants of Mental Health Across Racial Cohorts: An Explainable Machine Learning Analysis. AMIA 2026 Annual Symposium, podium abstract, Dallas (2026).</p>
+  </section>
+
+  <!-- A pendulum's phase portrait: closed orbits and open ones. -->
+  <div class="anim-strip anim-mid" id="anim-pendulum" aria-hidden="true"><canvas></canvas></div>
+
+  <h2 id="industry-paper">Industry research</h2>
+
+  <section class="project" id="sms">
+    <h3>Predicting healthcare provider engagement in SMS campaigns</h3>
+    <p class="meta">Impiricus, 2025</p>
+    <p>A predictive model of how individual healthcare providers respond to SMS outreach, written up as a standalone study from the provider-behavior modeling behind products at Impiricus.</p>
+    <p class="cite"><strong>D. A. Qureshi</strong>, R. Chaudhary, K. S. Tan, O. Maoz, S. Burian, M. Gelber, P. H. Kang, A. G. Labouseur. Predicting Healthcare Provider Engagement in SMS Campaigns. arXiv:2511.17658 (2025).</p>
+    <p class="more"><a href="https://arxiv.org/abs/2511.17658" target="_blank" rel="noopener">arXiv</a></p>
+  </section>
+
+  <h2 id="earlier">Earlier work</h2>
+
   <section class="project" id="population-health">
     <h3>Population health in the All of Us Research Program</h3>
-    <p class="meta">NIH All of Us, with Ketan Pamurthy</p>
+    <p class="meta">NIH All of Us Research Program, with Ketan Pamurthy, 2022 to 2024</p>
     <figure>
       <img src="assets/img/research/all-of-us-presentation-web.jpg" alt="Daanish and Ketan Pamurthy presenting at a podium in front of an All of Us Research Program banner" loading="lazy" width="1200" height="800">
     </figure>
     <p>Statistical and machine learning analysis of the All of Us population health data, looking at how maternal mortality and cardiovascular disease relate to social determinants of health. We presented the findings at CPGI 2023. Ketan and I later co-authored the blepharospasm poster on the home page, also from All of Us data.</p>
-    <p class="more"><a href="https://www.linkedin.com/posts/dq03_cpgi2023-joinallofus-reasons4research-activity-7067555611630002176-KI3r">CPGI 2023 presentation</a></p>
+    <p class="more"><a href="https://www.linkedin.com/posts/dq03_cpgi2023-joinallofus-reasons4research-activity-7067555611630002176-KI3r" target="_blank" rel="noopener">CPGI 2023 presentation</a></p>
   </section>
 
-  <section class="project" id="sarkar">
-    <h3>Social determinants and cardiovascular disease</h3>
-    <p class="meta">Brown University, Center for Biomedical Informatics, with Neil Sarkar</p>
-    <p>The role of ethnicity and social determinants of health in cardiovascular disease, including a look at the "Blue Zones" in the United States, regions where people live measurably longer, healthier lives. This is where I came into biomedical informatics.</p>
+  <section class="project" id="nasa">
+    <h3>A new geometric structure under load</h3>
+    <p class="meta">National Aeronautics and Space Administration (NASA), research scholar, 2022</p>
+    <div class="fig-pair">
+      <figure><img src="assets/img/research/nasa-shape-web.jpg" alt="Assembling a large array of the folded paper structure in a workshop" loading="lazy" width="1200" height="894"></figure>
+      <figure><img src="assets/img/research/structural-research-web.jpg" alt="A single folded unit of the structure being compressed in a testing machine" loading="lazy" width="1200" height="705"></figure>
+    </div>
+    <p>I designed a new folded geometric structure and used mechanics and statistics to study how it carries stress and when it starts to fail, for materials and structures that have to survive the loads of space missions.</p>
+  </section>
+
+  <section class="project" id="mussels">
+    <h3>Why mussel byssal plaques are tiny yet strong</h3>
+    <p class="meta">MIT, Department of Civil and Environmental Engineering, visiting student with <a href="https://ecs.syracuse.edu/faculty-staff/zhao-qin" target="_blank" rel="noopener">Zhao Qin</a>, 2018 to 2021</p>
+    <figure class="narrow">
+      <img src="assets/img/research/why-mussels-figure.jpg" alt="Graphical abstract: mussels attached to a rock, a byssal plaque under the microscope, and the modeling, 3D printing and testing workflow" loading="lazy" width="996" height="996" style="max-width:420px">
+    </figure>
+    <p>Mussels hold onto wave-battered rock with small adhesive plaques at the ends of their threads. Combining mechanical testing, 3D printing and numerical modeling, we showed why a small plaque, sized to its thread, already gives near-optimal attachment, and that the overall strength of the anchor depends more on the architecture of the thread network than on the size of each plaque.</p>
+    <p class="cite"><strong>D. A. Qureshi</strong>, S. Goffredo, Y. Kim, Y. Han, M. Guo, S. Ryu, Z. Qin. Why mussel byssal plaques are tiny yet strong in attachment. <em>Matter</em> 5(2), 710&ndash;724 (2022).</p>
+    <p class="more"><a href="https://doi.org/10.1016/j.matt.2021.12.001" target="_blank" rel="noopener">paper</a></p>
   </section>
 
 </main>
@@ -148,9 +148,10 @@
   (function () {
     /* if the animation fails to load or throws, drop back to the plain static page */
     function off() { document.documentElement.classList.remove('anim-page'); }
-    window.addEventListener('error', function (e) { if (/anim-heat\.js/.test(e.filename || '')) off(); });
-    var s = document.createElement('script'); s.src = 'assets/js/anim-heat.js'; s.onerror = off;
-    document.body.appendChild(s);
+    window.addEventListener('error', function (e) { if (/anim-(heat|v3)\.js/.test(e.filename || '')) off(); });
+    function load(src, host) { var s = document.createElement('script'); s.src = src; s.dataset.host = host; s.onerror = off; document.body.appendChild(s); }
+    load('assets/js/anim-heat.js', '#anim-heat');
+    load('assets/js/anim-v3.js', '#anim-pendulum');
   })();
 </script>
 </body>

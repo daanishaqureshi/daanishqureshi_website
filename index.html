@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daanish Aleem Qureshi</title>
-<meta name="description" content="Daanish Qureshi, PhD student in Computational Biology and Biomedical Informatics at Yale, working on AI agents and foundation models for biology.">
+<meta name="description" content="Daanish Qureshi, PhD student in Computational Biology and Biomedical Informatics at Yale, working on AI agents for biological discovery and foundation models for biology.">
 <meta property="og:title" content="Daanish Qureshi">
 <meta property="og:description" content="PhD student in Computational Biology and Biomedical Informatics at Yale, working on AI agents and foundation models for biology.">
 <meta property="og:type" content="website">
@@ -15,11 +15,13 @@
   (function () {
     var q = location.search, m = /[?&]v=(\d)/.exec(q), v = m ? +m[1] : 1;
     if (v > 4) v = 1;
-    document.documentElement.className += ' anim-v' + v;
+    document.documentElement.className += ' anim-v' + v + (v ? ' anim-mid-on' : '');
     window.ANIM_V = v; window.ANIM_PICK = /[?&]pick\b/.test(q);
   })();
 </script>
-<link rel="icon" href="favicon.svg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 </head>
 <body>
 
@@ -49,34 +51,41 @@
       <p class="role">PhD student, Computational Biology and Biomedical Informatics<br>Yale University</p>
       <ul class="links">
         <li><a href="mailto:daanish.qureshi@yale.edu">Email</a></li>
-        <li><a href="https://github.com/daanishaqureshi">GitHub</a></li>
-        <li><a href="https://linkedin.com/in/dq03">LinkedIn</a></li>
+        <li><a href="https://github.com/daanishaqureshi" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/dq03" target="_blank" rel="noopener">LinkedIn</a></li>
       </ul>
     </div>
   </section>
 
-  <p>I am a PhD student in Computational Biology and Biomedical Informatics at Yale, working under <a href="https://www.vandijklab.org/">David van Dijk</a>. I work on AI agents and foundation models for biology: how agents store and retrieve biological knowledge, how to evaluate the science they produce honestly, and what biological foundation models learn. Before Yale I studied applied mathematics, biology and engineering at Brown, then co-founded LitGrab, which was acquired by Impiricus, where I am VP of AI Engineering. I am also an angel investor in various early-stage AI startups. I want these methods to reach drug discovery and clinical development.</p>
+  <p>I am a PhD student in Computational Biology and Biomedical Informatics at Yale, working under <a href="https://www.vandijklab.org/" target="_blank" rel="noopener">David van Dijk</a>. I build AI agents for biological discovery: knowledge stores that agents can retrieve from accurately and efficiently, and rigorous ways to evaluate the hypotheses and analyses they produce.</p>
+
+  <p>I also work on foundation models for biology. Single-cell foundation models such as Cell2Sentence-Scale (C2S-Scale), from David's group, read a cell's gene expression as text and learn from millions of cells. I study what these models learn, and whether their behavior can be programmed directly in weight space instead of by retraining.</p>
+
+  <p>Before Yale I studied applied mathematics, biology and engineering at Brown, then co-founded LitGrab, which was acquired by Impiricus, where I am VP of AI Engineering. I am also an angel investor in various early-stage AI startups. I want these methods to reach drug discovery and clinical development.</p>
 
   <h2>Research interests</h2>
   <ul class="plain">
     <li>AI agents for biological discovery</li>
-    <li>Knowledge stores that agents can retrieve from</li>
-    <li>Honest evaluation of the science agents produce</li>
-    <li>What biological foundation models learn</li>
+    <li>Accurate and efficient knowledge stores for agentic retrieval</li>
+    <li>Rigorous, reproducible evaluation of AI-generated scientific hypotheses</li>
+    <li>Interpretability and weight-space programming of biological foundation models</li>
   </ul>
 
   <h2>News</h2>
   <ul class="news">
     <!-- WEIGHT PREPRINT NEWS SLOT: uncomment once the arXiv ID exists.
-    <li><time>Nov 2026</time><span>Preprint on weight-space programming in biological foundation models, on <a href="https://arxiv.org/abs/XXXX.XXXXX">arXiv</a>.</span></li>
+    <li><time>Nov 2026</time><span>Preprint on weight-space programming in biological foundation models, on <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">arXiv</a>.</span></li>
     -->
     <li><time>Nov 2026</time><span>Our work on social and lifestyle determinants of mental health is a podium abstract at AMIA 2026 in Dallas.</span></li>
-    <li><time>Nov 2026</time><span>Drug release modeling with physics-informed neural networks is out in the <a href="https://doi.org/10.1016/j.jddst.2026.108654"><em>Journal of Drug Delivery Science and Technology</em></a>.</span></li>
+    <li><time>Nov 2026</time><span>Drug release modeling with physics-informed neural networks is out in the <a href="https://doi.org/10.1016/j.jddst.2026.108654" target="_blank" rel="noopener"><em>Journal of Drug Delivery Science and Technology</em></a>.</span></li>
     <li><time>Oct 2026</time><span>Blepharospasm in the All of Us Research Program, a poster at the ASOPRS Fall Scientific Symposium in New Orleans.</span></li>
     <li><time>Aug 2026</time><span>Started the PhD in Computational Biology and Biomedical Informatics at Yale.</span></li>
-    <li><time>Jul 2026</time><span>The drug release work was featured in <a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery">Brown News</a>.</span></li>
-    <li><time>Dec 2025</time><span>Ultrasound crack measurement in HDPE is out in <a href="https://doi.org/10.1115/1.4070539"><em>ASME JNDE</em></a>.</span></li>
+    <li><time>Jul 2026</time><span>The drug release work was featured in <a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery" target="_blank" rel="noopener">Brown News</a>.</span></li>
+    <li><time>Dec 2025</time><span>Ultrasound crack measurement in HDPE is out in <a href="https://doi.org/10.1115/1.4070539" target="_blank" rel="noopener"><em>ASME JNDE</em></a>.</span></li>
   </ul>
+
+  <!-- A second accent between sections: cells settling into clusters (the helix when the cells are on top). -->
+  <div class="anim-strip anim-mid" id="anim-mid" aria-hidden="true"><canvas></canvas></div>
 
   <h2 id="publications">Publications</h2>
 
@@ -87,14 +96,14 @@
       <span class="pub-title">Initial Controlled Studies of Weight Space Programming in Biological Foundation Models</span>
       <span class="pub-authors"><strong>D. Qureshi</strong>, A. Patel, S. A. Rizvi, D. van Dijk</span>
       <span class="pub-venue">arXiv preprint, 2026</span>
-      <span class="pub-links"><a href="https://arxiv.org/abs/XXXX.XXXXX">arXiv</a><a href="https://github.com/XXXX">code</a></span>
+      <span class="pub-links"><a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">arXiv</a><a href="https://github.com/XXXX" target="_blank" rel="noopener">code</a></span>
     </li>
     -->
     <li>
       <span class="pub-title">Predicting Healthcare Provider Engagement in SMS Campaigns</span>
       <span class="pub-authors"><strong>D. A. Qureshi</strong>, R. Chaudhary, K. S. Tan, O. Maoz, S. Burian, M. Gelber, P. H. Kang, A. G. Labouseur</span>
       <span class="pub-venue">arXiv:2511.17658, 2025</span>
-      <span class="pub-links"><a href="https://arxiv.org/abs/2511.17658">arXiv</a></span>
+      <span class="pub-links"><a href="https://arxiv.org/abs/2511.17658" target="_blank" rel="noopener">arXiv</a></span>
     </li>
   </ul>
 
@@ -104,19 +113,19 @@
       <span class="pub-title">Drug release modeling using Physics-Informed Neural Networks</span>
       <span class="pub-authors"><strong>D. A. Qureshi</strong>, K. Shukla, V. Srivastava</span>
       <span class="pub-venue"><em>Journal of Drug Delivery Science and Technology</em> 125, 108654 (2026)</span>
-      <span class="pub-links"><a href="https://doi.org/10.1016/j.jddst.2026.108654">paper</a><a href="https://arxiv.org/abs/2602.09963">arXiv</a><a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery">Brown News</a></span>
+      <span class="pub-links"><a href="https://doi.org/10.1016/j.jddst.2026.108654" target="_blank" rel="noopener">paper</a><a href="https://arxiv.org/abs/2602.09963" target="_blank" rel="noopener">arXiv</a><a href="https://www.brown.edu/news/2026-07-06/ai-drug-delivery" target="_blank" rel="noopener">Brown News</a></span>
     </li>
     <li>
       <span class="pub-title">A Machine Learning Method to Measure the Embedded Crack Length and Position in High-Density Polyethylene Using Ultrasound Time Signal</span>
       <span class="pub-authors"><strong>D. Aleem Qureshi</strong>, V. Bellala, S. Niu, V. Srivastava</span>
       <span class="pub-venue"><em>ASME Journal of Nondestructive Evaluation, Diagnostics and Prognostics of Engineering Systems</em> 9(1), 011004 (2026)</span>
-      <span class="pub-links"><a href="https://doi.org/10.1115/1.4070539">paper</a><a href="https://arxiv.org/abs/2304.11497">arXiv</a></span>
+      <span class="pub-links"><a href="https://doi.org/10.1115/1.4070539" target="_blank" rel="noopener">paper</a><a href="https://arxiv.org/abs/2304.11497" target="_blank" rel="noopener">arXiv</a></span>
     </li>
     <li>
       <span class="pub-title">Why mussel byssal plaques are tiny yet strong in attachment</span>
       <span class="pub-authors"><strong>D. A. Qureshi</strong>, S. Goffredo, Y. Kim, Y. Han, M. Guo, S. Ryu, Z. Qin</span>
       <span class="pub-venue"><em>Matter</em> 5(2), 710&ndash;724 (2022)</span>
-      <span class="pub-links"><a href="https://doi.org/10.1016/j.matt.2021.12.001">paper</a></span>
+      <span class="pub-links"><a href="https://doi.org/10.1016/j.matt.2021.12.001" target="_blank" rel="noopener">paper</a></span>
     </li>
   </ul>
 
@@ -143,10 +152,13 @@
 <script>
   (function () {
     /* if an animation fails to load or throws, drop back to the plain static page */
-    function off() { document.documentElement.classList.remove('anim-v' + window.ANIM_V); }
-    function load(src, fail) { var s = document.createElement('script'); s.src = src; if (fail) s.onerror = fail; document.body.appendChild(s); }
+    function off() { document.documentElement.classList.remove('anim-v' + window.ANIM_V, 'anim-mid-on'); }
+    function load(src, fail, host) { var s = document.createElement('script'); s.src = src; if (host) s.dataset.host = host; if (fail) s.onerror = fail; document.body.appendChild(s); }
     window.addEventListener('error', function (e) { if (/anim-v\d\.js/.test(e.filename || '')) off(); });
-    if (window.ANIM_V) load('assets/js/anim-v' + window.ANIM_V + '.js', off);
+    if (window.ANIM_V) {
+      load('assets/js/anim-v' + window.ANIM_V + '.js', off);
+      load('assets/js/anim-v' + (window.ANIM_V === 2 ? 1 : 2) + '.js', off, '#anim-mid');
+    }
     if (window.ANIM_PICK) load('assets/js/anim-pick.js');
   })();
 </script>

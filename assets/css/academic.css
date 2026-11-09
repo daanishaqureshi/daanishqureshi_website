@@ -176,8 +176,14 @@ ul.plain li { margin-bottom: 4px; }
 .lede { color: var(--muted); }
 .anim-page .anim-strip { display: block; position: relative; height: 76px; margin: 28px 0 0; }
 
+/* Strips between sections, further down a page (Home shows its one when animations are on). */
+.anim-mid-on .anim-strip.anim-mid { display: block; position: relative; height: 76px; }
+.anim-page .anim-strip.anim-mid, .anim-mid-on .anim-strip.anim-mid { margin: 40px 0 -8px; }
+
 .project { margin: 0 0 36px; }
 .project h3 { margin: 28px 0 2px; font-size: 20px; color: var(--text); line-height: 1.35; }
+.project h4 { margin: 24px 0 8px; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.35; }
+.project h4 + .meta { margin-top: -6px; }
 .meta { margin: 0 0 12px; color: var(--muted); font-size: 16px; }
 .cite { color: var(--muted); font-size: 16px; line-height: 1.5; margin-bottom: 4px; }
 .cite em { font-style: italic; }
@@ -219,6 +225,7 @@ figcaption { margin-top: 6px; font-size: 15px; line-height: 1.45; color: var(--m
   .anim-v1 .anim-strip, .anim-v2 .anim-strip, .anim-v3 .anim-strip { height: 64px; margin-top: 20px; }
   .anim-v1 .intro, .anim-v2 .intro, .anim-v3 .intro { margin-top: 20px; }
   .anim-page .anim-strip { height: 64px; margin-top: 20px; }
+  .anim-page .anim-strip.anim-mid, .anim-mid-on .anim-strip.anim-mid { height: 64px; margin: 32px 0 -8px; }
   .page-head h1 { font-size: 28px; }
   .project h3 { font-size: 19px; }
   .side { grid-template-columns: 1fr; gap: 8px; }
