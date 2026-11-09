@@ -65,6 +65,9 @@
     <li><time>2018 to 2021</time><div class="what"><strong>MIT</strong>, Department of Civil and Environmental Engineering, visiting student with <a href="https://ecs.syracuse.edu/faculty-staff/zhao-qin" target="_blank" rel="noopener">Zhao Qin</a> (<a href="https://www.zhaoqinresearch.com/" target="_blank" rel="noopener">lab</a>)<span>Mussel byssal plaque attachment, published in <em>Matter</em>. <a href="research.html#mussels">More</a></span></div></li>
   </ul>
 
+  <!-- A DNA helix turning. -->
+  <div class="anim-strip anim-mid" id="anim-helix" aria-hidden="true"><canvas></canvas></div>
+
   <h2 id="industry">Industry</h2>
   <ul class="cv">
     <li><time>2025 to present</time><div class="what"><strong>VP of AI Engineering</strong>, Impiricus<span>Architected the Ascend platform, invented ION (Intelligently Optimized Network), and leads AI research. <a href="industry.html#impiricus">More</a></span></div></li>
@@ -80,6 +83,9 @@
     <li><time>2022</time><div class="what"><strong>D. A. Qureshi</strong>, S. Goffredo, Y. Kim, Y. Han, M. Guo, S. Ryu, Z. Qin. Why mussel byssal plaques are tiny yet strong in attachment. <em>Matter</em> 5(2), 710&ndash;724. <a href="https://doi.org/10.1016/j.matt.2021.12.001" target="_blank" rel="noopener">paper</a></div></li>
   </ul>
   <p>Abstracts and posters (AMIA 2026, ASOPRS 2026) are on the <a href="index.html#publications">home page</a>.</p>
+
+  <!-- Cells settling into clusters. -->
+  <div class="anim-strip anim-mid" id="anim-cells" aria-hidden="true"><canvas></canvas></div>
 
   <h2 id="talks">Talks and events</h2>
   <ul class="cv">
@@ -106,9 +112,11 @@
 <script>
   (function () {
     function off() { document.documentElement.classList.remove('anim-page'); }
-    window.addEventListener('error', function (e) { if (/anim-timeline\.js/.test(e.filename || '')) off(); });
-    var s = document.createElement('script'); s.src = 'assets/js/anim-timeline.js'; s.onerror = off;
-    document.body.appendChild(s);
+    window.addEventListener('error', function (e) { if (/anim-(timeline|v\d)\.js/.test(e.filename || '')) off(); });
+    function load(src, host) { var s = document.createElement('script'); s.src = src; if (host) s.dataset.host = host; s.onerror = off; document.body.appendChild(s); }
+    load('assets/js/anim-timeline.js', '.anim-strip:not(.anim-mid)');
+    load('assets/js/anim-v1.js', '#anim-helix');
+    load('assets/js/anim-v2.js', '#anim-cells');
   })();
 </script>
 </body>

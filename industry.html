@@ -30,6 +30,9 @@
 
 <main class="wrap">
 
+  <!-- A network growing node by node. -->
+  <div class="anim-strip" aria-hidden="true"><canvas></canvas></div>
+
   <div class="page-head">
     <h1>Industry</h1>
     <p class="lede">Alongside my PhD at Yale, where I work on <a href="research.html">AI agents and foundation models for biology</a>, I build AI products in healthcare, invest in early-stage AI startups, and bring builders and clinicians together in New York.</p>
@@ -52,6 +55,9 @@
     <figure><img src="assets/img/leadership/impiricus-team-web.jpg" alt="The Impiricus team at their booth at an industry conference" loading="lazy" width="1200" height="800"><figcaption>The Impiricus team at an industry conference.</figcaption></figure>
   </section>
 
+  <!-- A heat (diffusion) equation relaxing. -->
+  <div class="anim-strip anim-mid" id="anim-heat" aria-hidden="true"><canvas></canvas></div>
+
   <h2 id="litgrab">LitGrab</h2>
   <section class="project">
     <p class="meta">Co-founder and Head of Technology, 2024 to 2025. Acquired by Impiricus</p>
@@ -64,8 +70,8 @@
     <p><strong>Amorcer</strong>, investor and advisor. An AI-native platform that helps clinicians launch and run virtual chronic-care clinics (from the French <em>amorcer</em>, "to launch"). It was later acquired by 3Y Health, a practice-management platform for clinician entrepreneurs.</p>
   </section>
 
-  <!-- A network that grows one node at a time by preferential attachment. -->
-  <div class="anim-strip anim-mid" id="anim-network" aria-hidden="true"><canvas></canvas></div>
+  <!-- Cells settling into clusters. -->
+  <div class="anim-strip anim-mid" id="anim-cells" aria-hidden="true"><canvas></canvas></div>
 
   <h2 id="events">Events and talks</h2>
 
@@ -118,9 +124,11 @@
 <script>
   (function () {
     function off() { document.documentElement.classList.remove('anim-page'); }
-    window.addEventListener('error', function (e) { if (/anim-network\.js/.test(e.filename || '')) off(); });
-    var s = document.createElement('script'); s.src = 'assets/js/anim-network.js'; s.dataset.host = '#anim-network'; s.onerror = off;
-    document.body.appendChild(s);
+    window.addEventListener('error', function (e) { if (/anim-(network|heat|v2)\.js/.test(e.filename || '')) off(); });
+    function load(src, host) { var s = document.createElement('script'); s.src = src; s.dataset.host = host; s.onerror = off; document.body.appendChild(s); }
+    load('assets/js/anim-network.js', '.anim-strip:not(.anim-mid)');
+    load('assets/js/anim-heat.js', '#anim-heat');
+    load('assets/js/anim-v2.js', '#anim-cells');
   })();
 </script>
 </body>

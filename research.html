@@ -30,6 +30,9 @@
 
 <main class="wrap">
 
+  <!-- A heat (diffusion) equation relaxing, after the PINN drug release work. -->
+  <div class="anim-strip" aria-hidden="true"><canvas></canvas></div>
+
   <div class="page-head">
     <h1>Research</h1>
     <p class="lede">Machine learning for biology and medicine, from physics-informed models of drug release to AI agents for biological discovery. The full publication list is on the <a href="index.html#publications">home page</a>, and my work in industry is on the <a href="industry.html">Industry</a> page.</p>
@@ -43,8 +46,8 @@
     <p>I build AI agents for biological discovery and study the foundation models they work with: accurate and efficient knowledge stores for agentic retrieval, rigorous evaluation of the hypotheses agents generate, and the development and interpretability of single-cell foundation models such as Cell2Sentence-Scale (C2S-Scale). Papers from this work will be listed here once they are posted.</p>
   </section>
 
-  <!-- A heat (diffusion) equation relaxing, after the PINN drug release work. -->
-  <div class="anim-strip anim-mid" id="anim-heat" aria-hidden="true"><canvas></canvas></div>
+  <!-- Cells settling into clusters, after the single-cell work. -->
+  <div class="anim-strip anim-mid" id="anim-cells" aria-hidden="true"><canvas></canvas></div>
 
   <h2 id="brown">Research at Brown</h2>
 
@@ -105,6 +108,9 @@
     <p class="more"><a href="https://arxiv.org/abs/2511.17658" target="_blank" rel="noopener">arXiv</a></p>
   </section>
 
+  <!-- A DNA helix turning. -->
+  <div class="anim-strip anim-mid" id="anim-helix" aria-hidden="true"><canvas></canvas></div>
+
   <h2 id="earlier">Earlier work</h2>
 
   <section class="project" id="population-health">
@@ -148,10 +154,12 @@
   (function () {
     /* if the animation fails to load or throws, drop back to the plain static page */
     function off() { document.documentElement.classList.remove('anim-page'); }
-    window.addEventListener('error', function (e) { if (/anim-(heat|v3)\.js/.test(e.filename || '')) off(); });
+    window.addEventListener('error', function (e) { if (/anim-(heat|v\d)\.js/.test(e.filename || '')) off(); });
     function load(src, host) { var s = document.createElement('script'); s.src = src; s.dataset.host = host; s.onerror = off; document.body.appendChild(s); }
-    load('assets/js/anim-heat.js', '#anim-heat');
+    load('assets/js/anim-heat.js', '.anim-strip:not(.anim-mid)');
+    load('assets/js/anim-v2.js', '#anim-cells');
     load('assets/js/anim-v3.js', '#anim-pendulum');
+    load('assets/js/anim-v1.js', '#anim-helix');
   })();
 </script>
 </body>

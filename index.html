@@ -58,11 +58,7 @@
     </div>
   </section>
 
-  <p>I am a PhD student in Computational Biology and Biomedical Informatics at Yale, working under <a href="https://www.vandijklab.org/" target="_blank" rel="noopener">David van Dijk</a>. I build AI agents for biological discovery: knowledge stores that agents can retrieve from accurately and efficiently, and rigorous ways to evaluate the hypotheses and analyses they produce.</p>
-
-  <p>I also work on foundation models for biology. Single-cell foundation models such as Cell2Sentence-Scale (C2S-Scale), from David's group, read a cell's gene expression as text and learn from millions of cells. I build and interpret these models: how they are trained, and what they learn about cells and genes.</p>
-
-  <p>Before Yale I studied applied mathematics, biology and engineering at Brown, then co-founded LitGrab, which was acquired by Impiricus, where I am VP of AI Engineering. I am also an angel investor in various early-stage AI startups. I want these methods to reach drug discovery and clinical development.</p>
+  <p>I am a PhD student in Computational Biology and Biomedical Informatics at Yale, working under <a href="https://www.vandijklab.org/" target="_blank" rel="noopener">David van Dijk</a>. I develop methods for AI agents and biological foundation models: knowledge stores that agents can retrieve from accurately and efficiently, rigorous evaluation of the hypotheses and analyses agents generate, and the training and interpretability of foundation models. I work with single-cell data, using models such as Cell2Sentence-Scale (C2S-Scale) from David's group, and with DNA methylation data alongside <a href="https://medicine.yale.edu/profile/a-higginschen/" target="_blank" rel="noopener">Albert Higgins-Chen</a>. Before Yale I studied applied mathematics, biology and engineering at Brown, then co-founded LitGrab, which was acquired by Impiricus, where I am VP of AI Engineering. I am also an angel investor in various early-stage AI startups. I want these methods to reach drug discovery and clinical development.</p>
 
   <h2>Research interests</h2>
   <ul class="plain">
@@ -71,6 +67,9 @@
     <li>Rigorous, reproducible evaluation of AI-generated scientific hypotheses</li>
     <li>Development and interpretability of biological foundation models</li>
   </ul>
+
+  <!-- A heat (diffusion) equation relaxing. -->
+  <div class="anim-strip anim-mid" id="anim-heat" aria-hidden="true"><canvas></canvas></div>
 
   <h2>News</h2>
   <ul class="news">
@@ -144,10 +143,11 @@
     /* if an animation fails to load or throws, drop back to the plain static page */
     function off() { document.documentElement.classList.remove('anim-v' + window.ANIM_V, 'anim-mid-on'); }
     function load(src, fail, host) { var s = document.createElement('script'); s.src = src; if (host) s.dataset.host = host; if (fail) s.onerror = fail; document.body.appendChild(s); }
-    window.addEventListener('error', function (e) { if (/anim-v\d\.js/.test(e.filename || '')) off(); });
+    window.addEventListener('error', function (e) { if (/anim-(v\d|heat)\.js/.test(e.filename || '')) off(); });
     if (window.ANIM_V) {
       load('assets/js/anim-v' + window.ANIM_V + '.js', off);
       load('assets/js/anim-v' + (window.ANIM_V === 2 ? 1 : 2) + '.js', off, '#anim-mid');
+      load('assets/js/anim-heat.js', off, '#anim-heat');
     }
     if (window.ANIM_PICK) load('assets/js/anim-pick.js');
   })();
