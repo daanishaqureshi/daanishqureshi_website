@@ -10,6 +10,15 @@
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/academic.css">
+<script>
+  /* Home animation variant: ?v=0 (none) to ?v=4, default 1. ?pick shows a switcher. */
+  (function () {
+    var q = location.search, m = /[?&]v=(\d)/.exec(q), v = m ? +m[1] : 1;
+    if (v > 4) v = 1;
+    document.documentElement.className += ' anim-v' + v;
+    window.ANIM_V = v; window.ANIM_PICK = /[?&]pick\b/.test(q);
+  })();
+</script>
 <link rel="icon" href="favicon.svg">
 </head>
 <body>
@@ -29,6 +38,8 @@
 </header>
 
 <main class="wrap">
+
+  <div class="anim-strip" aria-hidden="true"><canvas></canvas></div>
 
   <section class="intro">
     <!-- PHOTO PLACEHOLDER: new headshot coming from Daanish. Replace this div with
@@ -131,5 +142,15 @@
   <div class="wrap">Last updated November 2026</div>
 </footer>
 
+<script>
+  (function () {
+    /* if an animation fails to load or throws, drop back to the plain static page */
+    function off() { document.documentElement.classList.remove('anim-v' + window.ANIM_V); }
+    function load(src, fail) { var s = document.createElement('script'); s.src = src; if (fail) s.onerror = fail; document.body.appendChild(s); }
+    window.addEventListener('error', function (e) { if (/anim-v\d\.js/.test(e.filename || '')) off(); });
+    if (window.ANIM_V) load('assets/js/anim-v' + window.ANIM_V + '.js', off);
+    if (window.ANIM_PICK) load('assets/js/anim-pick.js');
+  })();
+</script>
 </body>
 </html>

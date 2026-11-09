@@ -1,4 +1,5 @@
-/* One stylesheet for the academic site. Light, one column, no animation. */
+/* One stylesheet for the academic site. Light, one column. The only motion is
+   the Home accent at the end of this file, chosen by ?v=N on index.html. */
 
 :root {
   --text: #1a1a1a;
@@ -127,6 +128,46 @@ ul.plain li { margin-bottom: 4px; }
 }
 .site-footer .wrap { padding-top: 16px; padding-bottom: 32px; }
 
+/* Home animation accents (index.html?v=N). Space is reserved in CSS before any
+   script runs, so nothing shifts when an animation starts. */
+
+.anim-strip { display: none; }
+.anim-v1 .anim-strip, .anim-v2 .anim-strip, .anim-v3 .anim-strip {
+  display: block;
+  position: relative;
+  height: 76px;
+  margin: 28px 0 0;
+}
+.anim-v1 .intro, .anim-v2 .intro, .anim-v3 .intro { margin-top: 24px; }
+.anim-strip canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.anim-v4 main h2 { position: relative; padding-right: 80px; }
+.h-icon {
+  position: absolute; right: 0; top: 50%;
+  width: 64px; height: 24px; margin-top: -12px;
+  fill: none; stroke: var(--link); stroke-width: 1.2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.h-icon .rung { stroke: #9aa0a6; stroke-width: 1; }
+.h-icon path { transition: stroke-dashoffset 1.6s cubic-bezier(.4, 0, .2, 1); }
+.h-rule {
+  position: absolute; right: 78px; top: 50%; height: 1px;
+  background: var(--rule);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .9s ease;
+}
+.h-drawn .h-rule { transform: scaleX(1); }
+.h-still .h-rule, .h-still path { transition: none; }
+
+.anim-pick {
+  position: fixed; right: 12px; bottom: 12px; z-index: 10;
+  display: flex; flex-wrap: wrap; gap: 2px 10px; max-width: calc(100% - 24px);
+  padding: 6px 10px; border: 1px solid var(--rule); border-radius: 6px;
+  background: #fff; font-size: 13px;
+}
+.anim-pick a { color: var(--muted); }
+.anim-pick a[aria-current] { color: var(--link); font-weight: 600; }
+
 /* Phone */
 
 @media (max-width: 600px) {
@@ -137,4 +178,6 @@ ul.plain li { margin-bottom: 4px; }
   .intro h1 { font-size: 28px; }
   .news li { flex-direction: column; gap: 0; margin-bottom: 12px; }
   .news time { flex-basis: auto; font-size: 15px; }
+  .anim-v1 .anim-strip, .anim-v2 .anim-strip, .anim-v3 .anim-strip { height: 64px; margin-top: 20px; }
+  .anim-v1 .intro, .anim-v2 .intro, .anim-v3 .intro { margin-top: 20px; }
 }
