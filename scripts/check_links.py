@@ -8,7 +8,7 @@ from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ["index.html", "journey.html", "research.html", "leadership.html"]
+PAGES = ["index.html", "research.html", "cv.html", "industry.html", "journey.html", "leadership.html"]
 REF_RE = re.compile(r'(?:href|src)="([^"]+)"')
 ID_RE = re.compile(r'id="([^"]+)"')
 

@@ -1,5 +1,6 @@
 /* One stylesheet for the academic site. Light, one column. The only motion is
-   the Home accent at the end of this file, chosen by ?v=N on index.html. */
+   one small canvas strip per page: Home's accent chosen by ?v=N on index.html,
+   and one fixed accent each on Research, CV and Industry (.anim-page). */
 
 :root {
   --text: #1a1a1a;
@@ -168,6 +169,43 @@ ul.plain li { margin-bottom: 4px; }
 .anim-pick a { color: var(--muted); }
 .anim-pick a[aria-current] { color: var(--link); font-weight: 600; }
 
+/* Inner pages (Research, CV, Industry) */
+
+.page-head { margin: 24px 0 8px; }
+.page-head h1 { margin: 0 0 8px; font-size: 32px; font-weight: 600; line-height: 1.2; }
+.lede { color: var(--muted); }
+.anim-page .anim-strip { display: block; position: relative; height: 76px; margin: 28px 0 0; }
+
+.project { margin: 0 0 36px; }
+.project h3 { margin: 28px 0 2px; font-size: 20px; color: var(--text); line-height: 1.35; }
+.meta { margin: 0 0 12px; color: var(--muted); font-size: 16px; }
+.cite { color: var(--muted); font-size: 16px; line-height: 1.5; margin-bottom: 4px; }
+.cite em { font-style: italic; }
+.more { margin: 0; font-size: 16px; }
+.more a + a::before { content: "·"; color: var(--muted); padding: 0 6px; }
+.project ul { margin: 0 0 16px; padding-left: 20px; }
+.project ul li { margin-bottom: 4px; }
+blockquote { margin: 0 0 16px; padding-left: 16px; border-left: 2px solid var(--rule); color: var(--muted); }
+
+figure { margin: 12px 0 18px; }
+figure img { display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--rule); background: #fff; }
+figcaption { margin-top: 6px; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.fig-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 18px; }
+.fig-pair figure { margin: 0; }
+.fig-pair img { aspect-ratio: 4 / 3; object-fit: cover; }
+.fig-pair.tall img { aspect-ratio: 3 / 4; }
+.side { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; }
+.side figure { margin: 4px 0 0; }
+
+/* CV lists: a date column and an entry */
+.cv { margin: 0 0 8px; padding: 0; list-style: none; }
+.cv > li { display: flex; gap: 16px; margin-bottom: 14px; line-height: 1.5; }
+.cv time { flex: 0 0 132px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.cv .what { flex: 1; min-width: 0; }
+.cv .what span { display: block; color: var(--muted); font-size: 16px; }
+.cv ul { margin: 4px 0 0; padding-left: 18px; font-size: 16px; }
+.cv ul li { margin-bottom: 2px; }
+
 /* Phone */
 
 @media (max-width: 600px) {
@@ -180,4 +218,11 @@ ul.plain li { margin-bottom: 4px; }
   .news time { flex-basis: auto; font-size: 15px; }
   .anim-v1 .anim-strip, .anim-v2 .anim-strip, .anim-v3 .anim-strip { height: 64px; margin-top: 20px; }
   .anim-v1 .intro, .anim-v2 .intro, .anim-v3 .intro { margin-top: 20px; }
+  .anim-page .anim-strip { height: 64px; margin-top: 20px; }
+  .page-head h1 { font-size: 28px; }
+  .project h3 { font-size: 19px; }
+  .side { grid-template-columns: 1fr; gap: 8px; }
+  .side figure { max-width: 240px; }
+  .cv > li { flex-direction: column; gap: 0; }
+  .cv time { flex-basis: auto; font-size: 15px; }
 }
